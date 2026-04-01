@@ -1,0 +1,4 @@
+name: Nocturne
+version: '1.0-SNAPSHOT'
+main: me.TyAlternative.com.nocturne.Nocturne
+api-version: '1.21'
