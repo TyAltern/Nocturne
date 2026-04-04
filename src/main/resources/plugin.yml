@@ -2,3 +2,38 @@ name: Nocturne
 version: '1.0-SNAPSHOT'
 main: me.TyAlternative.com.nocturne.Nocturne
 api-version: '1.21'
+authors:
+  - TyAlternative
+
+dependencies:
+  server:
+    SkinsRestorer:
+      load: BEFORE
+      required: true
+      join-classpath: false
+
+commands:
+  nocturne:
+    description: Commande principale du jeu
+    usage: /nocturne <start|stop|skip|role|debug|reload>
+    aliases: [noc, n]
+    permission: nocturne.admin
+
+  compo:
+    description: Gestion de la composition des rôles
+    usage: /compo [display]
+    aliases: [ composition ]
+    permission: nocturne.composition
+
+permissions:
+  nocturne.admin:
+    description: Accès aux commandes administrateur
+    default: op
+
+  nocturne.play:
+    description: Permet de participer à une partie
+    default: true
+
+  nocturne.composition:
+    description: Permet de modifier la composition
+    default: op
