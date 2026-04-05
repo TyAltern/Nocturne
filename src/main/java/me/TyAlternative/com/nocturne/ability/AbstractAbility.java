@@ -186,6 +186,14 @@ public abstract class AbstractAbility implements Ability {
         return hidden;
     }
 
+    /**
+     * Marque cette capacité comme cachée dans la présentation du rôle.
+     * À appeler pour les capacités internes ou les malédictions invisibles.
+     */
+    public final void setHidden(boolean hidden) {
+        this.hidden = hidden;
+    }
+
     @SuppressWarnings("RedundantMethodOverride")
     @Override
     public boolean supportsDrunk() {
@@ -332,13 +340,6 @@ public abstract class AbstractAbility implements Ability {
         this.tickInterval = ticks;
     }
 
-    /**
-     * Marque cette capacité comme cachée dans la présentation du rôle.
-     * À appeler pour les capacités internes ou les malédictions invisibles.
-     */
-    protected final void setHidden(boolean hidden) {
-        this.hidden = hidden;
-    }
 
 
     // -------------------------------------------------------------------------

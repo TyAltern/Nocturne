@@ -1,5 +1,6 @@
 package me.TyAlternative.com.nocturne.composition;
 
+import me.TyAlternative.com.nocturne.api.role.Role;
 import me.TyAlternative.com.nocturne.api.role.RoleType;
 import me.TyAlternative.com.nocturne.role.RoleRegistry;
 import org.jetbrains.annotations.NotNull;
@@ -139,7 +140,7 @@ public final class CompositionManager {
             // Créer une instance temporaire pour vérifier le type du rôle
             // (on ne stocke pas le type ddans la composition pour rester découplé)
             //TODO: update this assignment
-            var role = registry.create(roleId);
+            Role role = registry.create(roleId);
             if (role.getType() == RoleType.FLAMME) hasFlamme = true;
             if (role.getType() == RoleType.BATON) hasBaton = true;
         }

@@ -28,6 +28,7 @@ import java.util.UUID;
  * délégués aux {@link Ability} enregistrées. Chaque hook est isolé par un try/catch
  * individuel afin qu'une erreur dans une ability n'empêche pas les autres de s'exécuter.
  */
+@SuppressWarnings("unused")
 public interface Role {
 
     // -------------------------------------------------------------------------
@@ -127,31 +128,31 @@ public interface Role {
     /**
      * Appelé lorsque ce joueur interagit physiquement avec un autre joueur.
      *
-     * @param caster         joueur qui interagit
-     * @param casterNocturne   données Nocturne du lanceur
-     * @param receiver       joueur cible de l'interaction
-     * @param receiverNocturne données Nocturne de la cible
-     * @param emptyHand      {@code true} si le lanceur avait la main principale vide
+     * @param caster           joueur qui interagit
+     * @param nocturneCaster   données Nocturne du lanceur
+     * @param receiver         joueur cible de l'interaction
+     * @param nocturneReceiver données Nocturne de la cible
+     * @param emptyHand        {@code true} si le lanceur avait la main principale vide
      */
     void onPlayerInteract(
             @NotNull Player caster,
-            @NotNull NocturnePlayer casterNocturne,
+            @NotNull NocturnePlayer nocturneCaster,
             @NotNull Player receiver,
-            @NotNull NocturnePlayer receiverNocturne,
+            @NotNull NocturnePlayer nocturneReceiver,
             boolean emptyHand
     );
 
     /**
      * Appelé sur tous les joueurs vivants lorsque l'un d'eux utilise une capacité active.
      *
-     * @param caster       joueur ayant utilisé la capacité
-     * @param casterNocturne données Nocturne du lanceur
-     * @param context      contexte d'exécution de la capacité
-     * @param result       résultat de l'exécution
+     * @param caster         joueur ayant utilisé la capacité
+     * @param nocturneCaster données Nocturne du lanceur
+     * @param context        contexte d'exécution de la capacité
+     * @param result         résultat de l'exécution
      */
     void onActiveAbilityUsed(
             @NotNull Player caster,
-            @NotNull NocturnePlayer casterNocturne,
+            @NotNull NocturnePlayer nocturneCaster,
             @NotNull AbilityContext context,
             @NotNull AbilityResult result
     );
@@ -171,14 +172,14 @@ public interface Role {
     /**
      * Appelé sur tous les joueurs vivants lorsqu'un autre joueur est éliminé.
      *
-     * @param eliminated joueur éliminé
-     * @param eliminatedNocturne données Nocturne du joueur éliminé
-     * @param cause      raison de l'élimination
+     * @param eliminated         joueur éliminé
+     * @param nocturneEliminated données Nocturne du joueur éliminé
+     * @param cause              raison de l'élimination
      */
     void onOtherEliminated(
             @NotNull Player self,
             @NotNull Player eliminated,
-            @NotNull NocturnePlayer eliminatedNocturne,
+            @NotNull NocturnePlayer nocturneEliminated,
             @NotNull EliminationCause cause
     );
 

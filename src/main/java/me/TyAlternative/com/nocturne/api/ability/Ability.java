@@ -38,6 +38,7 @@ import java.util.UUID;
  * Pour les capacités avec {@link AbilityTrigger#TICKS}, surcharger {@link #getTickInterval()}
  * pour définir la fréquence d'exécution en ticks (20 ticks = 1 seconde).
  */
+@SuppressWarnings("unused")
 public interface Ability {
 
     // -------------------------------------------------------------------------
@@ -191,6 +192,7 @@ public interface Ability {
     default void onOtherEliminated(
             @NotNull Player self,
             @NotNull Player eliminated,
+            @NotNull NocturnePlayer nocturneEliminated,
             @NotNull EliminationCause cause
     ) {}
 
@@ -201,9 +203,9 @@ public interface Ability {
      */
     default void onPlayerInteract(
             @NotNull Player caster,
-            @NotNull NocturnePlayer casterPlayer,
+            @NotNull NocturnePlayer nocturneCaster,
             @NotNull Player receiver,
-            @NotNull NocturnePlayer receiverPlayer,
+            @NotNull NocturnePlayer nocturneReceiver,
             boolean emptyHand
     ) {}
 
@@ -213,7 +215,7 @@ public interface Ability {
      */
     default void onActiveAbilityUsed(
             @NotNull Player caster,
-            @NotNull NocturnePlayer casterPlayer,
+            @NotNull NocturnePlayer nocturneCaster,
             @NotNull AbilityContext context,
             @NotNull AbilityResult result
     ) {}

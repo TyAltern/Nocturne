@@ -1,6 +1,7 @@
 package me.TyAlternative.com.nocturne;
 
 import me.TyAlternative.com.nocturne.core.NocturneGame;
+import me.TyAlternative.com.nocturne.role.RoleRegistry;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Nocturne extends JavaPlugin {
@@ -20,7 +21,7 @@ public final class Nocturne extends JavaPlugin {
 
 
     public NocturneGame getGame() {
-        return new NocturneGame();
+        return new NocturneGame(new RoleRegistry(getLogger()), getLogger());
     }
 
     public static Nocturne getInstance() {
