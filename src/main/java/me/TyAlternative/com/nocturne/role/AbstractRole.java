@@ -92,15 +92,15 @@ public abstract class AbstractRole implements Role {
             @NotNull String displayName,
             @NotNull String description,
             @NotNull RoleType type,
-            @NotNull Material guiIcon,
-            @NotNull RoleTeam team
+            @NotNull RoleTeam team,
+            @NotNull Material guiIcon
     ) {
         this.id = id;
         this.displayName = displayName;
         this.description = description;
         this.type = type;
-        this.guiIcon = guiIcon;
         this.team = team;
+        this.guiIcon = guiIcon;
     }
 
 
