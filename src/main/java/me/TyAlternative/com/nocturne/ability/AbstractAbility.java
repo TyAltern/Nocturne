@@ -60,6 +60,7 @@ import java.util.List;
  * Pour activer le mode drunk, surcharger {@link #supportsDrunk()} pour retourner {@code true}
  * puis surcharger {@link #executeDrunkLogic} pour définir le comportement erroné.
  */
+@SuppressWarnings("unused")
 public abstract class AbstractAbility implements Ability {
 
     // -------------------------------------------------------------------------
@@ -131,6 +132,7 @@ public abstract class AbstractAbility implements Ability {
      * Accès au gestionnaire de jeu central.
      * Disponible uniquement pendant une partie active.
      */
+
     protected @NotNull NocturneGame game() {
         return Nocturne.getInstance().getGame();
     }

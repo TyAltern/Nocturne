@@ -24,6 +24,7 @@ import java.util.*;
  * // Résultat : 7 joueurs, 1 Flamme, 6 Bâtons
  * }</pre>
  */
+@SuppressWarnings("unused")
 public final class CompositionManager {
 
     /** Map interne : ID de rôle → nombre d'instances. */

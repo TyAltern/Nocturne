@@ -18,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
  * setUsageLimit(UsageLimit.perRound(1)); // une utilisation par manche
  * }</pre>
  */
+@SuppressWarnings("unused")
 public class UsageLimit {
 
     /** Type de portée de la limite. */
@@ -59,7 +60,7 @@ public class UsageLimit {
     /**
      * Limite de {@code maxUses} utilisations pour toute la partie.
      *
-     * @param maxUses nombre maximum d'utilisations pour la partie, doit être &gt; 0
+     * @param maxUses nombre maximum d'utilisations pour la partie, doit être > 0
      * @throws IllegalArgumentException si {@code maxUses} ≤ 0
      */
     public static @NotNull UsageLimit perGame(int maxUses) {
