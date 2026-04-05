@@ -1,11 +1,12 @@
 package me.TyAlternative.com.nocturne.api.role;
 
+import me.TyAlternative.com.nocturne.role.RoleRegistry;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * Fabrique fonctionnelle produisant une nouvelle instance de {@link Role} à chaque appel.
  *
- * <p>Chaque rôle enregistre sa propre fabrique dans le {@link me.tyalternative.nocturne.role.RoleRegistry}
+ * <p>Chaque rôle enregistre sa propre fabrique dans le {@link RoleRegistry}
  * via une référence de constructeur :
  *
  * <pre>{@code

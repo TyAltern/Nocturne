@@ -3,9 +3,11 @@ package me.TyAlternative.com.nocturne.api.role;
 import me.TyAlternative.com.nocturne.api.ability.Ability;
 import me.TyAlternative.com.nocturne.api.ability.AbilityContext;
 import me.TyAlternative.com.nocturne.api.ability.AbilityResult;
+import me.TyAlternative.com.nocturne.core.phase.PhaseManager;
 import me.TyAlternative.com.nocturne.elimination.EliminationCause;
 import me.TyAlternative.com.nocturne.mechanics.vote.VoteEntry;
 import me.TyAlternative.com.nocturne.player.NocturnePlayer;
+import me.TyAlternative.com.nocturne.role.RoleRegistry;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -22,7 +24,7 @@ import java.util.UUID;
  * {@link RoleFactory}), garantissant l'isolation totale de l'état entre joueurs.
  *
  * <p>Les hooks d'événements ({@code onAssigned}, {@code onGameplayPhaseStart}, etc.)
- * sont appelés par {@link me.tyalternative.nocturne.core.phase.PhaseManager} et
+ * sont appelés par {@link PhaseManager} et
  * délégués aux {@link Ability} enregistrées. Chaque hook est isolé par un try/catch
  * individuel afin qu'une erreur dans une ability n'empêche pas les autres de s'exécuter.
  */
@@ -33,8 +35,8 @@ public interface Role {
     // -------------------------------------------------------------------------
 
     /**
-     * Identifiant unique du rôle, en majuscules et sans espaces (ex: {@code "ETINCELLE"}).
-     * Utilisé comme clé dans le {@link me.tyalternative.nocturne.role.RoleRegistry}.
+     * Identifiant unique du rôle, en majuscules et sans espaces (ex : {@code "ETINCELLE"}).
+     * Utilisé comme clé dans le {@link RoleRegistry}.
      */
     @NotNull String getId();
 
