@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
  *   <li>{@link #clearAll()} est appelé en fin de partie pour libérer la mémoire.</li>
  * </ul>
  */
+@SuppressWarnings("unused")
 public class PlayerManager {
 
     /** Map principale : UUID → données joueur. */
@@ -107,7 +108,7 @@ public class PlayerManager {
      * Retourne les instances Bukkit {@link Player} de tous les joueurs vivants en ligne.
      * Les joueurs déconnectés sont exclus même si leur état est {@link PlayerState#PLAYING}.
      */
-    public @NotNull List<Player> getAlivePlayer() {
+    public @NotNull List<Player> getAlivePlayers() {
         return players.values().stream()
                 .map(NocturnePlayer::getPlayer)
                 .filter(Objects::nonNull)

@@ -6,7 +6,7 @@ import me.TyAlternative.com.nocturne.core.phase.PhaseContext;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
-public final class VotePhase implements GamePhase {
+public final class EndPhase implements GamePhase {
     @Override
     public void onStart(@NotNull PhaseContext context) {
 

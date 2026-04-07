@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
  * <p>Regroupe les informations de timing ainsi que le {@link RoundContext}
  * portant l'état de la manche courante (embrasements, protections, disparitions).
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "ClassCanBeRecord"})
 public final class PhaseContext {
 
     private final long startTimeMs;
@@ -87,15 +87,4 @@ public final class PhaseContext {
     public int getRoundNumber() {
         return roundContext.getRoundNumber();
     }
-
-
-
-    // -------------------------------------------------------------------------
-    // Manche
-    // -------------------------------------------------------------------------
-
-    /** Contexte de la manche courante, portant les managers de mécaniques. */
-
-    /** Raccourci : numéro de la manche courante. */
-
 }
