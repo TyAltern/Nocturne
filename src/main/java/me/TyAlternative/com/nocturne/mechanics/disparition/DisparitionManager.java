@@ -1,6 +1,7 @@
 package me.TyAlternative.com.nocturne.mechanics.disparition;
 
 import me.TyAlternative.com.nocturne.core.round.RoundContext;
+import me.TyAlternative.com.nocturne.elimination.EliminationManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;

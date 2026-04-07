@@ -1,5 +1,7 @@
 package me.TyAlternative.com.nocturne.mechanics.disparition;
 
+import me.TyAlternative.com.nocturne.elimination.EliminationCause;
+import me.TyAlternative.com.nocturne.elimination.EliminationManager;
 import org.jetbrains.annotations.NotNull;
 
 /**

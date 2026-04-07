@@ -1,6 +1,7 @@
 package me.TyAlternative.com.nocturne.mechanics.embrasement;
 
 
+import me.TyAlternative.com.nocturne.elimination.EliminationManager;
 import org.jetbrains.annotations.NotNull;
 
 /**
