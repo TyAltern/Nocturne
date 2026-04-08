@@ -29,6 +29,7 @@ import java.util.UUID;
  *   <li>{@link #resetFull()} — appelé en fin de partie, remet tout à zéro.</li>
  * </ul>
  */
+@SuppressWarnings("unused")
 public final class NocturnePlayer {
 
     private final UUID playerId;
@@ -140,7 +141,7 @@ public final class NocturnePlayer {
         return spectralArrowsRemaining;
     }
 
-    private void setSpectralArrowsRemaining(int count) {
+    public void setSpectralArrowsRemaining(int count) {
         this.spectralArrowsRemaining = Math.max(0,count);
     }
 

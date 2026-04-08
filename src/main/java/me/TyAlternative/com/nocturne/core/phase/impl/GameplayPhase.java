@@ -76,17 +76,39 @@ public final class GameplayPhase implements GamePhase {
 
     @Override
     public void onEnd(@NotNull PhaseContext context) {
+        NocturneGame game = Nocturne.getInstance().getGame();
 
+        // Arrêter le ticker en premier
+        game.getTickingAbilityManager().stop();
+
+        // Notifier les rôles
+        for (NocturnePlayer nocturnePlayer : game.getPlayerManager().getAlive()) {
+            Player player = nocturnePlayer.getPlayer();
+            if (player == null || !nocturnePlayer.hasRole()) continue;
+
+            clearInventory(player);
+            safeDispatch(() ->
+                    nocturnePlayer.getRole().onGameplayPhaseEnd(player, nocturnePlayer),
+                    player.getName(), "onGameplayPhaseEnd"
+            );
+        }
+
+        // Restaurer l'anonymat avant les éliminations
+        game.getAnonymityManager().restoreAll();
+
+        // Traiter disparitions puis embrasements
+        game.getEliminationManager().processDisparitions(context.getRoundContext());
+        game.getEliminationManager().processEmbrasements(context.getRoundContext());
     }
 
     @Override
     public @NotNull PhaseType getType() {
-        return null;
+        return PhaseType.GAMEPLAY;
     }
 
     @Override
     public long getDurationMs(@NotNull PhaseContext context) {
-        return 0;
+        return Nocturne.getInstance().getGame().getSettings().getGameplayDurationSeconds() * 1000L;
     }
 
 

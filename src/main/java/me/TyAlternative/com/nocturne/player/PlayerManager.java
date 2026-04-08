@@ -177,7 +177,7 @@ public class PlayerManager {
     }
 
     /** Nombre de joueurs vivants dans l'équipe donnée. */
-    public int getAlivePlayerByTeam(@NotNull RoleTeam team) {
+    public int getAliveCountByTeam(@NotNull RoleTeam team) {
         return (int) players.values().stream()
                 .filter(p -> p.getRole() != null && p.getRole().getTeam() == team)
                 .count();

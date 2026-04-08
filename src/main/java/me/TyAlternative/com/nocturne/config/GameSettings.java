@@ -121,7 +121,7 @@ public final class GameSettings {
     public int getDoubleSwapMaxDelayMs()           { return doubleSwapMaxDelayMs; }
 
     // =========================================================================
-    // Setters (package-private, utilisés uniquement par ConfigManager)
+    // Setters (package private, utilisés uniquement par ConfigManager)
     // =========================================================================
 
     void setDebug(boolean debug)                                     { this.debug = debug; }
