@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Agrégat de tous les paramètres de configuration de la partie.
@@ -16,7 +17,7 @@ import java.util.List;
  *
  * <p>Organisé en sections correspondant aux blocs du fichier de configuration.
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "BooleanMethodIsAlwaysInverted"})
 public final class GameSettings {
     // -------------------------------------------------------------------------
     // Général
@@ -59,6 +60,7 @@ public final class GameSettings {
     // -------------------------------------------------------------------------
 
     private int defaultSpectralArrows = 1;
+    private boolean redeemSpectralArrowIfMiss = false; // TODO: ADD this to config ( & ConfigManager)
 
     // -------------------------------------------------------------------------
     // Capacités
@@ -85,6 +87,13 @@ public final class GameSettings {
     private boolean doubleSwapEnabled  = true;
     private int doubleSwapMaxDelayMs   = 200;
 
+    // -------------------------------------------------------------------------
+    // Sons
+    // -------------------------------------------------------------------------
+
+    /** Map clé logique → nom Minecraft (ex: "phase_change" → "entity.player.levelup"). */
+    private java.util.Map<String, String> soundNames = new java.util.HashMap<>();
+
     // =========================================================================
     // Getters
     // =========================================================================
@@ -107,6 +116,8 @@ public final class GameSettings {
 
     public int getDefaultSpectralArrows()          { return defaultSpectralArrows; }
 
+    public boolean shouldRedeemSpectralArrowIfMiss()   { return redeemSpectralArrowIfMiss; }
+
     public int getPoudreChemineeCooldownSeconds()  { return poudreChemineeCooldownSeconds; }
     public @NotNull List<String> getAmnesiaRoleCandidates() { return amnesiaRoleCandidates; }
 
@@ -120,31 +131,34 @@ public final class GameSettings {
     public boolean isDoubleSwapEnabled()           { return doubleSwapEnabled; }
     public int getDoubleSwapMaxDelayMs()           { return doubleSwapMaxDelayMs; }
 
+    public @Nullable String getSoundName(@NotNull String key) { return soundNames.get(key); }
     // =========================================================================
     // Setters (package private, utilisés uniquement par ConfigManager)
     // =========================================================================
 
-    void setDebug(boolean debug)                                     { this.debug = debug; }
-    void setWorldName(String worldName)                              { this.worldName = worldName; }
-    void setGameplayDurationSeconds(int seconds)                     { this.gameplayDurationSeconds = seconds; }
-    void setVoteDurationSeconds(int seconds)                         { this.voteDurationSeconds = seconds; }
-    void setHideSkins(boolean hideSkins)                             { this.hideSkins = hideSkins; }
-    void setHideNametags(boolean hideNametags)                       { this.hideNametags = hideNametags; }
-    void setDefaultSkin(String skin)                                 { this.defaultSkin = skin; }
-    void setVoteTableLocations(List<Location> locations)             { this.voteTableLocations = locations; }
-    void setRevealRoleOnDeath(boolean reveal)                        { this.revealRoleOnDeath = reveal; }
-    void setTeleportSpectatorsOnDeath(boolean teleport)              { this.teleportSpectatorsOnDeath = teleport; }
-    void setSpectatorLocation(@Nullable Location location)           { this.spectatorLocation = location; }
-    void setDefaultSpectralArrows(int count)                         { this.defaultSpectralArrows = count; }
-    void setPoudreChemineeCooldownSeconds(int seconds)               { this.poudreChemineeCooldownSeconds = seconds; }
-    void setAmnesiaRoleCandidates(List<String> candidates)           { this.amnesiaRoleCandidates = candidates; }
-    void setBossBarEnabled(boolean enabled)                          { this.bossBarEnabled = enabled; }
+    void setDebug(boolean debug)                                      { this.debug = debug; }
+    void setWorldName(String worldName)                               { this.worldName = worldName; }
+    void setGameplayDurationSeconds(int seconds)                      { this.gameplayDurationSeconds = seconds; }
+    void setVoteDurationSeconds(int seconds)                          { this.voteDurationSeconds = seconds; }
+    void setHideSkins(boolean hideSkins)                              { this.hideSkins = hideSkins; }
+    void setHideNametags(boolean hideNametags)                        { this.hideNametags = hideNametags; }
+    void setDefaultSkin(String skin)                                  { this.defaultSkin = skin; }
+    void setVoteTableLocations(List<Location> locations)              { this.voteTableLocations = locations; }
+    void setRevealRoleOnDeath(boolean reveal)                         { this.revealRoleOnDeath = reveal; }
+    void setTeleportSpectatorsOnDeath(boolean teleport)               { this.teleportSpectatorsOnDeath = teleport; }
+    void setSpectatorLocation(@Nullable Location location)            { this.spectatorLocation = location; }
+    void setDefaultSpectralArrows(int count)                          { this.defaultSpectralArrows = count; }
+    void setRedeemSpectralArrowIfMiss(boolean redeemSpectralArrowIfMiss) { this.redeemSpectralArrowIfMiss = redeemSpectralArrowIfMiss; }
+    void setPoudreChemineeCooldownSeconds(int seconds)                { this.poudreChemineeCooldownSeconds = seconds; }
+    void setAmnesiaRoleCandidates(List<String> candidates)            { this.amnesiaRoleCandidates = candidates; }
+    void setBossBarEnabled(boolean enabled)                           { this.bossBarEnabled = enabled; }
     void setBossBarColorGameplay(String color)                        { this.bossBarColorGameplay = color; }
-    void setBossBarColorVote(String color)                           { this.bossBarColorVote = color; }
-    void setActionBarEnabled(boolean enabled)                        { this.actionBarEnabled = enabled; }
-    void setSoundsEnabled(boolean enabled)                           { this.soundsEnabled = enabled; }
-    void setPrefix(String prefix)                                    { this.prefix = prefix; }
-    void setDoubleSwapEnabled(boolean enabled)                       { this.doubleSwapEnabled = enabled; }
-    void setDoubleSwapMaxDelayMs(int delayMs)                        { this.doubleSwapMaxDelayMs = delayMs; }
+    void setBossBarColorVote(String color)                            { this.bossBarColorVote = color; }
+    void setActionBarEnabled(boolean enabled)                         { this.actionBarEnabled = enabled; }
+    void setSoundsEnabled(boolean enabled)                            { this.soundsEnabled = enabled; }
+    void setPrefix(String prefix)                                     { this.prefix = prefix; }
+    void setDoubleSwapEnabled(boolean enabled)                        { this.doubleSwapEnabled = enabled; }
+    void setDoubleSwapMaxDelayMs(int delayMs)                         { this.doubleSwapMaxDelayMs = delayMs; }
+    void setSoundNames(Map<String, String> names)                     { this.soundNames = names; }
 
 }

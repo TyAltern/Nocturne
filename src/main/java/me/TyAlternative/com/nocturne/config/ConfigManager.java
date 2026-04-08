@@ -7,7 +7,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Charge le fichier {@code config.yml} et alimente le {@link GameSettings}.
@@ -74,6 +76,9 @@ public final class ConfigManager {
         // Double swap
         settings.setDoubleSwapEnabled(cfg.getBoolean("abilities.double_swap.enabled", true));
         settings.setDoubleSwapMaxDelayMs(cfg.getInt("abilities.double_swap.max_delay_ms", 200));
+
+        // Sons
+        settings.setSoundNames(parseSounds(cfg));
 
         // UI
         settings.setBossBarEnabled(cfg.getBoolean("ui.bossbar.enabled", true));
@@ -142,6 +147,19 @@ public final class ConfigManager {
         double z = cfg.getDouble("mechanics.elimination.spectator_location.z", 0);
         return new Location(world, x, y, z);
 
+    }
+
+    private @NotNull Map<String, String> parseSounds(@NotNull FileConfiguration cfg) {
+        Map<String, String> sounds = new HashMap<>();
+        var soundsSection = cfg.getConfigurationSection("ui.sounds");
+        if (soundsSection != null) {
+            for (String key : soundsSection.getKeys(false)) {
+                if (!key.equals("enabled")) {
+                    sounds.put(key, soundsSection.getString(key, ""));
+                }
+            }
+        }
+        return sounds;
     }
 
 
