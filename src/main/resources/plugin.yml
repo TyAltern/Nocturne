@@ -21,7 +21,7 @@ commands:
 
   compo:
     description: Gestion de la composition des rôles
-    usage: /compo [display]
+    usage: /compo <display|show|open>
     aliases: [ composition ]
     permission: nocturne.composition
 
