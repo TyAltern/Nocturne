@@ -30,8 +30,10 @@ public final class GameSettings {
     // Phases
     // -------------------------------------------------------------------------
 
-    private int gameplayDurationSeconds = 360;
-    private int voteDurationSeconds     = 120;
+    private int maxGameplayDurationSeconds = 360;
+    private int minGameplayDurationSeconds = 360;
+    private int maxVoteDurationSeconds     = 120;
+    private int minVoteDurationSeconds     = 120;
 
     // -------------------------------------------------------------------------
     // Anonymat
@@ -60,7 +62,7 @@ public final class GameSettings {
     // -------------------------------------------------------------------------
 
     private int defaultSpectralArrows = 1;
-    private boolean redeemSpectralArrowIfMiss = false; // TODO: ADD this to config ( & ConfigManager)
+    private boolean redeemSpectralArrowIfMiss = false;
 
     // -------------------------------------------------------------------------
     // Capacités
@@ -101,8 +103,10 @@ public final class GameSettings {
     public boolean isDebug()                       { return debug; }
     public @NotNull String getWorldName()          { return worldName; }
 
-    public int getGameplayDurationSeconds()        { return gameplayDurationSeconds; }
-    public int getVoteDurationSeconds()            { return voteDurationSeconds; }
+    public int getMaxGameplayDurationSeconds()        { return maxGameplayDurationSeconds; }
+    public int getMinGameplayDurationSeconds()        { return minGameplayDurationSeconds; }
+    public int getMaxVoteDurationSeconds()            { return maxVoteDurationSeconds; }
+    public int getMinVoteDurationSeconds()            { return minVoteDurationSeconds; }
 
     public boolean shouldHideSkins()               { return hideSkins; }
     public boolean shouldHideNametags()            { return hideNametags; }
@@ -138,8 +142,10 @@ public final class GameSettings {
 
     void setDebug(boolean debug)                                      { this.debug = debug; }
     void setWorldName(String worldName)                               { this.worldName = worldName; }
-    void setGameplayDurationSeconds(int seconds)                      { this.gameplayDurationSeconds = seconds; }
-    void setVoteDurationSeconds(int seconds)                          { this.voteDurationSeconds = seconds; }
+    void setMaxGameplayDurationSeconds(int seconds)                      { this.maxGameplayDurationSeconds = seconds; }
+    void setMinGameplayDurationSeconds(int seconds)                      { this.minGameplayDurationSeconds = seconds; }
+    void setMaxVoteDurationSeconds(int seconds)                          { this.maxVoteDurationSeconds = seconds; }
+    void setMinVoteDurationSeconds(int seconds)                          { this.minVoteDurationSeconds = seconds; }
     void setHideSkins(boolean hideSkins)                              { this.hideSkins = hideSkins; }
     void setHideNametags(boolean hideNametags)                        { this.hideNametags = hideNametags; }
     void setDefaultSkin(String skin)                                  { this.defaultSkin = skin; }

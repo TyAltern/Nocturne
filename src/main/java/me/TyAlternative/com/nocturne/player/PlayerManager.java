@@ -109,6 +109,7 @@ public class PlayerManager {
      */
     public @NotNull List<Player> getAlivePlayers() {
         return players.values().stream()
+                .filter(NocturnePlayer::isAlive)
                 .map(NocturnePlayer::getPlayer)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
@@ -121,7 +122,7 @@ public class PlayerManager {
      */
     public @NotNull List<NocturnePlayer> getAliveByType(@NotNull RoleType type) {
         return players.values().stream()
-                .filter(p -> p.getRole() != null && p.getRole().getType() == type)
+                .filter(p -> p.getRole() != null && p.isAlive() && p.getRole().getType() == type)
                 .collect(Collectors.toList());
     }
 
@@ -132,7 +133,7 @@ public class PlayerManager {
      */
     public @NotNull List<NocturnePlayer> getAliveByTeam(@NotNull RoleTeam team) {
         return players.values().stream()
-                .filter(p -> p.getRole() != null && p.getRole().getTeam() == team)
+                .filter(p -> p.getRole() != null && p.isAlive() && p.getRole().getTeam() == team)
                 .collect(Collectors.toList());
     }
 
@@ -153,7 +154,7 @@ public class PlayerManager {
         if (referencePlayer == null) return Collections.emptyList();
 
         return getAlive().stream()
-                .filter(p -> !p.getPlayerId().equals(reference.getPlayerId()))
+                .filter(p -> p.isAlive() && !p.getPlayerId().equals(reference.getPlayerId()))
                 .filter(p -> {
                     Player filteredPlayer = p.getPlayer();
                     if (filteredPlayer == null) return false;
@@ -178,7 +179,7 @@ public class PlayerManager {
     /** Nombre de joueurs vivants dans l'équipe donnée. */
     public int getAliveCountByTeam(@NotNull RoleTeam team) {
         return (int) players.values().stream()
-                .filter(p -> p.getRole() != null && p.getRole().getTeam() == team)
+                .filter(p -> p.getRole() != null && p.isAlive() && p.getRole().getTeam() == team)
                 .count();
     }
 

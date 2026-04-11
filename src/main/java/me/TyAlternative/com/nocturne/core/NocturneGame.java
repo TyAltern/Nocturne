@@ -33,6 +33,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Logger;
 
 /**
@@ -66,7 +67,6 @@ import java.util.logging.Logger;
  *   → cleanup()
  * </pre>
  */
-@SuppressWarnings({"unused", "BooleanMethodIsAlwaysInverted"})
 public final class NocturneGame {
     private static final org.slf4j.Logger log = LoggerFactory.getLogger(NocturneGame.class);
 
@@ -92,6 +92,7 @@ public final class NocturneGame {
     private final GlowingManager     glowingManager;
     private final GameSettings       settings;
     private final Logger             logger;
+    private final Random             random;
 
     // -------------------------------------------------------------------------
     // État de manche (recréé à chaque nouvelle manche)
@@ -133,6 +134,7 @@ public final class NocturneGame {
         this.roleRegistry       = registry;
         this.signManager        = new SignManager();
         this.glowingManager     = new GlowingManager();
+        this.random             = new Random();
         this.messageManager     = new MessageManager(settings);
 
         // Managers avec dépendances simples
@@ -402,6 +404,7 @@ public final class NocturneGame {
     public @NotNull GlowingManager     getGlowingManager()      { return glowingManager; }
     public @NotNull RoleDistributor    getRoleDistributor()     { return roleDistributor; }
     public @NotNull GameSettings       getSettings()            { return settings; }
+    public @NotNull Random             getRandom()              { return random; }
 
     public @Nullable RoundContext getCurrentRound()              { return currentRound; }
     public boolean isGameRunning()                              { return gameRunning; }

@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
+
 /**
  * Phase de Gameplay : les joueurs interagissent librement, les Flammes
  * utilisent leurs capacités pour embraser les Bâtons.
@@ -108,7 +109,10 @@ public final class GameplayPhase implements GamePhase {
 
     @Override
     public long getDurationMs(@NotNull PhaseContext context) {
-        return Nocturne.getInstance().getGame().getSettings().getGameplayDurationSeconds() * 1000L;
+        int min = Nocturne.getInstance().getGame().getSettings().getMinGameplayDurationSeconds();
+        int max = Nocturne.getInstance().getGame().getSettings().getMaxGameplayDurationSeconds();
+        int durationSec = Nocturne.getInstance().getGame().getRandom().nextInt(min, max+1);
+        return durationSec * 1000L;
     }
 
 

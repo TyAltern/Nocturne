@@ -1,5 +1,6 @@
 package me.TyAlternative.com.nocturne.mechanics.vote;
 
+import me.TyAlternative.com.nocturne.Nocturne;
 import me.TyAlternative.com.nocturne.api.role.RoleType;
 import me.TyAlternative.com.nocturne.player.NocturnePlayer;
 import me.TyAlternative.com.nocturne.player.PlayerManager;
@@ -24,8 +25,6 @@ import java.util.*;
 
 @SuppressWarnings("unused")
 public class VoteCalculator {
-
-    private static final Random RANDOM = new Random();
 
     /**
      * Calcule l'UUID du joueur à éliminer.
@@ -118,7 +117,7 @@ public class VoteCalculator {
 
         // Priorité aux Bâtons en cas d'égalité
         List<UUID> pool = batons.isEmpty() ? candidates : batons;
-        return pool.get(RANDOM. nextInt(pool.size()));
+        return pool.get(Nocturne.getInstance().getGame().getRandom().nextInt(pool.size()));
 
     }
 

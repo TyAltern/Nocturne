@@ -61,7 +61,7 @@ public final class VoteManager {
             removeVote(voterId);
             return;
         }
-        NocturnePlayer nocturneVoted = playerManager.get(voterId);
+        NocturnePlayer nocturneVoted = playerManager.get(targetId);
         Player votedPlayer = nocturneVoted.getPlayer();
         if (votedPlayer == null || nocturneVoter.getPlayer() == null) return;
         nocturneVoter.getPlayer().sendMessage(messageManager.buildBroadcast("§7Vous avez §dvoté §7contre §e" + votedPlayer.getName() + " §7!"));
@@ -81,7 +81,7 @@ public final class VoteManager {
         if (nocturneVoter == null) return;
 
         if (nocturneVoter.hasVoted()) {
-            NocturnePlayer nocturneVoted = playerManager.get(voterId);
+            NocturnePlayer nocturneVoted = playerManager.get(nocturneVoter.getVotedPlayerId());
             Player votedPlayer = nocturneVoted.getPlayer();
             if (votedPlayer == null) return;
             nocturneVoter.getPlayer().sendMessage(messageManager.buildBroadcast("§7Vous avez retiré votre §dvote §7contre §e" + votedPlayer.getName() + " §7!"));

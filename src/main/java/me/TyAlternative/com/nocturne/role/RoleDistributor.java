@@ -8,7 +8,6 @@ import me.TyAlternative.com.nocturne.player.PlayerManager;
 import me.TyAlternative.com.nocturne.player.NocturnePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -30,7 +29,6 @@ import java.util.logging.Logger;
  */
 public final class RoleDistributor {
 
-    private static final org.slf4j.Logger log = LoggerFactory.getLogger(RoleDistributor.class);
     private final RoleRegistry registry;
     private final PlayerManager playerManager;
     private final Logger logger;

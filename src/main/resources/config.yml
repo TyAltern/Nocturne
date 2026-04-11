@@ -11,9 +11,11 @@ general:
 # ============================================================
 phases:
   gameplay:
-    duration: 20
+    min_duration: 10
+    max_duration: 20
   vote:
-    duration: 10
+    min_duration: 10
+    max_duration: 10
 
 # ============================================================
 # Mécaniques

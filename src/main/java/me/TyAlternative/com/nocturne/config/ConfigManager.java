@@ -50,8 +50,10 @@ public final class ConfigManager {
         settings.setWorldName(cfg.getString("general.world", "world"));
 
         // Phases
-        settings.setGameplayDurationSeconds(cfg.getInt("phases.gameplay.duration", 20));
-        settings.setVoteDurationSeconds(cfg.getInt("phases.vote.duration", 10));
+        settings.setMaxGameplayDurationSeconds(cfg.getInt("phases.gameplay.max_duration", 360));
+        settings.setMinGameplayDurationSeconds(cfg.getInt("phases.gameplay.min_duration", 360));
+        settings.setMaxVoteDurationSeconds(cfg.getInt("phases.vote.max_duration", 120));
+        settings.setMinVoteDurationSeconds(cfg.getInt("phases.vote.min_duration", 120));
 
         // Anonymat
         settings.setHideSkins(cfg.getBoolean("mechanics.anonymity.hide_skins", true));

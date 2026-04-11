@@ -95,6 +95,8 @@ public final class VotePhase implements GamePhase {
 
             setInteractionRange(player, DEFAULT_BLOCK_RANGE, DEFAULT_ENTITY_RANGE);
 
+            game.getGlowingManager().removeGlowForAllTargets(nocturnePlayer);
+
             safeDispatch(() ->
                             nocturnePlayer.getRole().afterVoteCalculation(
                                     player, nocturnePlayer, votedPlayerId, allVotes
@@ -117,7 +119,10 @@ public final class VotePhase implements GamePhase {
 
     @Override
     public long getDurationMs(@NotNull PhaseContext context) {
-        return Nocturne.getInstance().getGame().getSettings().getVoteDurationSeconds() * 1000L;
+        int min = Nocturne.getInstance().getGame().getSettings().getMinVoteDurationSeconds();
+        int max = Nocturne.getInstance().getGame().getSettings().getMaxVoteDurationSeconds();
+        int durationSec = Nocturne.getInstance().getGame().getRandom().nextInt(min, max+1);
+        return durationSec * 1000L;
     }
 
 

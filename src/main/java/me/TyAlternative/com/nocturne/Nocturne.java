@@ -28,7 +28,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * <p>Accès global via {@link #getInstance()} et {@link #getGame()}.
  */
-@SuppressWarnings({"unused", "DataFlowIssue"})
+@SuppressWarnings({"unused", "DataFlowIssue", "StringTemplateMigration"})
 public final class Nocturne extends JavaPlugin {
     private static Nocturne instance;
 

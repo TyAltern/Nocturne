@@ -146,13 +146,14 @@ public final class BossBarManager {
     }
 
     private float calculateProgress(@NotNull PhaseType phase, int remainingSeconds) {
-        int total = switch (phase) {
-            case GAMEPLAY -> game.getSettings().getGameplayDurationSeconds();
-            case VOTE     -> game.getSettings().getVoteDurationSeconds();
-            default       -> remainingSeconds;
-        };
-        if (total <= 0) return 1.0f;
-        return (float) remainingSeconds/total;
+//        int total = switch (phase) {
+//            case GAMEPLAY -> game.getSettings().getGameplayDurationSeconds();
+//            case VOTE     -> game.getSettings().getVoteDurationSeconds();
+//            default       -> remainingSeconds;
+//        };
+        int total = (int) game.getPhaseManager().getCurrentContext().getDurationMs();
+        if (total <= 0) return 1000.0f;
+        return (float) (remainingSeconds * 1000)/total;
     }
 
     private @NotNull BarColor resolveColor(@NotNull PhaseType phase) {
