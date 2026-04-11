@@ -50,8 +50,8 @@ public final class ConfigManager {
         settings.setWorldName(cfg.getString("general.world", "world"));
 
         // Phases
-        settings.setGameplayDurationSeconds(cfg.getInt("phases.gameplay.duration", 360));
-        settings.setVoteDurationSeconds(cfg.getInt("phases.vote.duration", 120));
+        settings.setGameplayDurationSeconds(cfg.getInt("phases.gameplay.duration", 20));
+        settings.setVoteDurationSeconds(cfg.getInt("phases.vote.duration", 10));
 
         // Anonymat
         settings.setHideSkins(cfg.getBoolean("mechanics.anonymity.hide_skins", true));
@@ -59,7 +59,8 @@ public final class ConfigManager {
         settings.setDefaultSkin(cfg.getString("mechanics.anonymity.default_skin", "steve"));
 
         // Flèches spectrales
-        settings.setDefaultSpectralArrows(cfg.getInt("mechanics.spectral_arrows.default_count", 1));
+        settings.setDefaultSpectralArrows(cfg.getInt("mechanics.spectral_arrows.default_count", 2));
+        settings.setRedeemSpectralArrowIfMiss(cfg.getBoolean("mechanics.spectral_arrows.redeem_if_miss", true));
 
         // Tables de vote
         settings.setVoteTableLocations(parseVoteTables(cfg));

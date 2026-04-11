@@ -1,6 +1,8 @@
 package me.TyAlternative.com.nocturne.elimination;
 
 
+import me.TyAlternative.com.nocturne.Nocturne;
+import me.TyAlternative.com.nocturne.core.NocturneGame;
 import me.TyAlternative.com.nocturne.core.round.RoundContext;
 import me.TyAlternative.com.nocturne.mechanics.disparition.DisparitionCause;
 import me.TyAlternative.com.nocturne.mechanics.embrasement.EmbrasementCause;
@@ -37,7 +39,7 @@ import java.util.logging.Logger;
  *   <li>Diffuse le message d'élimination.</li>
  * </ol>
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "DataFlowIssue", "ExtractMethodRecommender"})
 public final class EliminationManager {
 
     private final PlayerManager playerManager;
@@ -170,6 +172,18 @@ public final class EliminationManager {
         }
 
         logger.info("[Nocturne] %s éliminé (%s)".formatted(player.getName(), cause.getDisplayName()));
+
+        // Message broadcast
+        NocturneGame game = Nocturne.getInstance().getGame();
+        String rolePart = game.getSettings().shouldRevealRoleOnDeath() && nocturnePlayer.hasRole()
+                ? " §8(§7" + nocturnePlayer.getRole().getDisplayName() + "§8)"
+                : "";
+        String causePart = cause.isVote() || cause == EliminationCause.DISCONNECT
+                ? " §8— §7" + cause.getDisplayName()
+                : "";
+
+        game.broadcast("§e" + player.getName() + rolePart + " §7a été éliminé." + causePart);
+        game.getSoundManager().playToAll("elimination");
     }
 
 

@@ -1,5 +1,6 @@
 package me.TyAlternative.com.nocturne.composition;
 
+import me.TyAlternative.com.nocturne.Nocturne;
 import me.TyAlternative.com.nocturne.api.role.Role;
 import me.TyAlternative.com.nocturne.api.role.RoleType;
 import me.TyAlternative.com.nocturne.role.RoleRegistry;
@@ -47,6 +48,8 @@ public final class CompositionManager {
         String normalized = roleId.toUpperCase();
         if (count <= 0) compositionMap.remove(normalized);
         else compositionMap.put(normalized, count);
+        //noinspection StringTemplateMigration
+        Nocturne.getInstance().getLogger().info("Added to compo : " + roleId + " x" + Math.max(0,count));
     }
 
     /**

@@ -20,7 +20,9 @@ import me.TyAlternative.com.nocturne.player.PlayerManager;
 import me.TyAlternative.com.nocturne.player.PlayerState;
 import me.TyAlternative.com.nocturne.role.RoleDistributor;
 import me.TyAlternative.com.nocturne.role.RoleRegistry;
+import me.TyAlternative.com.nocturne.ui.BossBarManager;
 import me.TyAlternative.com.nocturne.ui.MessageManager;
+import me.TyAlternative.com.nocturne.ui.SoundManager;
 import me.TyAlternative.com.nocturne.victory.VictoryManager;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -84,6 +86,8 @@ public final class NocturneGame {
     private final VictoryManager     victoryManager;
     private final PhaseManager       phaseManager;
     private final MessageManager     messageManager;
+    private final BossBarManager     bossBarManager;
+    private final SoundManager       soundManager;
     private final GameSettings       settings;
     private final Logger             logger;
 
@@ -138,6 +142,10 @@ public final class NocturneGame {
 
         // VictoryManager référence this -> initialisé après le reste
         this.victoryManager = new VictoryManager(this);
+
+        // Managers UI
+        this.bossBarManager   = new BossBarManager(this);
+        this.soundManager     = new SoundManager(this, logger);
 
         // PhaseManager avec callback de transition
         this.phaseManager = new PhaseManager(this::handlePhaseTransition, logger);
@@ -197,7 +205,10 @@ public final class NocturneGame {
         // Démarrer la première manche
         startNewRound(roundNumber);
 
+        bossBarManager.start();
+
         broadcast("§aLa partie commence !");
+        soundManager.playToAll("game_start");
         return true;
     }
 
@@ -322,8 +333,9 @@ public final class NocturneGame {
      */
     private void cleanup() {
         tickingAbilityManager.stop();
-//        signManager.clearAll();
-//        anonymityManager.restoreAll();
+        bossBarManager.stop();
+        signManager.clearAll();
+        anonymityManager.restoreAll();
         abilityManager.clearAll();
         voteManager.clearAll();
 
@@ -382,6 +394,8 @@ public final class NocturneGame {
     public @NotNull VictoryManager     getVictoryManager()      { return victoryManager; }
     public @NotNull PhaseManager       getPhaseManager()        { return phaseManager; }
     public @NotNull MessageManager     getMessageManager()      { return messageManager; }
+    public @NotNull BossBarManager     getBossBarManager()      { return bossBarManager; }
+    public @NotNull SoundManager       getSoundManager()        { return soundManager; }
     public @NotNull RoleDistributor    getRoleDistributor()     { return roleDistributor; }
     public @NotNull GameSettings       getSettings()            { return settings; }
 

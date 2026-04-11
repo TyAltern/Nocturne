@@ -180,7 +180,8 @@ public final class CompositionGUI {
 
         String plain = PlainTextComponentSerializer.plainText().serialize(name).trim();
         for (Role role : game.getRoleRegistry().createAll()) {
-            String rolePlain = role.getDisplayName().replaceAll("§[0-9a-fk-orA-FK-OR]", "").trim();
+
+            String rolePlain = role.getDisplayName().trim();
 
             if (plain.equalsIgnoreCase(rolePlain)) return role;
         }

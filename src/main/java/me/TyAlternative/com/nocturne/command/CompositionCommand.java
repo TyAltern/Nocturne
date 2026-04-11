@@ -24,9 +24,9 @@ public final class CompositionCommand implements CommandExecutor, TabCompleter{
     private final NocturneGame game;
     private final CompositionGUI gui;
 
-    public CompositionCommand(NocturneGame game, CompositionGUI gui) {
+    public CompositionCommand(@NotNull NocturneGame game) {
         this.game = game;
-        this.gui = gui;
+        this.gui = new CompositionGUI(game);
     }
 
     @Override
