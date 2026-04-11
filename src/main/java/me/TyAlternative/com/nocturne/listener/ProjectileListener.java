@@ -25,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
  *   <li>Les dégâts sont toujours annulés (les flèches n'infligent aucun dégât).</li>
  * </ul>
  */
-@SuppressWarnings({"unused"})
+@SuppressWarnings({"unused", "StringTemplateMigration"})
 public final class ProjectileListener implements Listener {
 
     private final NocturneGame game;
@@ -54,7 +54,7 @@ public final class ProjectileListener implements Listener {
 
         if (nocturneShooter.consumeSpectralArrow()) {
             // Révéler le vrai nom du joueur touché à tous
-            game.getAnonymityManager().restoreNametag(target);
+            game.getAnonymityManager().restoreIdentity(target);
             arrow.remove();
 
             shooter.sendMessage("§bVous avez révélé l'identité de §e" + target.getName() + "§b.");

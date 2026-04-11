@@ -4,7 +4,6 @@ import  me.TyAlternative.com.nocturne.api.role.RoleTeam;
 import  me.TyAlternative.com.nocturne.api.role.RoleType;
 import me.TyAlternative.com.nocturne.core.NocturneGame;
 import me.TyAlternative.com.nocturne.listener.ConnectionListener;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -159,7 +158,7 @@ public class PlayerManager {
                     Player filteredPlayer = p.getPlayer();
                     if (filteredPlayer == null) return false;
                     // Ignorer les joueurs dans un monde différent
-                    if (!Bukkit.getWorlds().equals(referencePlayer.getWorld())) return false;
+                    if (!filteredPlayer.getWorld().equals(referencePlayer.getWorld())) return false;
                     return referencePlayer.getLocation().distance(filteredPlayer.getLocation()) <= radius;
                 })
                 .collect(Collectors.toList());

@@ -94,16 +94,16 @@ public final class BossBarManager {
         boolean showTimer = canSeeTimer(nocturnePlayer, phase);
         int     remaining = game.getPhaseManager().getRemainingSeconds();
 
-        int dotNumber = remaining%3;
+        int dotNumber = (3-remaining%3);
         // Titre
         String title = showTimer ?
-                phase.getDisplayName() + " §7-§f" + TimeUtil.formatSeconds(remaining):
-                "§7Phase de " + phase.getDisplayName() + " §7en cours" + ".".repeat(dotNumber);
+                phase.getDisplayName() + " §7-§f " + TimeUtil.formatSeconds(remaining):
+                "§7Phase de " + phase.getDisplayName() + " §7en cours" + ".".repeat(dotNumber)+" ".repeat(3-dotNumber);
 
         // Progression
         float progress = showTimer ? calculateProgress(phase, remaining) : 1.0f;
         bar.setProgress(Math.max(0.0, Math.min(1.0, progress)));
-
+        bar.setTitle(title);
         bar.setColor(resolveColor(phase));
     }
 

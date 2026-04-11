@@ -58,7 +58,7 @@ public final class PlayerInteractionListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Player attacker)) return;
-        if (!(event.getDamager() instanceof Player target)) return;
+        if (!(event.getEntity() instanceof Player target)) return;
 
         if (!game.isGameRunning()) return;
         event.setCancelled(true);

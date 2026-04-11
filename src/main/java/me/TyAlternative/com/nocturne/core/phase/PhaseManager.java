@@ -15,7 +15,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumMap;
 import java.util.Map;
-import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 /**
@@ -149,6 +148,7 @@ public final class PhaseManager {
         cancelEndTask();
 
         logger.info("[Nocturne] Fin de la phase : " + currentPhase.getType().getDisplayName());
+        currentPhase.onEnd(currentContext);
 
         // Déléguer la logique de transition (victoire, nouvelle manche...)
         transitionHandler.onPhaseEnded(currentPhase.getType());

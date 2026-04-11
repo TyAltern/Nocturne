@@ -59,7 +59,7 @@ public final class ConfigManager {
         settings.setDefaultSkin(cfg.getString("mechanics.anonymity.default_skin", "steve"));
 
         // Flèches spectrales
-        settings.setDefaultSpectralArrows(cfg.getInt("mechanics.spectral_arrows.default_count", 2));
+        settings.setDefaultSpectralArrows(cfg.getInt("mechanics.spectral_arrows.default_count", 1));
         settings.setRedeemSpectralArrowIfMiss(cfg.getBoolean("mechanics.spectral_arrows.redeem_if_miss", true));
 
         // Tables de vote

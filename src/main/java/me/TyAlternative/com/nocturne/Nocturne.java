@@ -78,6 +78,8 @@ public final class Nocturne extends JavaPlugin {
         if (game != null) {
             game.forceStop();
         }
+
+        game.getGlowingManager().disable();
         getLogger().info("Nocturne désactivé.");
     }
 

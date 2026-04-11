@@ -98,12 +98,12 @@ public final class AnonymityManager {
     // -------------------------------------------------------------------------
 
     /**
-     * Retire un joueur spécifique de l'équipe de masquage, révélant son nametag.
+     * Retire un joueur spécifique de l'équipe de masquage, révélant son nametag et son skin.
      * Utilisé lors d'une révélation par flèche spectrale.
      *
      * @param player joueur à révéler
      */
-    public void restoreNametag(@NotNull Player player) {
+    public void restoreIdentity(@NotNull Player player) {
         getOrCreateTeam().removeEntry(player.getName());
         Bukkit.dispatchCommand(
                 Bukkit.getConsoleSender(),

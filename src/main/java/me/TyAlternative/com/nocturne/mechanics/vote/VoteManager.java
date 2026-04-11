@@ -1,8 +1,12 @@
 package me.TyAlternative.com.nocturne.mechanics.vote;
 
+import me.TyAlternative.com.nocturne.Nocturne;
 import me.TyAlternative.com.nocturne.core.phase.impl.VotePhase;
 import me.TyAlternative.com.nocturne.player.NocturnePlayer;
 import me.TyAlternative.com.nocturne.player.PlayerManager;
+import me.TyAlternative.com.nocturne.ui.MessageManager;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,16 +24,18 @@ import java.util.UUID;
  * de mécaniques de manche), car les votes sont nettoyés explicitement en fin de
  * chaque phase de Vote via {@link #clearAll()}.
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "DataFlowIssue", "StringTemplateMigration"})
 public final class VoteManager {
     private final PlayerManager playerManager;
     private final VoteCalculator calculator;
+    private final MessageManager messageManager;
 
     /**
      * @param playerManager gestionnaire des joueurs, pour accéder aux données de vote
      */
-    public VoteManager(@NotNull PlayerManager playerManager) {
+    public VoteManager(@NotNull PlayerManager playerManager, @NotNull MessageManager messageManager) {
         this.playerManager = playerManager;
+        this.messageManager = messageManager;
         this.calculator = new VoteCalculator();
     }
 
@@ -55,6 +61,11 @@ public final class VoteManager {
             removeVote(voterId);
             return;
         }
+        NocturnePlayer nocturneVoted = playerManager.get(voterId);
+        Player votedPlayer = nocturneVoted.getPlayer();
+        if (votedPlayer == null || nocturneVoter.getPlayer() == null) return;
+        nocturneVoter.getPlayer().sendMessage(messageManager.buildBroadcast("§7Vous avez §dvoté §7contre §e" + votedPlayer.getName() + " §7!"));
+        Nocturne.getInstance().getGame().getGlowingManager().setGlow(nocturneVoter, nocturneVoted, ChatColor.GOLD);
 
         nocturneVoter.voteFor(targetId);
     }
@@ -68,6 +79,15 @@ public final class VoteManager {
     public void removeVote(@NotNull UUID voterId) {
         NocturnePlayer nocturneVoter = playerManager.get(voterId);
         if (nocturneVoter == null) return;
+
+        if (nocturneVoter.hasVoted()) {
+            NocturnePlayer nocturneVoted = playerManager.get(voterId);
+            Player votedPlayer = nocturneVoted.getPlayer();
+            if (votedPlayer == null) return;
+            nocturneVoter.getPlayer().sendMessage(messageManager.buildBroadcast("§7Vous avez retiré votre §dvote §7contre §e" + votedPlayer.getName() + " §7!"));
+            Nocturne.getInstance().getGame().getGlowingManager().removeGlow(nocturneVoter, nocturneVoted);
+        }
+
         nocturneVoter.clearVote();
     }
 

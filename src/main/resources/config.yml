@@ -1,0 +1,93 @@
+# ============================================================
+#                   Nocturne — Configuration
+# ============================================================
+
+general:
+  debug: false
+  world: world
+
+# ============================================================
+# Phases
+# ============================================================
+phases:
+  gameplay:
+    duration: 20
+  vote:
+    duration: 10
+
+# ============================================================
+# Mécaniques
+# ============================================================
+mechanics:
+  anonymity:
+    hide_skins: true
+    hide_nametags: true
+    default_skin: steve
+
+  spectral_arrows:
+    default_count: 1
+    redeem_if_miss: true
+
+  elimination:
+    reveal_role_on_death: false
+    teleport_spectators: false
+    spectator_location:
+      x: 0
+      y: 100
+      z: 0
+
+vote_tables:
+  - "45, 103, -217"
+  - "47, 103, -219"
+  # Exemple :
+  # vote_tables:
+  #   - "0, 64, 0"
+  #   - "5, 64, 0"
+
+# ============================================================
+# Cooldowns (secondes)
+# ============================================================
+cooldowns:
+  poudre_cheminee: 5
+
+# ============================================================
+# Capacités
+# ============================================================
+abilities:
+  double_swap:
+    enabled: true
+    max_delay_ms: 200
+
+  curse:
+    amnesia:
+      targets:
+        - "BATON"
+        - "SOUFFLE"
+        - "CALCINE"
+        - "TORCHE"
+
+# ============================================================
+# Messages
+# ============================================================
+messages:
+  prefix: "§8[§eNocturne§8]§r "
+
+# ============================================================
+# UI
+# ============================================================
+ui:
+  bossbar:
+    enabled: true
+    color_gameplay: BLUE
+    color_vote: PINK
+
+  actionbar:
+    enabled: true
+
+  sounds:
+    enabled: true
+    game_start: "entity.player.levelup"
+    phase_change: "block.note_block.pling"
+    elimination: "entity.lightning_bolt.thunder"
+    ability_used: "block.note_block.hat"
+    vote_cast: "entity.experience_orb.pickup"

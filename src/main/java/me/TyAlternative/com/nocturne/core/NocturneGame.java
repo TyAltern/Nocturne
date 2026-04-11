@@ -12,6 +12,7 @@ import me.TyAlternative.com.nocturne.elimination.EliminationManager;
 import me.TyAlternative.com.nocturne.mechanics.anonymity.AnonymityManager;
 import me.TyAlternative.com.nocturne.mechanics.disparition.DisparitionManager;
 import me.TyAlternative.com.nocturne.mechanics.embrasement.EmbrasementManager;
+import me.TyAlternative.com.nocturne.mechanics.glowing.GlowingManager;
 import me.TyAlternative.com.nocturne.mechanics.protection.ProtectionManager;
 import me.TyAlternative.com.nocturne.mechanics.sign.SignManager;
 import me.TyAlternative.com.nocturne.mechanics.vote.VoteManager;
@@ -88,6 +89,7 @@ public final class NocturneGame {
     private final MessageManager     messageManager;
     private final BossBarManager     bossBarManager;
     private final SoundManager       soundManager;
+    private final GlowingManager     glowingManager;
     private final GameSettings       settings;
     private final Logger             logger;
 
@@ -126,29 +128,30 @@ public final class NocturneGame {
         this.logger = logger;
 
         // Managers sans dépendances
-        this.playerManager = new PlayerManager();
+        this.playerManager      = new PlayerManager();
         this.compositionManager = new CompositionManager();
-        this.roleRegistry = registry;
+        this.roleRegistry       = registry;
         this.signManager        = new SignManager();
-        this.messageManager = new MessageManager(settings);
+        this.glowingManager     = new GlowingManager();
+        this.messageManager     = new MessageManager(settings);
 
         // Managers avec dépendances simples
-        this.abilityManager  = new AbilityManager(playerManager);
+        this.abilityManager      = new AbilityManager(playerManager);
         this.tickingAbilityManager = new TickingAbilityManager(playerManager, abilityManager, logger);
-        this.voteManager     = new VoteManager(playerManager);
-        this.anonymityManager     = new AnonymityManager(playerManager, settings);
-        this.eliminationManager = new EliminationManager(playerManager, logger);
-        this.roleDistributor = new RoleDistributor(registry, playerManager, logger);
+        this.voteManager         = new VoteManager(playerManager, messageManager);
+        this.anonymityManager    = new AnonymityManager(playerManager, settings);
+        this.eliminationManager  = new EliminationManager(playerManager, logger);
+        this.roleDistributor     = new RoleDistributor(registry, playerManager, logger);
 
         // VictoryManager référence this -> initialisé après le reste
-        this.victoryManager = new VictoryManager(this);
+        this.victoryManager      = new VictoryManager(this);
 
         // Managers UI
-        this.bossBarManager   = new BossBarManager(this);
-        this.soundManager     = new SoundManager(this, logger);
+        this.bossBarManager      = new BossBarManager(this);
+        this.soundManager        = new SoundManager(this, logger);
 
         // PhaseManager avec callback de transition
-        this.phaseManager = new PhaseManager(this::handlePhaseTransition, logger);
+        this.phaseManager        = new PhaseManager(this::handlePhaseTransition, logger);
     }
 
     // -------------------------------------------------------------------------
@@ -396,6 +399,7 @@ public final class NocturneGame {
     public @NotNull MessageManager     getMessageManager()      { return messageManager; }
     public @NotNull BossBarManager     getBossBarManager()      { return bossBarManager; }
     public @NotNull SoundManager       getSoundManager()        { return soundManager; }
+    public @NotNull GlowingManager     getGlowingManager()      { return glowingManager; }
     public @NotNull RoleDistributor    getRoleDistributor()     { return roleDistributor; }
     public @NotNull GameSettings       getSettings()            { return settings; }
 
