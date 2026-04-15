@@ -200,6 +200,7 @@ public final class NocturneGame {
             np.setState(PlayerState.PLAYING);
             np.setSpectralArrowsRemaining(settings.getDefaultSpectralArrows());
         }
+//        anonymityManager.hideAllNametagsEnd();
 
         // Distribuer les rôles
         roleDistributor.distribute(players, compositionManager);
@@ -351,7 +352,9 @@ public final class NocturneGame {
                 player.setGameMode(GameMode.SURVIVAL);
                 player.getInventory().clear();
             }
+            anonymityManager.cleanupPlayer(np);
         }
+//        anonymityManager.showAllNametagsEnd();
 
         playerManager.clearAll();
         currentRound = null;

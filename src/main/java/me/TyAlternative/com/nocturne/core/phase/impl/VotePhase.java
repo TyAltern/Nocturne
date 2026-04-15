@@ -84,6 +84,10 @@ public final class VotePhase implements GamePhase {
             );
         }
 
+        for (NocturnePlayer nocturnePlayer : game.getPlayerManager().getAlive()) {
+            game.getAnonymityManager().resetCustomNametagForAll(nocturnePlayer);
+        }
+
         // Calculer le résultat du vote
         UUID votedPlayerId = game.getVoteManager().calculateResult();
         List<VoteEntry> allVotes = game.getVoteManager().collectVotes();
@@ -105,7 +109,8 @@ public final class VotePhase implements GamePhase {
             );
         }
 
-        // Élimination du joueur voté
+
+            // Élimination du joueur voté
         game.getEliminationManager().eliminateVotedPlayer(votedPlayerId);
         
         // Nettoyage des votes

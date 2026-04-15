@@ -44,12 +44,12 @@ public final class GameplayPhase implements GamePhase {
         NocturneGame game = Nocturne.getInstance().getGame();
 
         // Anonymat
-        if (game.getSettings().shouldHideSkins()) {
-            game.getAnonymityManager().hideAllSkins();
-        }
-        if (game.getSettings().shouldHideNametags()) {
-            game.getAnonymityManager().hideAllNametags();
-        }
+        game.getAnonymityManager().hideAll(
+                game.getSettings().shouldHideSkins(),
+                game.getSettings().shouldHideNametags()
+        );
+
+
 
         // Nettoyer les panneaux de la manche précédente
         game.getSignManager().clearAll();

@@ -5,10 +5,12 @@ import fr.skytasul.glowingentities.GlowingBlocks;
 import fr.skytasul.glowingentities.GlowingEntities;
 import me.TyAlternative.com.nocturne.Nocturne;
 import me.TyAlternative.com.nocturne.player.NocturnePlayer;
-import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -130,4 +132,54 @@ public final class GlowingManager {
             entries.clear();
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+    private enum ColoredTeam {
+        BLACK(NamedTextColor.BLACK),
+        DARK_BLUE(NamedTextColor.DARK_BLUE),
+        DARK_GREEN(NamedTextColor.DARK_GREEN),
+        DARK_AQUA(NamedTextColor.DARK_AQUA),
+        DARK_RED(NamedTextColor.DARK_RED),
+        DARK_PURPLE(NamedTextColor.DARK_PURPLE),
+        GOLD(NamedTextColor.GOLD),
+        GRAY(NamedTextColor.GRAY),
+        DARK_GRAY(NamedTextColor.DARK_GRAY),
+        BLUE(NamedTextColor.BLUE),
+        GREEN(NamedTextColor.GREEN),
+        AQUA(NamedTextColor.AQUA),
+        RED(NamedTextColor.RED),
+        LIGHT_PURPLE(NamedTextColor.LIGHT_PURPLE),
+        YELLOW(NamedTextColor.YELLOW),
+        WHITE(NamedTextColor.WHITE);
+
+        private final Team team;
+        private final NamedTextColor textColor;
+
+        ColoredTeam(NamedTextColor textColor) {
+            this.textColor = textColor;
+            Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
+            String teamName = textColor.toString() + "-colored-team";
+            Team testTeam = scoreboard.getTeam(teamName);
+            if (testTeam == null) {
+                this.team = scoreboard.registerNewTeam(teamName);
+                this.team.color(textColor);
+            } else {
+                this.team = testTeam;
+            }
+        }
+
+        public Team getTeam() { return this.team; }
+        public NamedTextColor getTextColor() { return this.textColor; }
+    }
+
+
 }

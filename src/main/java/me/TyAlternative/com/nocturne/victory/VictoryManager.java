@@ -18,7 +18,6 @@ import java.util.List;
  * Le résultat est propagé via {@link NocturneGame#handleVictory(RoleTeam, String)}.
  */
 
-@SuppressWarnings("unused")
 public final class VictoryManager {
 
     private final List<VictoryCondition> conditions = new ArrayList<>();

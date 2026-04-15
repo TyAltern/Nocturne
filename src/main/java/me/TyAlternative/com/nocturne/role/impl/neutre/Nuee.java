@@ -17,7 +17,7 @@ public final class Nuee extends AbstractRole {
     public Nuee() {
         super(
                 ID,
-                "§0§lLa Nuée",
+                "§8§lLa Nuée",
                 "Vous n'appartenez à aucun camp. Votre objectif est le vôtre.",
                 RoleType.NEUTRE,
                 RoleTeam.BATONS, // TODO : définir une équipe Neutre dédiée si nécessaire

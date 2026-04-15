@@ -5,7 +5,6 @@ import me.TyAlternative.com.nocturne.core.phase.impl.VotePhase;
 import me.TyAlternative.com.nocturne.player.NocturnePlayer;
 import me.TyAlternative.com.nocturne.player.PlayerManager;
 import me.TyAlternative.com.nocturne.ui.MessageManager;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -65,7 +64,8 @@ public final class VoteManager {
         Player votedPlayer = nocturneVoted.getPlayer();
         if (votedPlayer == null || nocturneVoter.getPlayer() == null) return;
         nocturneVoter.getPlayer().sendMessage(messageManager.buildBroadcast("§7Vous avez §dvoté §7contre §e" + votedPlayer.getName() + " §7!"));
-        Nocturne.getInstance().getGame().getGlowingManager().setGlow(nocturneVoter, nocturneVoted, ChatColor.GOLD);
+        Nocturne.getInstance().getGame().getAnonymityManager().setCustomNametagWithPrefix(nocturneVoter, nocturneVoted, "§6> ");
+//        Nocturne.getInstance().getGame().getGlowingManager().setGlow(nocturneVoter, nocturneVoted, ChatColor.GOLD);
 
         nocturneVoter.voteFor(targetId);
     }
@@ -85,7 +85,8 @@ public final class VoteManager {
             Player votedPlayer = nocturneVoted.getPlayer();
             if (votedPlayer == null) return;
             nocturneVoter.getPlayer().sendMessage(messageManager.buildBroadcast("§7Vous avez retiré votre §dvote §7contre §e" + votedPlayer.getName() + " §7!"));
-            Nocturne.getInstance().getGame().getGlowingManager().removeGlow(nocturneVoter, nocturneVoted);
+            Nocturne.getInstance().getGame().getAnonymityManager().resetCustomNametag(nocturneVoter, nocturneVoted);
+//            Nocturne.getInstance().getGame().getGlowingManager().removeGlow(nocturneVoter, nocturneVoted);
         }
 
         nocturneVoter.clearVote();
