@@ -400,7 +400,6 @@ public final class AnonymityManager {
             // Stocker la référence
             displayEntities.computeIfAbsent(viewer.getUniqueId(), k -> new ConcurrentHashMap<>())
                     .put(nocturneTarget.getPlayerId(), textDisplay);
-            Nocturne.getInstance().getLogger().info("new nametag created: %s".formatted(displayText));
 
         } catch (Exception e) {
             Nocturne.getInstance().getLogger().severe(
@@ -447,18 +446,15 @@ public final class AnonymityManager {
         Player target = nocturneTarget.getPlayer();
         Map<UUID, TextDisplay> viewerEntities = displayEntities.get(nocturneViewer.getPlayerId());
         if (viewerEntities == null) {
-            Nocturne.getInstance().getLogger().info("-> from viewerEntities == null | viewer: %s, target: %s".formatted(viewer.getName(), target.getName()));
             createDisplayEntity(nocturneViewer, nocturneTarget, nametag);
             return;
         }
 
         TextDisplay entity = viewerEntities.get(nocturneTarget.getPlayerId());
         if (entity == null || !entity.isValid()) {
-            Nocturne.getInstance().getLogger().info("-> from entity == null | viewer: %s, target: %s".formatted(viewer.getName(), target.getName()));
             createDisplayEntity(nocturneViewer, nocturneTarget, nametag);
             return;
         }
-        Nocturne.getInstance().getLogger().info("continued | viewer: %s, target: %s". formatted(viewer.getName(), target.getName()));
 
 
         String displayText = nametag.customName;

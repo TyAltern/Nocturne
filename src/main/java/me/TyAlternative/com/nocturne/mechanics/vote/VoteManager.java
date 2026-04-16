@@ -2,9 +2,11 @@ package me.TyAlternative.com.nocturne.mechanics.vote;
 
 import me.TyAlternative.com.nocturne.Nocturne;
 import me.TyAlternative.com.nocturne.core.phase.impl.VotePhase;
+import me.TyAlternative.com.nocturne.mechanics.particle.ParticleData;
 import me.TyAlternative.com.nocturne.player.NocturnePlayer;
 import me.TyAlternative.com.nocturne.player.PlayerManager;
 import me.TyAlternative.com.nocturne.ui.MessageManager;
+import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -65,6 +67,17 @@ public final class VoteManager {
         if (votedPlayer == null || nocturneVoter.getPlayer() == null) return;
         nocturneVoter.getPlayer().sendMessage(messageManager.buildBroadcast("§7Vous avez §dvoté §7contre §e" + votedPlayer.getName() + " §7!"));
         Nocturne.getInstance().getGame().getAnonymityManager().setCustomNametagWithPrefix(nocturneVoter, nocturneVoted, "§6> ");
+        Nocturne.getInstance().getGame().getTickingParticleTimer().addTickingParticles(
+                nocturneVoter,
+                nocturneVoted,
+                new ParticleData.Builder()
+                        .particle(Particle.WAX_ON)
+                        .particle_count(10)
+                        .height_offset(0.75)
+                        .spread(0.4)
+                        .spawnTickInterval(10)
+                        .build()
+        );
 //        Nocturne.getInstance().getGame().getGlowingManager().setGlow(nocturneVoter, nocturneVoted, ChatColor.GOLD);
 
         nocturneVoter.voteFor(targetId);
@@ -86,6 +99,10 @@ public final class VoteManager {
             if (votedPlayer == null) return;
             nocturneVoter.getPlayer().sendMessage(messageManager.buildBroadcast("§7Vous avez retiré votre §dvote §7contre §e" + votedPlayer.getName() + " §7!"));
             Nocturne.getInstance().getGame().getAnonymityManager().resetCustomNametag(nocturneVoter, nocturneVoted);
+            Nocturne.getInstance().getGame().getTickingParticleTimer().removeTickingParticles(
+                    nocturneVoter,
+                    nocturneVoted
+            );
 //            Nocturne.getInstance().getGame().getGlowingManager().removeGlow(nocturneVoter, nocturneVoted);
         }
 

@@ -60,7 +60,7 @@ public final class Nocturne extends JavaPlugin {
         registerRoles();
 
         // 4. Construction du jeu (inclut tous les sous-managers, UI compris)
-        game = new NocturneGame(configManager.getSettings(), roleRegistry, getLogger());
+        game = new NocturneGame( configManager.getSettings(), roleRegistry, getLogger());
 
         // 5. Commandes
         registerCommands();

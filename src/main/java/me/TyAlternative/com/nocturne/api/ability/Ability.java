@@ -3,6 +3,7 @@ package me.TyAlternative.com.nocturne.api.ability;
 import me.TyAlternative.com.nocturne.ability.AbilityIds;
 import me.TyAlternative.com.nocturne.ability.AbilityManager;
 import me.TyAlternative.com.nocturne.api.role.Role;
+import me.TyAlternative.com.nocturne.core.phase.PhaseContext;
 import me.TyAlternative.com.nocturne.elimination.EliminationCause;
 import me.TyAlternative.com.nocturne.mechanics.vote.VoteEntry;
 import me.TyAlternative.com.nocturne.player.NocturnePlayer;
@@ -157,16 +158,16 @@ public interface Ability {
     default void onAssigned(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer) {}
 
     /** Appelé au début de chaque phase de Gameplay. */
-    default void onGameplayPhaseStart(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer) {}
+    default void onGameplayPhaseStart(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull PhaseContext phaseContext) {}
 
     /** Appelé à la fin de chaque phase de Gameplay. */
-    default void onGameplayPhaseEnd(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer) {}
+    default void onGameplayPhaseEnd(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull PhaseContext phaseContext) {}
 
     /** Appelé au début de chaque phase de Vote. */
-    default void onVotePhaseStart(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer) {}
+    default void onVotePhaseStart(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull PhaseContext phaseContext) {}
 
     /** Appelé à la fin de chaque phase de Vote. */
-    default void onVotePhaseEnd(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer) {}
+    default void onVotePhaseEnd(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull PhaseContext phaseContext) {}
 
     /**
      * Appelé après le calcul du résultat du vote.

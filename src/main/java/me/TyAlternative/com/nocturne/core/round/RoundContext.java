@@ -2,6 +2,7 @@ package me.TyAlternative.com.nocturne.core.round;
 
 import me.TyAlternative.com.nocturne.mechanics.disparition.DisparitionManager;
 import me.TyAlternative.com.nocturne.mechanics.embrasement.EmbrasementManager;
+import me.TyAlternative.com.nocturne.mechanics.particle.InteractionTracker;
 import me.TyAlternative.com.nocturne.mechanics.protection.ProtectionManager;
 import me.TyAlternative.com.nocturne.core.NocturneGame;
 import me.TyAlternative.com.nocturne.core.phase.PhaseContext;
@@ -25,6 +26,7 @@ public final class RoundContext {
     private final EmbrasementManager embrasementManager;
     private final ProtectionManager protectionManager;
     private final DisparitionManager disparitionManager;
+    private final InteractionTracker interactionTracker;
 
     /**
      * @param roundNumber         numéro de la manche (commence à 1)
@@ -42,6 +44,7 @@ public final class RoundContext {
         this.embrasementManager = embrasementManager;
         this.protectionManager = protectionManager;
         this.disparitionManager = disparitionManager;
+        this.interactionTracker   = new InteractionTracker();
     }
 
     /** Numéro de la manche courante, commence à {@code 1}. */
@@ -62,5 +65,13 @@ public final class RoundContext {
     /** Gestionnaire des disparitions actives pour cette manche. */
     public @NotNull DisparitionManager getDisparitionManager() {
         return disparitionManager;
+    }
+
+    /**
+     * Registre des interactions (casts et cibles) pour cette manche.
+     * Utilisé par les capacités info visuelles (Aurore, Lueur).
+     */
+    public @NotNull InteractionTracker getInteractionTracker() {
+        return interactionTracker;
     }
 }

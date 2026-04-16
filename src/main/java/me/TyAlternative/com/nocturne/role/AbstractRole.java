@@ -9,9 +9,11 @@ import me.TyAlternative.com.nocturne.api.role.RoleTeam;
 import me.TyAlternative.com.nocturne.api.role.RoleType;
 import me.TyAlternative.com.nocturne.ability.AbstractAbility;
 import me.TyAlternative.com.nocturne.core.NocturneGame;
+import me.TyAlternative.com.nocturne.core.phase.PhaseContext;
 import me.TyAlternative.com.nocturne.elimination.EliminationCause;
 import me.TyAlternative.com.nocturne.mechanics.vote.VoteEntry;
 import me.TyAlternative.com.nocturne.player.NocturnePlayer;
+import me.TyAlternative.com.nocturne.ui.MessageManager;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -230,7 +232,7 @@ public abstract class AbstractRole implements Role {
 
     /**
      * Appelé à l'assignation du rôle.
-     * Envoie le message de présentation via {@link me.TyAlternative.com.nocturne.ui.MessageManager},
+     * Envoie le message de présentation via {@link MessageManager},
      * puis délègue à chaque capacité.
      *
      * <p>Surcharger cette méthode pour ajouter un comportement spécifique,
@@ -238,6 +240,13 @@ public abstract class AbstractRole implements Role {
      */
     @Override
     public void onAssigned(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer) {
+        // Injecter le propriétaire dans chaque ability (une fois pour toute la vie du rôle)
+        for (Ability ability : abilities) {
+            if (ability instanceof AbstractAbility abstractAbility) {
+                abstractAbility.injectOwner(nocturnePlayer);
+            }
+        }
+
         // Présentation du rôle au joueur
         game().getMessageManager().sendRolePresentation(player, this);
 
@@ -246,23 +255,23 @@ public abstract class AbstractRole implements Role {
     }
 
     @Override
-    public void onGameplayPhaseStart(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer) {
-        dispatchToAbilities(ability -> ability.onGameplayPhaseStart(player, nocturnePlayer));
+    public void onGameplayPhaseStart(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull PhaseContext phaseContext) {
+        dispatchToAbilities(ability -> ability.onGameplayPhaseStart(player, nocturnePlayer, phaseContext));
     }
 
     @Override
-    public void onGameplayPhaseEnd(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer) {
-        dispatchToAbilities(ability -> ability.onGameplayPhaseEnd(player, nocturnePlayer));
+    public void onGameplayPhaseEnd(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull PhaseContext phaseContext) {
+        dispatchToAbilities(ability -> ability.onGameplayPhaseEnd(player, nocturnePlayer, phaseContext));
     }
 
     @Override
-    public void onVotePhaseStart(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer) {
-        dispatchToAbilities(ability -> ability.onVotePhaseStart(player, nocturnePlayer));
+    public void onVotePhaseStart(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull PhaseContext phaseContext) {
+        dispatchToAbilities(ability -> ability.onVotePhaseStart(player, nocturnePlayer, phaseContext));
     }
 
     @Override
-    public void onVotePhaseEnd(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer) {
-        dispatchToAbilities(ability -> ability.onVotePhaseEnd(player, nocturnePlayer));
+    public void onVotePhaseEnd(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull PhaseContext phaseContext) {
+        dispatchToAbilities(ability -> ability.onVotePhaseEnd(player, nocturnePlayer, phaseContext));
     }
 
     @Override

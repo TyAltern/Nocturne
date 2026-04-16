@@ -1,5 +1,6 @@
 package me.TyAlternative.com.nocturne.role.impl.baton;
 
+import me.TyAlternative.com.nocturne.ability.impl.info.DiscernementMatinalAbility;
 import me.TyAlternative.com.nocturne.api.role.RoleTeam;
 import me.TyAlternative.com.nocturne.api.role.RoleType;
 import me.TyAlternative.com.nocturne.role.AbstractRole;
@@ -10,8 +11,8 @@ import org.bukkit.Material;
  *
  * <p>Capacités :
  * <ul>
- *   <li><b>Discernement Matinal</b> (Passif) — après chaque vote, révèle si tous
- *       les joueurs ayant voté contre l'éliminé étaient des Bâtons.</li>
+ *   <li>{@link DiscernementMatinalAbility} — après chaque vote, révèle si au moins
+ *       une Flamme a voté contre le joueur éliminé.</li>
  * </ul>
  */
 public final class Aube extends AbstractRole {
@@ -27,6 +28,6 @@ public final class Aube extends AbstractRole {
                 RoleTeam.BATONS,
                 Material.ORANGE_STAINED_GLASS
         );
-        // TODO : registerAbility(new DiscernementMatinalAbility());
+        registerAbility(new DiscernementMatinalAbility());
     }
 }

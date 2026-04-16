@@ -61,10 +61,13 @@ public final class VotePhase implements GamePhase {
             setInteractionRange(player, VOTE_INTERACTION_RANGE);
 
             safeDispatch(() ->
-                    nocturnePlayer.getRole().onVotePhaseStart(player, nocturnePlayer),
+                    nocturnePlayer.getRole().onVotePhaseStart(player, nocturnePlayer, context),
                     player.getName(), "onVotePhaseStart"
             );
         }
+
+        // Démarrer le ticker des particules TICKS
+        game.getTickingParticleTimer().start();
 
         game.broadcast("§dPhase de §lVote §r§dcommencée !");
     }
@@ -73,13 +76,16 @@ public final class VotePhase implements GamePhase {
     public void onEnd(@NotNull PhaseContext context) {
         NocturneGame game = Nocturne.getInstance().getGame();
 
+        // Arrêter le ticker en premier
+        game.getTickingParticleTimer().stop();
+
         // Notifier onVotePhaseEnd
         for (NocturnePlayer nocturnePlayer : game.getPlayerManager().getAlive()) {
             Player player = nocturnePlayer.getPlayer();
             if (player == null || !nocturnePlayer.hasRole()) continue;
 
             safeDispatch(() ->
-                            nocturnePlayer.getRole().onVotePhaseEnd(player, nocturnePlayer),
+                            nocturnePlayer.getRole().onVotePhaseEnd(player, nocturnePlayer, context),
                     player.getName(), "onVotePhaseEnd"
             );
         }

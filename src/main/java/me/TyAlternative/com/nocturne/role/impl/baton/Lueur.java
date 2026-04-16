@@ -1,5 +1,6 @@
 package me.TyAlternative.com.nocturne.role.impl.baton;
 
+import me.TyAlternative.com.nocturne.ability.impl.info.ReverberationLumineuseAbility;
 import me.TyAlternative.com.nocturne.api.role.RoleTeam;
 import me.TyAlternative.com.nocturne.api.role.RoleType;
 import me.TyAlternative.com.nocturne.role.AbstractRole;
@@ -8,7 +9,15 @@ import org.bukkit.Material;
 /**
  * La Lueur — Bâton.
  *
- * <p>Capacités : à définir (Phase 5).
+ * <p>Capacités :
+ * <ul>
+ *   <li>{@link ReverberationLumineuseAbility} (drunk) — affiche des particules dorées
+ *       autour des joueurs ayant été ciblés par une capacité active. En mode drunk,
+ *       les signaux sont tous des leurres aléatoires.</li>
+ * </ul>
+ *
+ * <p>Symétrique à l'Aurore : l'Aurore voit les casters, la Lueur voit les targets.
+ * Tous deux reçoivent des informations bruitées (mode drunk intentionnel).
  */
 public final class Lueur extends AbstractRole {
 
@@ -23,6 +32,6 @@ public final class Lueur extends AbstractRole {
                 RoleTeam.BATONS,
                 Material.YELLOW_STAINED_GLASS
         );
-        // TODO : capacités à définir
+        registerAbility(new ReverberationLumineuseAbility());
     }
 }

@@ -5,6 +5,7 @@ import me.TyAlternative.com.nocturne.api.ability.*;
 import me.TyAlternative.com.nocturne.api.phase.PhaseType;
 import me.TyAlternative.com.nocturne.core.NocturneGame;
 import me.TyAlternative.com.nocturne.player.NocturnePlayer;
+import me.TyAlternative.com.nocturne.role.AbstractRole;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -93,6 +94,13 @@ public abstract class AbstractAbility implements Ability {
     /** Mode drunk actif sur cette capacité. */
     private boolean drunk = false;
 
+    /**
+     * Référence au joueur propriétaire de cette instance d'ability.
+     * Injectée par {@link AbstractRole#onAssigned} via {@link #injectOwner}.
+     * Peut-être {@code null} avant l'assignation du rôle.
+     */
+    private @Nullable NocturnePlayer owner = null;
+
     // -------------------------------------------------------------------------
     // Constructeur
     // -------------------------------------------------------------------------
@@ -136,6 +144,41 @@ public abstract class AbstractAbility implements Ability {
     protected @NotNull NocturneGame game() {
         return Nocturne.getInstance().getGame();
     }
+
+    // -------------------------------------------------------------------------
+    // Propriétaire — injecté par AbstractRole à l'assignation
+    // -------------------------------------------------------------------------
+
+    /**
+     * Injecte le joueur propriétaire de cette instance d'ability.
+     * Appelé automatiquement par {@link AbstractRole#onAssigned}.
+     *
+     * <p>Cette méthode est package-private, car seul {@code AbstractRole} doit l'appeler.
+     *
+     * @param nocturnePlayer joueur à qui appartient ce rôle
+     */
+    public final void injectOwner(@NotNull NocturnePlayer nocturnePlayer) {
+        this.owner = nocturnePlayer;
+    }
+
+    /**
+     * Retourne le {@link NocturnePlayer} propriétaire de cette ability.
+     * Disponible dès l'assignation du rôle (après {@code onAssigned}).
+     *
+     * @return propriétaire de cette ability, ou {@code null} si pas encore assignée
+     */
+    protected final @Nullable NocturnePlayer getOwner() {
+        return owner;
+    }
+
+    /**
+     * Retourne le {@link Player} Bukkit propriétaire de cette ability,
+     * ou {@code null} s'il est hors-ligne ou si l'ability n'est pas encore assignée.
+     */
+    protected final @Nullable Player getOwnerPlayer() {
+        return owner != null ? owner.getPlayer() : null;
+    }
+
 
     // -------------------------------------------------------------------------
     // Identité — implémentation de Ability

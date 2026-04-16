@@ -18,7 +18,6 @@ import me.TyAlternative.com.nocturne.api.role.Role;
  * role.getAbility("embrasement"); // typo non détectée à la compilation
  * }</pre>
  */
-@SuppressWarnings("SpellCheckingInspection")
 public final class AbilityIds {
 
     private AbilityIds() {
@@ -43,6 +42,7 @@ public final class AbilityIds {
     public static final String OMBRES_RESIDUELLES     = "OMBRES_RESIDUELLES";
     public static final String CLAIRVOYANCE           = "CLAIRVOYANCE";
     public static final String ECHOS_INTERACTION      = "ECHOS_INTERACTION";
+    public static final String REVERBERATION_LUMINEUSE = "REVERBERATION_LUMINEUSE";
 
     // -------------------------------------------------------------------------
     // Protection
@@ -62,10 +62,18 @@ public final class AbilityIds {
     public static final String CORROSION              = "CORROSION";
     public static final String PRISE_DE_FEU           = "PRISE_DE_FEU";
     public static final String SOLITUDE_MORTELLE      = "SOLITUDE_MORTELLE";
+    public static final String INCANDESCENCE          = "INCANDESCENCE";
 
     // -------------------------------------------------------------------------
     // Malédictions
     // -------------------------------------------------------------------------
 
     public static final String AMNESIE                = "AMNESIE";
+
+    // -------------------------------------------------------------------------
+    // Neutres
+    // -------------------------------------------------------------------------
+
+    public static final String MANIPULATION_VOTE      = "MANIPULATION_VOTE";
+    public static final String MORT_FEINTE            = "MORT_FEINTE";
 }

@@ -64,13 +64,14 @@ public final class GameplayPhase implements GamePhase {
 
             giveRoundItems(nocturnePlayer);
             safeDispatch(() ->
-                nocturnePlayer.getRole().onGameplayPhaseStart(player, nocturnePlayer),
+                nocturnePlayer.getRole().onGameplayPhaseStart(player, nocturnePlayer, context),
                 player.getName(), "onGameplayPhaseStart"
             );
         }
 
-        // Démarrer le ticker des capacités TICKS
+        // Démarrer les tickers des capacités/particules TICKS
         game.getTickingAbilityManager().start(PhaseType.GAMEPLAY);
+        game.getTickingParticleTimer().start();
 
         game.broadcast("§bPhase de §lGameplay §r§bcommencée !");
     }
@@ -79,8 +80,9 @@ public final class GameplayPhase implements GamePhase {
     public void onEnd(@NotNull PhaseContext context) {
         NocturneGame game = Nocturne.getInstance().getGame();
 
-        // Arrêter le ticker en premier
+        // Arrêter les tickers en premier
         game.getTickingAbilityManager().stop();
+        game.getTickingParticleTimer().stop();
 
         // Notifier les rôles
         for (NocturnePlayer nocturnePlayer : game.getPlayerManager().getAlive()) {
@@ -89,7 +91,7 @@ public final class GameplayPhase implements GamePhase {
 
             clearInventory(player);
             safeDispatch(() ->
-                    nocturnePlayer.getRole().onGameplayPhaseEnd(player, nocturnePlayer),
+                    nocturnePlayer.getRole().onGameplayPhaseEnd(player, nocturnePlayer, context),
                     player.getName(), "onGameplayPhaseEnd"
             );
         }

@@ -1,5 +1,6 @@
 package me.TyAlternative.com.nocturne.role.impl.baton;
 
+import me.TyAlternative.com.nocturne.ability.impl.info.OmbresResiduellesAbility;
 import me.TyAlternative.com.nocturne.api.role.RoleTeam;
 import me.TyAlternative.com.nocturne.api.role.RoleType;
 import me.TyAlternative.com.nocturne.role.AbstractRole;
@@ -10,7 +11,7 @@ import org.bukkit.Material;
  *
  * <p>Capacités :
  * <ul>
- *   <li><b>Ombres Résiduelles</b> (Passif) — après chaque vote, révèle la moitié
+ *   <li>{@link OmbresResiduellesAbility} — après chaque vote, révèle la moitié
  *       des joueurs n'ayant pas voté contre l'éliminé.</li>
  * </ul>
  */
@@ -27,6 +28,6 @@ public final class Crepuscule extends AbstractRole {
                 RoleTeam.BATONS,
                 Material.RED_STAINED_GLASS
         );
-        // TODO : registerAbility(new OmbresResiduellesAbility());
+        registerAbility(new OmbresResiduellesAbility());
     }
 }

@@ -1,5 +1,6 @@
 package me.TyAlternative.com.nocturne.role.impl.baton;
 
+import me.TyAlternative.com.nocturne.ability.impl.info.EchosInteractionAbility;
 import me.TyAlternative.com.nocturne.api.role.RoleTeam;
 import me.TyAlternative.com.nocturne.api.role.RoleType;
 import me.TyAlternative.com.nocturne.role.AbstractRole;
@@ -10,11 +11,13 @@ import org.bukkit.Material;
  *
  * <p>Capacités :
  * <ul>
- *   <li><b>Échos d'Interaction</b> (Passif, drunk) — marque aléatoirement des joueurs
- *       avec un effet de particules visible uniquement par l'Aurore.
- *       Le mode drunk signifie que le comportement est erroné : les marquages
- *       sont aléatoires et non basés sur les vraies interactions.</li>
+ *   <li>{@link EchosInteractionAbility} (drunk) — affiche des particules violettes
+ *       autour des joueurs ayant utilisé une capacité active. En mode drunk,
+ *       les signaux sont tous des leurres aléatoires : l'information est sans valeur.</li>
  * </ul>
+ *
+ * <p>Le mode drunk est intentionnel pour ce rôle : l'Aurore reçoit bien des signaux
+ * visuels, mais ils sont tous des faux positifs, rendant sa capacité inutile.
  */
 public final class Aurore extends AbstractRole {
 
@@ -29,6 +32,6 @@ public final class Aurore extends AbstractRole {
                 RoleTeam.BATONS,
                 Material.MAGENTA_STAINED_GLASS
         );
-        // TODO : registerDrunkAbility(new EchosInteractionAbility());
+        registerDrunkAbility(new EchosInteractionAbility());
     }
 }

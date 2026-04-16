@@ -13,6 +13,7 @@ import me.TyAlternative.com.nocturne.mechanics.anonymity.AnonymityManager;
 import me.TyAlternative.com.nocturne.mechanics.disparition.DisparitionManager;
 import me.TyAlternative.com.nocturne.mechanics.embrasement.EmbrasementManager;
 import me.TyAlternative.com.nocturne.mechanics.glowing.GlowingManager;
+import me.TyAlternative.com.nocturne.mechanics.particle.TickingParticleTimer;
 import me.TyAlternative.com.nocturne.mechanics.protection.ProtectionManager;
 import me.TyAlternative.com.nocturne.mechanics.sign.SignManager;
 import me.TyAlternative.com.nocturne.mechanics.vote.VoteManager;
@@ -80,6 +81,7 @@ public final class NocturneGame {
     private final RoleDistributor    roleDistributor;
     private final AbilityManager     abilityManager;
     private final TickingAbilityManager tickingAbilityManager;
+    private final TickingParticleTimer tickingParticleTimer;
     private final VoteManager        voteManager;
     private final SignManager        signManager;
     private final AnonymityManager   anonymityManager;
@@ -136,6 +138,7 @@ public final class NocturneGame {
         this.glowingManager     = new GlowingManager();
         this.random             = new Random();
         this.messageManager     = new MessageManager(settings);
+        this.tickingParticleTimer = new TickingParticleTimer();
 
         // Managers avec dépendances simples
         this.abilityManager      = new AbilityManager(playerManager);
@@ -200,7 +203,7 @@ public final class NocturneGame {
             np.setState(PlayerState.PLAYING);
             np.setSpectralArrowsRemaining(settings.getDefaultSpectralArrows());
         }
-//        anonymityManager.hideAllNametagsEnd();
+        anonymityManager.hideAllNametagsEnd();
 
         // Distribuer les rôles
         roleDistributor.distribute(players, compositionManager);
@@ -339,6 +342,7 @@ public final class NocturneGame {
      */
     private void cleanup() {
         tickingAbilityManager.stop();
+        tickingParticleTimer.stop();
         bossBarManager.stop();
         signManager.clearAll();
         anonymityManager.restoreAll();
@@ -354,7 +358,7 @@ public final class NocturneGame {
             }
             anonymityManager.cleanupPlayer(np);
         }
-//        anonymityManager.showAllNametagsEnd();
+        anonymityManager.showAllNametagsEnd();
 
         playerManager.clearAll();
         currentRound = null;
@@ -395,6 +399,7 @@ public final class NocturneGame {
     public @NotNull RoleRegistry       getRoleRegistry()        { return roleRegistry; }
     public @NotNull AbilityManager     getAbilityManager()      { return abilityManager; }
     public @NotNull TickingAbilityManager getTickingAbilityManager() { return tickingAbilityManager; }
+    public @NotNull TickingParticleTimer getTickingParticleTimer() { return tickingParticleTimer; }
     public @NotNull VoteManager        getVoteManager()         { return voteManager; }
     public @NotNull SignManager        getSignManager()         { return signManager; }
     public @NotNull AnonymityManager   getAnonymityManager()    { return anonymityManager; }
