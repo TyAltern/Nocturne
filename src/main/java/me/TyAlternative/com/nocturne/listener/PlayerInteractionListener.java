@@ -1,10 +1,7 @@
 package me.TyAlternative.com.nocturne.listener;
 
 import me.TyAlternative.com.nocturne.Nocturne;
-import me.TyAlternative.com.nocturne.api.ability.Ability;
-import me.TyAlternative.com.nocturne.api.ability.AbilityContext;
-import me.TyAlternative.com.nocturne.api.ability.AbilityResult;
-import me.TyAlternative.com.nocturne.api.ability.AbilityTrigger;
+import me.TyAlternative.com.nocturne.api.ability.*;
 import me.TyAlternative.com.nocturne.api.phase.PhaseType;
 import me.TyAlternative.com.nocturne.core.NocturneGame;
 import me.TyAlternative.com.nocturne.player.NocturnePlayer;
@@ -217,6 +214,7 @@ public final class PlayerInteractionListener implements Listener {
 
         for (Ability ability : np.getRole().getAbilities()) {
             if (ability.getTrigger() != trigger) continue;
+            if (ability.getUseType() != AbilityUseType.ACTIVE && ability.getUseType() != AbilityUseType.TOGGLE) continue;
 
             AbilityContext context = buildContext(target, empty);
 
