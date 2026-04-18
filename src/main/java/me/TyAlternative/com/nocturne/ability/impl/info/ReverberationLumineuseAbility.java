@@ -81,6 +81,11 @@ public final class ReverberationLumineuseAbility extends AbstractAbility {
         return AbilityResult.silentSuccess();
     }
 
+    @Override
+    public boolean supportsDrunk() {
+        return true;
+    }
+
     // -------------------------------------------------------------------------
     // Initialisation
     // -------------------------------------------------------------------------

@@ -65,22 +65,35 @@ public final class VoteManager {
         NocturnePlayer nocturneVoted = playerManager.get(targetId);
         Player votedPlayer = nocturneVoted.getPlayer();
         if (votedPlayer == null || nocturneVoter.getPlayer() == null) return;
-        nocturneVoter.getPlayer().sendMessage(messageManager.buildBroadcast("§7Vous avez §dvoté §7contre §e" + votedPlayer.getName() + " §7!"));
-        Nocturne.getInstance().getGame().getAnonymityManager().setCustomNametagWithPrefix(nocturneVoter, nocturneVoted, "§6> ");
-        Nocturne.getInstance().getGame().getTickingParticleTimer().addTickingParticles(
-                nocturneVoter,
-                nocturneVoted,
-                new ParticleData.Builder()
-                        .particle(Particle.WAX_ON)
-                        .particle_count(10)
-                        .height_offset(0.75)
-                        .spread(0.4)
-                        .spawnTickInterval(10)
-                        .build()
-        );
-//        Nocturne.getInstance().getGame().getGlowingManager().setGlow(nocturneVoter, nocturneVoted, ChatColor.GOLD);
 
-        nocturneVoter.voteFor(targetId);
+
+//        Non votable invisible
+        if (!nocturneVoter.canBeVoted() && nocturneVoted.isHiddenInVote()) {
+        }
+//        Non votable visible mais notifier
+        else if (!nocturneVoter.canBeVoted() && !nocturneVoted.isVoteImmunityHidden()) {
+            nocturneVoter.getPlayer().sendMessage(messageManager.buildBroadcast("§7Vous ne pouvez pas voter contre §e" + votedPlayer.getName() + " §7!"));
+        }
+//        Non votable visible mais non notifier +
+//        Votable et visible
+        else {
+            nocturneVoter.getPlayer().sendMessage(messageManager.buildBroadcast("§7Vous avez §dvoté §7contre §e" + votedPlayer.getName() + " §7!"));
+            Nocturne.getInstance().getGame().getAnonymityManager().setCustomNametagWithPrefix(nocturneVoter, nocturneVoted, "§6> ");
+            Nocturne.getInstance().getGame().getTickingParticleTimer().addTickingParticles(
+                    nocturneVoter,
+                    nocturneVoted,
+                    new ParticleData.Builder()
+                            .particle(Particle.WAX_ON)
+                            .particle_count(10)
+                            .height_offset(0.75)
+                            .spread(0.4)
+                            .spawnTickInterval(10)
+                            .build()
+            );
+
+            nocturneVoter.voteFor(targetId);
+        }
+
     }
 
     /**
@@ -103,7 +116,6 @@ public final class VoteManager {
                     nocturneVoter,
                     nocturneVoted
             );
-//            Nocturne.getInstance().getGame().getGlowingManager().removeGlow(nocturneVoter, nocturneVoted);
         }
 
         nocturneVoter.clearVote();

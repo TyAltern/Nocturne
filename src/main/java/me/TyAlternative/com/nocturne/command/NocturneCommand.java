@@ -32,7 +32,9 @@ import java.util.stream.Collectors;
 @SuppressWarnings({"unused", "DataFlowIssue", "SameParameterValue"})
 public final class NocturneCommand implements CommandExecutor, TabCompleter {
     private static final List<String> SUBCOMMANDS =
-            Arrays.asList("start","stop","skip","role","debug","reload");
+            Arrays.asList("start","stop","skip","role","debug","reload","player");
+    private static final List<String> PLAYERS_SUBCOMMAND =
+            Arrays.asList("weight","canVote","canBeVote","isHidden","hideVoteImmunity");
 
     private final NocturneGame game;
     private final ConfigManager configManager;
@@ -72,6 +74,7 @@ public final class NocturneCommand implements CommandExecutor, TabCompleter {
             case "skip"   -> handleSkip(player);
             case "role"   -> handleRole(player, args);
             case "debug"  -> handleDebug(player);
+//            case "player" -> handlePlayer(player, args);
             case "reload" -> handleReload(player);
             default       -> sendHelp(player);
         }
@@ -136,6 +139,78 @@ public final class NocturneCommand implements CommandExecutor, TabCompleter {
         player.sendMessage("§8══════════════════════════");
     }
 
+    private void handlePlayer(@NotNull Player player, @NotNull String @NotNull[] args) {
+        if (!game.isGameRunning()) {
+            player.sendMessage("§cAucune partie en cours.");
+            return;
+        }
+
+        Player target = args.length >=2 ? player.getServer().getPlayer(args[1]) : player;
+
+        if (target == null) {
+            player.sendMessage("§cJoueur introuvable : " + args[1]);
+            return;
+        }
+
+        NocturnePlayer nocturneTarget = game.getPlayerManager().get(player);
+        if (nocturneTarget == null && !nocturneTarget.isAlive()) {
+            player.sendMessage("§7" + target.getName() + " §cn'est pas en vie.");
+        }
+        boolean isSetter = args.length >= 4 && args[3].equalsIgnoreCase("set");
+        if (isSetter && (args.length < 5 || !PLAYERS_SUBCOMMAND.contains(args[4]))) {
+            player.sendMessage("§cVous devez rentrer une propriété que vous voulez modifier.");
+        }
+
+        String property = args.length >= 3 ? args[2] : null;
+        switch (property) {
+            case "weight" -> {
+                if (isSetter && args[4].chars().allMatch(Character::isDigit)) {
+                    nocturneTarget.setVoteWeight(Integer.parseInt(args[4]));
+                    player.sendMessage("§eLe poids de vote de §6" + target.getName() + "§e a été modifié par §6§l" + nocturneTarget.getVoteWeight() + "§r§e.");
+                } else {
+                    player.sendMessage("§eLe poids de vote de §6" + target.getName() + "§e est de §6§l" + nocturneTarget.getVoteWeight() + "§r§e.");
+                }
+            }
+            case "canVote" -> {
+                if (isSetter && (args[4].equalsIgnoreCase("true") || args[4].equalsIgnoreCase("false"))) {
+                    nocturneTarget.setCanVote(Boolean.parseBoolean(args[4]));
+                    player.sendMessage("§eLe joueur §6" + target.getName() + "§e " + (nocturneTarget.canVote() ? "peut maintenant" : "ne peut plus") + " voter.");
+
+                } else {
+                    player.sendMessage("§eLe joueur §6" + target.getName() + "§e " + (nocturneTarget.canVote() ? "peut" : "ne peut pas") + " voter.");
+                }
+            }
+            case "canBeVote" -> {
+                if (isSetter && (args[4].equalsIgnoreCase("true") || args[4].equalsIgnoreCase("false"))) {
+                    nocturneTarget.setCanBeVoted(Boolean.parseBoolean(args[4]));
+                    player.sendMessage("§eLe joueur §6" + target.getName() + "§e " + (nocturneTarget.canBeVoted() ? "peut maintenant" : "ne peut plus") + " être voté.");
+
+                } else {
+                    player.sendMessage("§eLe joueur §6" + target.getName() + "§e " + (nocturneTarget.canBeVoted() ? "peut" : "ne peut pas") + " être voté.");
+                }
+            }
+            case "isHidden" -> {
+                if (isSetter && (args[4].equalsIgnoreCase("true") || args[4].equalsIgnoreCase("false"))) {
+                    nocturneTarget.setHiddenInVote(Boolean.parseBoolean(args[4]));
+                    player.sendMessage("§eLe joueur §6" + target.getName() + "§e " + (nocturneTarget.isVoteImmunityHidden() ? "est maintenant" : "n'est plus") + " caché.");
+
+                } else {
+                    player.sendMessage("§eLe joueur §6" + target.getName() + "§e " + (nocturneTarget.isVoteImmunityHidden() ? "est" : "n'est pas") + " caché.");
+                }
+            }
+            case   "hideVoteImmunity" -> {
+                if (isSetter && (args[4].equalsIgnoreCase("true") || args[4].equalsIgnoreCase("false"))) {
+                    nocturneTarget.setHideVoteImmunity(Boolean.parseBoolean(args[4]));
+                    player.sendMessage("§eL'immunité du joueur §6" + target.getName() + "§e " + (nocturneTarget.isVoteImmunityHidden() ? "est maintenant" : "n'est plus") + " cachée.");
+
+                } else {
+                    player.sendMessage("§eL'immunité du joueur §6" + target.getName() + "§e " + (nocturneTarget.isVoteImmunityHidden() ? "est" : "n'est pas") + " cachée.");
+                }
+            }
+        }
+    }
+
+
     private void handleReload(@NotNull Player player) {
         configManager.reload();
         player.sendMessage("§aConfiguration rechargée !");
@@ -148,6 +223,7 @@ public final class NocturneCommand implements CommandExecutor, TabCompleter {
         player.sendMessage("§e/noc skip §7— Passer la phase");
         player.sendMessage("§e/noc role [joueur] §7— Voir un rôle");
         player.sendMessage("§e/noc debug §7— État interne");
+        player.sendMessage("§e/noc player §7— Modification des données internes");
         player.sendMessage("§e/noc reload §7— Recharger la config");
         player.sendMessage("§8══════════════════════");
     }
@@ -167,12 +243,36 @@ public final class NocturneCommand implements CommandExecutor, TabCompleter {
             return filterStart(args[0], SUBCOMMANDS);
         }
         if (args.length == 2 && args[0].equalsIgnoreCase("role")){
-            return  sender.getServer().getOnlinePlayers().stream()
-                    .map(Player::getName)
-                    .filter(name -> name.toLowerCase().startsWith(args[1].toLowerCase()))
-                    .collect(Collectors.toList());
+            return  filterPlayerName(args[1], sender);
         }
+//        if (args.length >= 2 && args[0].equalsIgnoreCase("player")) {
+//            if (args.length == 2) {
+//                return  filterPlayerName(args[1], sender);
+//            }
+//            if (args.length == 3){
+//                return filterStart(args[2], PLAYERS_SUBCOMMAND);
+//            }
+//            if (args.length == 4) {
+//                return filterStart(args[3], List.of("get","set"));
+//            }
+//            if (args.length == 5 && args[3].equalsIgnoreCase("set")) {
+//                String property = args[2];
+//                return switch (property) {
+//                    case "weight" -> List.of("...","-5","-4","-3","-2","-1","0","1","2","3","4","5","...");
+//
+//                    case "canVote", "canBeVote", "isHidden", "hideVoteImmunity" -> filterStart(args[2],List.of("true", "false"));
+//                    default -> List.of();
+//                };
+//            }
+//        }
         return List.of();
+    }
+
+    private @NotNull List<String> filterPlayerName(@NotNull String input, @NotNull CommandSender sender) {
+        return  sender.getServer().getOnlinePlayers().stream()
+                .map(Player::getName)
+                .filter(name -> name.toLowerCase().startsWith(input.toLowerCase()))
+                .collect(Collectors.toList());
     }
 
     private @NotNull List<String> filterStart(@NotNull String input, @NotNull List<String> options) {

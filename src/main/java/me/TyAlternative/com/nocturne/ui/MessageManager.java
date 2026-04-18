@@ -92,10 +92,10 @@ public final class MessageManager {
 
         if (!capacities.isEmpty()) {
             player.sendMessage(EMPTY);
-            player.sendMessage(Component.text(
-                    "§r§8§l» §r§7Vous disposez de "
-                            + AbilityCategory.CAPACITY.getColor().asHexString().replace("#", "§x")
-                            + "§l" + capacities.size() + " Capacité" + (capacities.size() > 1 ? "s" : "") + "§r§7 :"
+            player.sendMessage(Component.text("§r§8§l» §r§7Vous disposez de ")
+                    .append(Component.text("§l" + capacities.size() + " Capacité" + (capacities.size() > 1 ? "s" : ""))
+                            .color(TextColor.fromHexString(AbilityCategory.CAPACITY.getColor().asHexString())))
+                    .append(Component.text("§r§7 :")
             ));
             for (Ability ability : capacities) {
                 player.sendMessage(buildAbilityLine(ability, AbilityCategory.CAPACITY));
@@ -104,11 +104,11 @@ public final class MessageManager {
 
         if (!effects.isEmpty()) {
             player.sendMessage(EMPTY);
-            player.sendMessage(Component.text(
-                    "§r§8§l» §r§7Vous bénéficiez de "
-                            + AbilityCategory.EFFECT.getColor().asHexString().replace("#", "§x")
-                            + "§l" + effects.size() + " Effet" + (effects.size() > 1 ? "s" : "") + "§r§7 :"
-            ));
+            player.sendMessage(Component.text("§r§8§l» §r§7Vous bénéficiez de ")
+                    .append(Component.text("§l" + effects.size() + " Effet" + (effects.size() > 1 ? "s" : ""))
+                            .color(TextColor.fromHexString(AbilityCategory.EFFECT.getColor().asHexString())))
+                    .append(Component.text("§r§7 :")
+                    ));
             for (Ability ability : effects) {
                 player.sendMessage(buildAbilityLine(ability, AbilityCategory.EFFECT));
             }
@@ -116,11 +116,11 @@ public final class MessageManager {
 
         if (!curses.isEmpty()) {
             player.sendMessage(EMPTY);
-            player.sendMessage(Component.text(
-                    "§r§8§l» §r§7Vous portez "
-                            + AbilityCategory.CURSE.getColor().asHexString().replace("#", "§x")
-                            + "§l" + curses.size() + " Malédiction" + (curses.size() > 1 ? "s" : "") + "§r§7 :"
-            ));
+            player.sendMessage(Component.text("§r§8§l» §r§7Vous bénéficiez de ")
+                    .append(Component.text("§l" + curses.size() + " Malédiction" + (curses.size() > 1 ? "s" : ""))
+                            .color(TextColor.fromHexString(AbilityCategory.CURSE.getColor().asHexString())))
+                    .append(Component.text("§r§7 :")
+                    ));
             for (Ability ability : curses) {
                 player.sendMessage(buildAbilityLine(ability, AbilityCategory.CURSE));
             }

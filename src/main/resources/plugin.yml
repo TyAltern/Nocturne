@@ -15,7 +15,7 @@ dependencies:
 commands:
   nocturne:
     description: Commande principale du jeu
-    usage: /nocturne <start|stop|skip|role|debug|reload>
+    usage: /nocturne <start|stop|skip|role|debug|player|reload>
     aliases: [noc, n]
     permission: nocturne.admin
 

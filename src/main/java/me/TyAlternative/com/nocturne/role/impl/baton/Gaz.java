@@ -1,5 +1,7 @@
 package me.TyAlternative.com.nocturne.role.impl.baton;
 
+import me.TyAlternative.com.nocturne.ability.impl.misc.PriseDeFeuAbility;
+import me.TyAlternative.com.nocturne.ability.impl.protection.SolitudeMortelleAbility;
 import me.TyAlternative.com.nocturne.api.role.RoleTeam;
 import me.TyAlternative.com.nocturne.api.role.RoleType;
 import me.TyAlternative.com.nocturne.role.AbstractRole;
@@ -29,7 +31,7 @@ public final class Gaz extends AbstractRole {
                 RoleTeam.BATONS,
                 Material.GLASS_BOTTLE
         );
-        // TODO : registerAbility(new SolitudeMortelleAbility());
-        // TODO : registerAbility(new PriseDeFeuAbility());
+         registerAbility(new SolitudeMortelleAbility());
+         registerAbility(new PriseDeFeuAbility());
     }
 }

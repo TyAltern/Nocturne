@@ -62,6 +62,11 @@ public final class DiscernementMatinalAbility extends AbstractAbility {
         return AbilityResult.silentSuccess();
     }
 
+    @Override
+    public boolean supportsDrunk() {
+        return true;
+    }
+
     // -------------------------------------------------------------------------
     // Hook principal : résultat du vote
     // -------------------------------------------------------------------------

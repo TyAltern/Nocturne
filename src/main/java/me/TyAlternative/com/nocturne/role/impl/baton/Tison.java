@@ -1,5 +1,6 @@
 package me.TyAlternative.com.nocturne.role.impl.baton;
 
+import me.TyAlternative.com.nocturne.ability.impl.misc.IncandescenceAbility;
 import me.TyAlternative.com.nocturne.api.role.RoleTeam;
 import me.TyAlternative.com.nocturne.api.role.RoleType;
 import me.TyAlternative.com.nocturne.role.AbstractRole;
@@ -23,6 +24,6 @@ public final class Tison extends AbstractRole {
                 RoleTeam.BATONS,
                 Material.BLAZE_ROD
         );
-        // TODO : capacités à définir
+        registerAbility(new IncandescenceAbility());
     }
 }

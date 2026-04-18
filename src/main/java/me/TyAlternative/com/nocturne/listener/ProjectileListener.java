@@ -85,6 +85,7 @@ public final class ProjectileListener implements Listener {
             // Rembourser la flèche si activée : elle a touché un bloc, pas un joueur
             if (game.getSettings().shouldRedeemSpectralArrowIfMiss()) {
                 shooter.give(new ItemStack(Material.SPECTRAL_ARROW));
+                nocturneShooter.setSpectralArrowsRemaining(nocturneShooter.getSpectralArrowsRemaining() + 1);
             }
         }
     }

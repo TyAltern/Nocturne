@@ -67,6 +67,11 @@ public final class EchosInteractionAbility extends AbstractAbility {
         return AbilityResult.silentSuccess();
     }
 
+    @Override
+    public boolean supportsDrunk() {
+        return true;
+    }
+
     // -------------------------------------------------------------------------
     // Initialisation
     // -------------------------------------------------------------------------
@@ -128,7 +133,6 @@ public final class EchosInteractionAbility extends AbstractAbility {
                 MAX_DELAY
         );
     }
-
 
     private void manageDrunkAbility(@NotNull NocturnePlayer self) {
         switch (random.nextInt(0,3)) {

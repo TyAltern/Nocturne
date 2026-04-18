@@ -45,6 +45,9 @@ public final class NocturnePlayer {
     private @Nullable UUID votedPlayerId;
     private int voteWeight;
     private boolean canVote;
+    private boolean canBeVoted;
+    private boolean hideVoteImmunity;
+    private boolean isHiddenInVote;
     private @Nullable TextColor voteGlowColor;
 
     // Flèches spectrales
@@ -63,6 +66,9 @@ public final class NocturnePlayer {
         this.state = PlayerState.LOBBY;
         this.voteWeight = 1;
         this.canVote = true;
+        this.canBeVoted = true;
+        this.hideVoteImmunity = true;
+        this.isHiddenInVote = false;
         this.voteGlowColor = TextColor.color(255,170,0); // doré par défaut
     }
 
@@ -203,6 +209,21 @@ public final class NocturnePlayer {
     public boolean canVote() {return canVote;}
 
     public void setCanVote(boolean canVote) { this.canVote = canVote;}
+
+    /** {@code true} si ce joueur est autorisé à être voté. */
+    public boolean canBeVoted() {return canBeVoted;}
+
+    public void setCanBeVoted(boolean canBeVoted) { this.canBeVoted = canBeVoted;}
+
+    /** {@code true} si l'immunité de vote de ce joueur est visible. */
+    public boolean isVoteImmunityHidden() {return hideVoteImmunity;}
+
+    public void setHideVoteImmunity(boolean hideVoteImmunity) { this.hideVoteImmunity = hideVoteImmunity;}
+
+    /** {@code true} si ce joueur est visible lors des votes. */
+    public boolean isHiddenInVote() {return isHiddenInVote;}
+
+    public void setHiddenInVote(boolean isHiddenInVote) { this.isHiddenInVote = isHiddenInVote;}
 
     /**
      * Couleur de surbrillance (glowing) affichée sur le joueur ciblé lors du vote.

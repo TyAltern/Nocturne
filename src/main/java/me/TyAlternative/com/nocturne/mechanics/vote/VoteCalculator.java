@@ -23,8 +23,9 @@ import java.util.*;
  * <p>Cette logique préserve l'avantage des Flammes en cas d'égalité
  */
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "DataFlowIssue"})
 public class VoteCalculator {
+
 
     /**
      * Calcule l'UUID du joueur à éliminer.
@@ -37,8 +38,9 @@ public class VoteCalculator {
             @NotNull List<VoteEntry> votes,
             @NotNull PlayerManager playerManager
     ) {
+
         // Agréger les scores par joueur
-        Map<UUID, Integer> scores =aggregateScores(votes);
+        Map<UUID, Integer> scores = aggregateScores(votes, playerManager);
 
         if (scores.isEmpty()) {
             return null;
@@ -81,11 +83,15 @@ public class VoteCalculator {
      * @param votes liste des votes
      * @return map UUID → score total
      */
-    private @NotNull Map<UUID, Integer> aggregateScores(@NotNull List<VoteEntry> votes) {
+    private @NotNull Map<UUID, Integer> aggregateScores(@NotNull List<VoteEntry> votes, @NotNull PlayerManager playerManager) {
         Map<UUID, Integer> scores = new HashMap<>();
 
         for (VoteEntry vote : votes) {
             if (!vote.hasTarget()) continue;
+
+            NocturnePlayer votedPlayer = playerManager.get(vote.getTargetId());
+            if (!votedPlayer.canBeVoted()) continue;
+
             scores.merge(vote.getTargetId(), vote.getWeight(), Integer::sum);
         }
         return scores;

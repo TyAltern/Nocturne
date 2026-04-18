@@ -152,6 +152,7 @@ public class PlayerManager {
     ) {
         Player referencePlayer = reference.getPlayer();
         if (referencePlayer == null) return Collections.emptyList();
+        double radiusSquared = radius * radius;
 
         return getAlive().stream()
                 .filter(p -> p.isAlive() && !p.getPlayerId().equals(reference.getPlayerId()))
@@ -160,7 +161,7 @@ public class PlayerManager {
                     if (filteredPlayer == null) return false;
                     // Ignorer les joueurs dans un monde différent
                     if (!filteredPlayer.getWorld().equals(referencePlayer.getWorld())) return false;
-                    return referencePlayer.getLocation().distance(filteredPlayer.getLocation()) <= radius;
+                    return referencePlayer.getLocation().distanceSquared(filteredPlayer.getLocation()) <= radiusSquared;
                 })
                 .collect(Collectors.toList());
     }
