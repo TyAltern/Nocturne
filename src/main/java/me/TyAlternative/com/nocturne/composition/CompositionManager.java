@@ -148,13 +148,13 @@ public final class CompositionManager {
             if (role.getType() == RoleType.BATON) hasBaton = true;
         }
 
-        if (!hasBaton) {
-            errors.add("La composition doit contenir au moins un Bâton.");
-        }
+//        if (!hasBaton) {
+//            errors.add("La composition doit contenir au moins un Bâton.");
+//        }
 
-        if (!hasFlamme) {
-            errors.add("La composition doit contenir au moins une Flamme.");
-        }
+//        if (!hasFlamme) {
+//            errors.add("La composition doit contenir au moins une Flamme.");
+//        }
 
         return errors;
     }

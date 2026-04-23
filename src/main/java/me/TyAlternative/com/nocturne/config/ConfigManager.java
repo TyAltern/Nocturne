@@ -72,7 +72,27 @@ public final class ConfigManager {
         settings.setTeleportSpectatorsOnDeath(cfg.getBoolean("mechanics.elimination.teleport_spectators", false));
         settings.setSpectatorLocation(parseSpectatorLocation(cfg));
 
+        // Starting Cooldown
+        settings.setEclaircissementStartingCooldown(cfg.getInt("starting_cooldowns.eclaircissement", 10));
+        settings.setEmbrasementStartingCooldown(cfg.getInt("starting_cooldowns.embrasement", 10));
+        settings.setEtouffementStartingCooldown(cfg.getInt("starting_cooldowns.etouffement", 10));
+        settings.setBriseStartingCooldown(cfg.getInt("starting_cooldowns.brise", 10));
+        settings.setAquilonStartingCooldown(cfg.getInt("starting_cooldowns.aquilon", 10));
+        settings.setAusterStartingCooldown(cfg.getInt("starting_cooldowns.auster", 10));
+
+
         // Capacités
+        settings.setAlizeRadius(cfg.getDouble("abilities.capacity.alize.radius", 45.0));
+        settings.setAlizeProtectOnlyUnprotected(cfg.getBoolean("abilities.capacity.alize.only_not_protected", true));
+        settings.setAusterCooldown(cfg.getInt("abilities.capacity.auster.cooldown", 0));
+        settings.setAusterShowProtectedCount(cfg.getBoolean("abilities.capacity.auster.show_protected_count", false));
+        settings.setAusterRemoveIfBefore(cfg.getBoolean("abilities.capacity.auster.cancel_if_before", false));
+        settings.setIncandescenceAbilityCandidates(cfg.getStringList("abilities.capacity.incandescence.targets"));
+
+
+        settings.setRayonnementRadius(cfg.getDouble("abilities.capacity.rayonnement.radius", 10.0));
+        settings.setRayonnementMinExposureSeconds(cfg.getInt("abilities.capacity.rayonnement.min_exposure_seconds", 5));
+        settings.setRayonnementShowValue(cfg.getBoolean("abilities.capacity.rayonnement.show_value", true));
         settings.setPoudreChemineeCooldownSeconds(cfg.getInt("cooldowns.poudre_cheminee", 5));
         settings.setAmnesiaRoleCandidates(cfg.getStringList("abilities.curse.amnesia.targets"));
 

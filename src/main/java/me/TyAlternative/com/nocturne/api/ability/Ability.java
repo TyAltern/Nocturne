@@ -2,12 +2,14 @@ package me.TyAlternative.com.nocturne.api.ability;
 
 import me.TyAlternative.com.nocturne.ability.AbilityIds;
 import me.TyAlternative.com.nocturne.ability.AbilityManager;
+import me.TyAlternative.com.nocturne.ability.DrunkSupport;
 import me.TyAlternative.com.nocturne.api.role.Role;
 import me.TyAlternative.com.nocturne.core.phase.PhaseContext;
 import me.TyAlternative.com.nocturne.elimination.EliminationCause;
 import me.TyAlternative.com.nocturne.mechanics.vote.VoteEntry;
 import me.TyAlternative.com.nocturne.player.NocturnePlayer;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import org.jetbrains.annotations.NotNull;
@@ -59,6 +61,9 @@ public interface Ability {
     /** Description de la capacité affichée à l'assignation du rôle. */
     @NotNull String getDescription();
 
+    /** Matérial correspondant à la capacité. */
+    @NotNull Material getMaterial();
+
     /** Catégorie visuelle (Capacité, Effet, Malédiction). */
     @NotNull AbilityCategory getCategory();
 
@@ -88,9 +93,9 @@ public interface Ability {
     boolean isHidden();
 
 
-    /** {@code true} si cette capacité supporte le mode "drunk" (comportement erroné). */
-    default boolean supportsDrunk() {
-        return false;
+    /** {@code DrunkSupport.NO} si cette capacité supporte le mode "drunk" (comportement erroné). */
+    default DrunkSupport supportsDrunk() {
+        return DrunkSupport.NO;
     }
 
     /** {@code true} si cette capacité est actuellement en mode "drunk". */

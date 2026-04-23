@@ -84,6 +84,18 @@ public class PlayerManager {
     }
 
     /**
+     * Retourne tous les {@link Player} enregistrés, quel que soit leur état.
+     * La collection retournée est une vue instantanée non-modifiable.
+     */
+    public @NotNull @Unmodifiable List<Player> getAllPlayers() {
+        List<Player> playersInstances = new ArrayList<>();
+        for (NocturnePlayer nocturnePlayer : players.values()) {
+            playersInstances.add(nocturnePlayer.getPlayer());
+        }
+        return  Collections.unmodifiableList(playersInstances);
+    }
+
+    /**
      * Retourne tous les joueurs dont l'état correspond à {@code state}.
      *
      * @param state état à filtrer
@@ -209,7 +221,6 @@ public class PlayerManager {
      */
     public void clearAll() {
         players.values().forEach(NocturnePlayer::resetFull);
-        players.clear();
     }
 
 }

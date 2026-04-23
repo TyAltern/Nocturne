@@ -4,6 +4,7 @@ import me.TyAlternative.com.nocturne.ability.impl.misc.IncandescenceAbility;
 import me.TyAlternative.com.nocturne.api.role.RoleTeam;
 import me.TyAlternative.com.nocturne.api.role.RoleType;
 import me.TyAlternative.com.nocturne.role.AbstractRole;
+import me.TyAlternative.com.nocturne.role.RoleIds;
 import org.bukkit.Material;
 
 /**
@@ -13,7 +14,7 @@ import org.bukkit.Material;
  */
 public final class Tison extends AbstractRole {
 
-    public static final String ID = "TISON";
+    public static final String ID = RoleIds.TISON;
 
     public Tison() {
         super(

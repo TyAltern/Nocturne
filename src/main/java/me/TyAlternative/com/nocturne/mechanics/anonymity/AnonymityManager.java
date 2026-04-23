@@ -16,8 +16,10 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import org.bukkit.util.Transformation;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joml.AxisAngle4f;
 import org.joml.Vector3f;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -121,12 +123,12 @@ public final class AnonymityManager {
     /**
      * Masque les nametags classique de minecraft de tous les joueurs vivants via une équipe Scoreboard (à ne pas utiliser en jeu).
      */
-    public void hideAllNametagsEnd() {
+    public void hideAllNametagsEnd(@NotNull List<Player> players) {
         Team team = getOrCreateTeam();
         team.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.NEVER);
 
-        for (Player player : playerManager.getAlivePlayers()) {
-            if (!team.hasEntry(player.getName())) team.addEntry(player.getName());
+        for (Player player: players) {
+            team.addEntry(player.getName());
         }
     }
 
@@ -148,9 +150,9 @@ public final class AnonymityManager {
     /**
      * Restaure la visibilité des nametags classique de minecraft en retirant les joueurs de l'équipe (à ne pas utiliser en jeu).
      */
-    public void showAllNametagsEnd() {
+    public void showAllNametagsEnd(@NotNull List<Player> players) {
         Team team = getOrCreateTeam();
-        for (Player player : playerManager.getAlivePlayers()) {
+        for (Player player: players) {
             team.removeEntry(player.getName());
         }
     }
@@ -169,6 +171,10 @@ public final class AnonymityManager {
         team.removeEntry(playerName);
     }
 
+    // -------------------------------------------------------------------------
+    // Custom Nametags
+    // -------------------------------------------------------------------------
+
     /**
      * Cache le nametag d'un joueur aux yeux d'un autre joueur.
      *
@@ -180,7 +186,7 @@ public final class AnonymityManager {
 
         if (nocturneViewer == nocturneTarget) return;
 
-        NameTag nametag = new NameTag("", true);
+        NameTag nametag = new NameTag.Builder().hidden(true).build();
 
         // Stocker la configuration de masquage
         nameTagConfigs.computeIfAbsent(nocturneViewer.getPlayerId(), key -> new ConcurrentHashMap<>())
@@ -195,17 +201,13 @@ public final class AnonymityManager {
      *
      * @param nocturneViewer donnée nocturne du joueur qui observer
      * @param nocturneTarget donnée nocturne du joueur à reset
-     * @param customName     String qui sera affiché en tant que nouveau pseudo du joueur
+     * @param nametag        NameTag qui sera affiché en tant que nouveau pseudo du joueur
      */
-    public void setCustomNametag(@NotNull NocturnePlayer nocturneViewer, @NotNull NocturnePlayer nocturneTarget, String customName) {
+    public void setCustomNametag(@NotNull NocturnePlayer nocturneViewer, @NotNull NocturnePlayer nocturneTarget, @NotNull NameTag nametag) {
         if (nocturneViewer.getPlayer() == null || nocturneTarget.getPlayer() == null) return;
 
         if (nocturneViewer == nocturneTarget) return;
 
-        // Supprimer l'ancienne entity s'il en existe une
-//        removeDisplayEntity(nocturneViewer, nocturneTarget);
-
-        NameTag nametag = new NameTag(customName, false);
 
         // Stocker la configuration
         nameTagConfigs.computeIfAbsent(nocturneViewer.getPlayerId(), k -> new ConcurrentHashMap<>())
@@ -225,23 +227,32 @@ public final class AnonymityManager {
         if (nocturneViewer.getPlayer() == null || nocturneTarget.getPlayer() == null) return;
 
         String targetName = nocturneTarget.getPlayer().getName();
-        setCustomNametag(nocturneViewer, nocturneTarget, targetName);
+        setCustomNametag(nocturneViewer,
+                nocturneTarget,
+                new NameTag.Builder()
+                    .customName(targetName)
+                    .build()
+        );
 
     }
 
     /**
-     * Affiche le nom d'un joueur aux yeux d'un autre joueur, en y ajoutant un {@code prefix}.
+     * Affiche le nom d'un joueur aux yeux d'un autre joueur, en y ajoutant un {@code prefix} et/ou un {@code suffix}.
      *
      * @param nocturneViewer donnée nocturne du joueur qui observer
      * @param nocturneTarget donnée nocturne du joueur dont le nametag est modifié
-     * @param prefix         string qui sera placé avant le nom joueur
+     * @param prefix         string qui sera placé avant le nom joueur (aucun si null)
+     * @param suffix         string qui sera placé apèrs le nom joueur (aucun si null)
      */
-    public void setCustomNametagWithPrefix(@NotNull NocturnePlayer nocturneViewer, @NotNull NocturnePlayer nocturneTarget, String prefix) {
+    public void addCustomPrefixSuffixToNametag(@NotNull NocturnePlayer nocturneViewer, @NotNull NocturnePlayer nocturneTarget, @Nullable String prefix, @Nullable String suffix) {
 
         if (nocturneViewer.getPlayer() == null || nocturneTarget.getPlayer() == null) return;
+        NameTag previousNameTag = getCustomNametag(nocturneViewer, nocturneTarget);
+        if (previousNameTag == null) return;
+        if (previousNameTag.customName == null) return;
 
-        String targetName = prefix + nocturneTarget.getPlayer().getName();
-        setCustomNametag(nocturneViewer, nocturneTarget, targetName);
+        NameTag nameTag = new NameTag.Builder().prefix (prefix == null ? "" : prefix).customName(previousNameTag.customName).suffix(suffix == null ? "" : suffix).build();
+        setCustomNametag(nocturneViewer, nocturneTarget, nameTag);
     }
 
     /**
@@ -265,6 +276,21 @@ public final class AnonymityManager {
         for (NocturnePlayer nocturneViewer : playerManager.getAlive()) {
             hideCustomNametag(nocturneViewer, nocturneTarget);
         }
+    }
+
+
+    /**
+     * Retourne le {@link NameTag} de {@code nocturneTarget} affiché à {@code nocturneViewer}
+     *
+     * @param nocturneViewer donnée nocturne du joueur qui observer
+     * @param nocturneTarget donnée nocturne du joueur observé
+     *
+     * @return {@code null} Si le joueur ne possède pas de nametag custom ou bien le {@link NameTag} vu par {@code nocturneViewer} au-dessus de {@code nocturneTarget}
+     */
+    public @Nullable NameTag getCustomNametag(@NotNull NocturnePlayer nocturneViewer, @NotNull NocturnePlayer nocturneTarget) {
+        Map<UUID, NameTag> datas = nameTagConfigs.get(nocturneViewer.getPlayerId());
+        if (datas == null) return null;
+        return datas.get(nocturneTarget.getPlayerId());
     }
 
     // -------------------------------------------------------------------------
@@ -344,7 +370,8 @@ public final class AnonymityManager {
      */
     private void createDisplayEntity(@NotNull NocturnePlayer nocturneViewer, @NotNull NocturnePlayer nocturneTarget, NameTag nametag) {
 
-        String displayText = nametag.customName;
+        String displayText = nametag.getTotalName();
+        boolean isHidden = nametag.hidden;
         boolean seeThrough = nametag.seeThrough;
 
 
@@ -392,7 +419,9 @@ public final class AnonymityManager {
             });
 
             // Rendre visible SEULEMENT pour le viewer spécifique
-            viewer.showEntity(Nocturne.getInstance(), textDisplay);
+            if (!isHidden) {
+                viewer.showEntity(Nocturne.getInstance(), textDisplay);
+            }
 
             // Faire rider l'entity sur le joueur
             target.addPassenger(textDisplay);
@@ -457,7 +486,7 @@ public final class AnonymityManager {
         }
 
 
-        String displayText = nametag.customName;
+        String displayText = nametag.getTotalName();
         boolean hidden = nametag.hidden;
         boolean seeThrough = nametag.seeThrough;
 
@@ -541,30 +570,8 @@ public final class AnonymityManager {
             viewerConfigs.remove(playerId);
         }
 
-
-
+        showPlayerNametagEnd(nocturnePlayer);
 
     }
 
-
-    /**
-     * Configuration d'un nametag
-     */
-
-    private static class NameTag {
-        String customName;
-        boolean hidden;
-        boolean seeThrough;
-
-        NameTag(String customName, boolean hidden) {
-            this.customName = customName;
-            this.hidden = hidden;
-            this.seeThrough = true;
-        }
-        NameTag(String customName, boolean hidden, boolean seeThrough) {
-            this.customName = customName;
-            this.hidden = hidden;
-            this.seeThrough = seeThrough;
-        }
-    }
 }

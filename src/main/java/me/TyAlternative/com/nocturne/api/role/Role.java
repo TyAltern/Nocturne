@@ -79,6 +79,8 @@ public interface Role {
     /** {@code true} si ce rôle possède la capacité identifiée par {@code abilityId}. */
     boolean hasAbility(@NotNull String abilityId);
 
+    /** Supprime une ability dont l'id est {@code abilityId} et retourne {@code true} si cela a fonctionné, {@code false} sinon. */
+    boolean removeAbility(@NotNull String abilityId);
 
     // -------------------------------------------------------------------------
     // Équipe (mutable pour les mécaniques d'alignement dynamique)

@@ -3,12 +3,14 @@ package me.TyAlternative.com.nocturne.ability.impl.info;
 import me.TyAlternative.com.nocturne.ability.AbilityIds;
 import me.TyAlternative.com.nocturne.ability.AbstractAbility;
 
+import me.TyAlternative.com.nocturne.ability.DrunkSupport;
 import me.TyAlternative.com.nocturne.api.ability.*;
 import me.TyAlternative.com.nocturne.api.phase.PhaseType;
 import me.TyAlternative.com.nocturne.api.role.RoleType;
 import me.TyAlternative.com.nocturne.mechanics.vote.VoteEntry;
 import me.TyAlternative.com.nocturne.player.NocturnePlayer;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -43,6 +45,7 @@ public final class DiscernementMatinalAbility extends AbstractAbility {
                 "Discernement Matinal",
                 "À la fin de chaque vote, vous saurez si au moins une Flamme a voté "
                         + "contre le joueur éliminé.",
+                Material.AIR,
                 AbilityCategory.CAPACITY,
                 AbilityUseType.PASSIVE,
                 AbilityTrigger.AUTOMATIC
@@ -63,8 +66,8 @@ public final class DiscernementMatinalAbility extends AbstractAbility {
     }
 
     @Override
-    public boolean supportsDrunk() {
-        return true;
+    public DrunkSupport supportsDrunk() {
+        return DrunkSupport.DEFAULT_LOGIC;
     }
 
     // -------------------------------------------------------------------------

@@ -67,6 +67,8 @@ public final class GameplayPhase implements GamePhase {
                 nocturnePlayer.getRole().onGameplayPhaseStart(player, nocturnePlayer, context),
                 player.getName(), "onGameplayPhaseStart"
             );
+
+            game.getActionBarManager().updatePlayerActionBar(player, nocturnePlayer, getType());
         }
 
         // Démarrer les tickers des capacités/particules TICKS
@@ -176,7 +178,7 @@ public final class GameplayPhase implements GamePhase {
             action.run();
         } catch (Exception e) {
             Nocturne.getInstance().getLogger().severe(
-                    "[Nocturne] Erreur dans %s pour %s : %s".formatted(hookName, playerName, e.getMessage())
+                    "[Nocturne] Erreur dans %s pour %s : %s".formatted(hookName, playerName, e)
             );
         }
     }

@@ -113,7 +113,7 @@ public final class EliminationManager {
      */
     public void eliminateVotedPlayer(@Nullable UUID votedPlayerId) {
         if (votedPlayerId == null) return;
-//        eliminate(votedPlayerId, EliminationCause.VOTE);
+        eliminate(votedPlayerId, EliminationCause.VOTE);
     }
 
     // -------------------------------------------------------------------------

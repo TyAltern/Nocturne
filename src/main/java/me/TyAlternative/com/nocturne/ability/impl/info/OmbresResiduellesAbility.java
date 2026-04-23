@@ -3,12 +3,14 @@ package me.TyAlternative.com.nocturne.ability.impl.info;
 import me.TyAlternative.com.nocturne.ability.AbilityIds;
 import me.TyAlternative.com.nocturne.ability.AbstractAbility;
 
+import me.TyAlternative.com.nocturne.ability.DrunkSupport;
 import me.TyAlternative.com.nocturne.api.ability.*;
 import me.TyAlternative.com.nocturne.api.phase.PhaseType;
 
 import me.TyAlternative.com.nocturne.mechanics.vote.VoteEntry;
 import me.TyAlternative.com.nocturne.player.NocturnePlayer;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -41,6 +43,7 @@ public final class OmbresResiduellesAbility extends AbstractAbility {
                 "Ombres Résiduelles",
                 "À la fin de chaque vote, vous connaissez la moitié des joueurs "
                         + "n'ayant pas voté contre l'éliminé.",
+                Material.AIR,
                 AbilityCategory.CAPACITY,
                 AbilityUseType.PASSIVE,
                 AbilityTrigger.AUTOMATIC
@@ -59,8 +62,8 @@ public final class OmbresResiduellesAbility extends AbstractAbility {
     }
 
     @Override
-    public boolean supportsDrunk() {
-        return true;
+    public DrunkSupport supportsDrunk() {
+        return DrunkSupport.DEFAULT_LOGIC;
     }
 
     // -------------------------------------------------------------------------
@@ -75,18 +78,21 @@ public final class OmbresResiduellesAbility extends AbstractAbility {
             @Nullable UUID votedPlayerId,
             @NotNull List<VoteEntry> allVotes
     ) {
-        if (votedPlayerId == null) {
-            player.sendMessage(Component.text(
-                    "§7[Ombres Résiduelles] §8Aucun joueur éliminé — aucune information."
-            ));
-            return;
-        }
+        // TODO : FIX DEBUG MODIFICATION
+//        if (votedPlayerId == null) {
+//            player.sendMessage(Component.text(
+//                    "§7[Ombres Résiduelles] §8Aucun joueur éliminé — aucune information."
+//            ));
+//            return;
+//        }
 
         // Construire la liste des UUID ayant voté CONTRE l'éliminé
         Set<UUID> votedAgainst = new HashSet<>();
-        for (VoteEntry vote : allVotes) {
-            if (vote.hasTarget() && votedPlayerId.equals(vote.getTargetId())) {
-                votedAgainst.add(vote.getVoterId());
+        if (votedPlayerId != null)  {
+            for (VoteEntry vote : allVotes) {
+                if (vote.hasTarget() && votedPlayerId.equals(vote.getTargetId())) {
+                    votedAgainst.add(vote.getVoterId());
+                }
             }
         }
 
@@ -94,7 +100,7 @@ public final class OmbresResiduellesAbility extends AbstractAbility {
         List<String> nonVoters = new ArrayList<>();
         for (VoteEntry vote : allVotes) {
             UUID voterId = vote.getVoterId();
-            if (voterId.equals(nocturnePlayer.getPlayerId()))  continue; // s'exclure soi-même
+//            if (voterId.equals(nocturnePlayer.getPlayerId()))  continue; // s'exclure soi-même
             if (voterId.equals(votedPlayerId))                 continue; // exclure l'éliminé
             if (!votedAgainst.contains(voterId)) {
                 String name = resolvePlayerName(voterId);
@@ -118,7 +124,8 @@ public final class OmbresResiduellesAbility extends AbstractAbility {
 
         player.sendMessage(Component.text(
                 "§7[Ombres Résiduelles] §7Ces joueurs n'ont §eNOT§7 voté contre §e"
-                        + resolvePlayerName(votedPlayerId) + "§7 : §f"
+//                        + resolvePlayerName(votedPlayerId) + "§7 : §f"
+                        + "le voté" + "§7 : §f"
                         + String.join("§7, §f", revealed)
         ));
 

@@ -1,11 +1,11 @@
 package me.TyAlternative.com.nocturne.mechanics.ability;
 
+import me.TyAlternative.com.nocturne.Nocturne;
 import me.TyAlternative.com.nocturne.ability.AbstractAbility;
 import me.TyAlternative.com.nocturne.ability.impl.info.*;
-//import me.TyAlternative.com.nocturne.ability.impl.flamme.*;
+import me.TyAlternative.com.nocturne.ability.impl.flamme.*;
 //import me.TyAlternative.com.nocturne.ability.impl.misc.*;
-//import me.TyAlternative.com.nocturne.ability.impl.protection.*;
-import org.jetbrains.annotations.NotNull;
+import me.TyAlternative.com.nocturne.ability.impl.protection.*;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -38,9 +38,11 @@ public final class RandomAbilityPool {
 
     /** Liste des fabriques de capacités disponibles. */
     private final List<Supplier<AbstractAbility>> suppliers;
+    private final List<String> possibleOptions;
 
     public RandomAbilityPool() {
         suppliers = new ArrayList<>();
+        possibleOptions = Nocturne.getInstance().getGame().getSettings().getIncandescenceAbilityCandidates();
         registerAll();
     }
 
@@ -54,22 +56,30 @@ public final class RandomAbilityPool {
      * @param excludedId ID de la dernière capacité (exclu du tirage), ou {@code null}
      * @return nouvelle instance de capacité prête à l'emploi
      */
-    public @NotNull AbstractAbility draw(@Nullable String excludedId) {
-        if (suppliers.size() == 1) {
-            return suppliers.getFirst().get();
+    public @Nullable AbstractAbility draw(@Nullable String excludedId) {
+        List<AbstractAbility> possiblePick = new ArrayList<>();
+        for (Supplier<AbstractAbility> supplier : suppliers) {
+            if (!possibleOptions.contains(supplier.get().getId())) continue;
+            possiblePick.add(supplier.get());
+        }
+        Nocturne.getInstance().getLogger().info(possibleOptions.toString() + " -> ");
+        possiblePick.forEach(abstractAbility -> Nocturne.getInstance().getLogger().info(abstractAbility.toString()));
+        if (possiblePick.isEmpty()) return null;
+
+        if (possiblePick.size() == 1) {
+            return possiblePick.getFirst();
         }
 
         // Filtrer l'ID exclu
-        List<Supplier<AbstractAbility>> candidates = new ArrayList<>();
-        for (Supplier<AbstractAbility> supplier : suppliers) {
-            AbstractAbility sample = supplier.get();
-            if (!sample.getId().equals(excludedId)) candidates.add(supplier);
+        List<AbstractAbility> candidates = new ArrayList<>();
+        for (AbstractAbility sample : possiblePick) {
+            if (!sample.getId().equals(excludedId)) candidates.add(sample);
         }
 
         if (candidates.isEmpty()) {
-            candidates = suppliers; // fallback : tous disponibles
+            candidates = possiblePick; // fallback : tous disponibles
         }
-        return candidates.get(random.nextInt(candidates.size())).get();
+        return candidates.get(random.nextInt(candidates.size()));
     }
 
     /** Nombre de capacités disponibles dans le pool. */
@@ -84,15 +94,16 @@ public final class RandomAbilityPool {
 
     private void registerAll() {
         // Flammes
-//        suppliers.add(EmbrasementAbility::new);
+        suppliers.add(EmbrasementAbility::new);
 //        suppliers.add(PoudreChemineeAbility::new);
-//        suppliers.add(RayonnementAbility::new);
+        suppliers.add(RayonnementAbility::new);
+        suppliers.add(EclaircissementAbility::new);
 
         // Protection
-//        suppliers.add(BriseAbility::new);
-//        suppliers.add(AlizeAbility::new);
-//        suppliers.add(AquilonAbility::new);
-//        suppliers.add(AusterAbility::new);
+        suppliers.add(BriseAbility::new);
+        suppliers.add(AlizeAbility::new);
+        suppliers.add(AquilonAbility::new);
+        suppliers.add(AusterAbility::new);
 
         // Info
         suppliers.add(DiscernementMatinalAbility::new);

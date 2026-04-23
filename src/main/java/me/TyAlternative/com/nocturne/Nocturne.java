@@ -79,6 +79,7 @@ public final class Nocturne extends JavaPlugin {
             game.forceStop();
         }
 
+        game.getActionBarManager().stop();
         game.getGlowingManager().disable();
         getLogger().info("Nocturne désactivé.");
     }
@@ -206,9 +207,7 @@ public final class Nocturne extends JavaPlugin {
     // -------------------------------------------------------------------------
 
     /** Instance singleton du plugin. Disponible dès {@link #onEnable()}. */
-    public static @NotNull Nocturne getInstance() {
-        return instance;
-    }
+    public static @NotNull Nocturne getInstance() { return instance; }
 
 
     /**
@@ -216,11 +215,8 @@ public final class Nocturne extends JavaPlugin {
      * Disponible après {@link #onEnable()}.
      */
 
-    public NocturneGame getGame() {
-        return game;
-    }
+    public NocturneGame getGame() { return game; }
     /** Gestionnaire de configuration. */
-    public @NotNull ConfigManager getConfigManager() {
-        return configManager;
-    }
+    public @NotNull ConfigManager getConfigManager() { return configManager; }
+
 }

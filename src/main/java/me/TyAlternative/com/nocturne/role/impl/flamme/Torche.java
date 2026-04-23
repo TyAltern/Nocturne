@@ -1,8 +1,11 @@
 package me.TyAlternative.com.nocturne.role.impl.flamme;
 
+import me.TyAlternative.com.nocturne.ability.impl.flamme.EtouffementFlammeAbility;
+import me.TyAlternative.com.nocturne.ability.impl.flamme.RayonnementAbility;
 import me.TyAlternative.com.nocturne.api.role.RoleTeam;
 import me.TyAlternative.com.nocturne.api.role.RoleType;
 import me.TyAlternative.com.nocturne.role.AbstractRole;
+import me.TyAlternative.com.nocturne.role.RoleIds;
 import org.bukkit.Material;
 
 /**
@@ -18,7 +21,7 @@ import org.bukkit.Material;
  */
 public final class Torche extends AbstractRole {
 
-    public static final String ID = "TORCHE";
+    public static final String ID = RoleIds.TORCHE;
 
     public Torche() {
         super(
@@ -30,7 +33,7 @@ public final class Torche extends AbstractRole {
                 Material.TORCH
         );
 
-        // TODO : registerAbility(new RayonnementAbility());
-        // TODO : registerAbility(new EtouffementFlammeAbility());
+        registerAbility(new RayonnementAbility());
+        registerAbility(new EtouffementFlammeAbility());
     }
 }

@@ -11,6 +11,7 @@ import me.TyAlternative.com.nocturne.mechanics.embrasement.EmbrasementManager;
 import me.TyAlternative.com.nocturne.mechanics.protection.ProtectionManager;
 import me.TyAlternative.com.nocturne.player.NocturnePlayer;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -51,9 +52,10 @@ public final class PriseDeFeuAbility extends AbstractAbility {
         super(
                 AbilityIds.PRISE_DE_FEU,
                 "Prise de Feu",
-                "Si un joueur Embrasé se trouve à moins de " + (int) 10.0
+                "Si un joueur Embrasé se trouve à moins de " + 10.0
                         + " blocs de vous en fin de phase, vous volez son Embrasement "
                         + "(il est protégé, vous vous embrasez à sa place, même si protégé).",
+                Material.AIR,
                 AbilityCategory.CURSE,
                 AbilityUseType.PASSIVE,
                 AbilityTrigger.AUTOMATIC
@@ -138,7 +140,7 @@ public final class PriseDeFeuAbility extends AbstractAbility {
 
     @Override
     public @NotNull String getDescription() {
-        return "Si un joueur Embrasé se trouve à moins de §6" + (int) radius
+        return "Si un joueur Embrasé se trouve à moins de §6" + radius
                 + "§r blocs de vous en fin de phase, vous volez son Embrasement "
                 + "(il est protégé, vous vous embrasez à sa place, même si protégé).";
     }

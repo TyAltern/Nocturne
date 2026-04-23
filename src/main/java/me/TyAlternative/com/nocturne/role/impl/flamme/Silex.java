@@ -1,8 +1,10 @@
 package me.TyAlternative.com.nocturne.role.impl.flamme;
 
+import me.TyAlternative.com.nocturne.ability.impl.curse.AmnesieAbility;
 import me.TyAlternative.com.nocturne.api.role.RoleTeam;
 import me.TyAlternative.com.nocturne.api.role.RoleType;
 import me.TyAlternative.com.nocturne.role.AbstractRole;
+import me.TyAlternative.com.nocturne.role.RoleIds;
 import org.bukkit.Material;
 
 /**
@@ -17,7 +19,7 @@ import org.bukkit.Material;
  */
 public final class Silex extends AbstractRole {
 
-    public static final String ID = "SILEX";
+    public static final String ID = RoleIds.SILEX;
 
     public Silex() {
         super(
@@ -29,7 +31,7 @@ public final class Silex extends AbstractRole {
                 Material.FLINT
         );
 
-        // TODO : registerHiddenAbility(new AmnesieAbility());
+         registerHiddenAbility(new AmnesieAbility());
     }
 }
 

@@ -7,6 +7,7 @@ import me.TyAlternative.com.nocturne.core.NocturneGame;
 import me.TyAlternative.com.nocturne.player.NocturnePlayer;
 import me.TyAlternative.com.nocturne.role.AbstractRole;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -58,7 +59,7 @@ import java.util.List;
  * }</pre>
  *
  * <h2>Mode drunk</h2>
- * Pour activer le mode drunk, surcharger {@link #supportsDrunk()} pour retourner {@code true}
+ * Pour activer le mode drunk, surcharger {@link #supportsDrunk()} pour retourner {@code DrunkSupport.DEFAULT_LOGIC} où {@code DrunkSupport.CUSTOM_LOGIC}
  * puis surcharger {@link #executeDrunkLogic} pour définir le comportement erroné.
  */
 @SuppressWarnings("unused")
@@ -71,6 +72,7 @@ public abstract class AbstractAbility implements Ability {
     private final String id;
     private final String displayName;
     private final String description;
+    private final Material material;
     private final AbilityCategory category;
     private final AbilityUseType useType;
     private final AbilityTrigger trigger;
@@ -117,6 +119,7 @@ public abstract class AbstractAbility implements Ability {
             @NotNull String id,
             @NotNull String displayName,
             @NotNull String description,
+            @NotNull Material material,
             @NotNull AbilityCategory category,
             @NotNull AbilityUseType useType,
             @NotNull AbilityTrigger trigger
@@ -124,6 +127,7 @@ public abstract class AbstractAbility implements Ability {
         this.id = id;
         this.displayName = displayName;
         this.description = description;
+        this.material = material;
         this.category = category;
         this.useType = useType;
         this.trigger = trigger;
@@ -200,6 +204,11 @@ public abstract class AbstractAbility implements Ability {
     }
 
     @Override
+    public @NotNull Material getMaterial() {
+        return material;
+    }
+
+    @Override
     public final @NotNull AbilityCategory getCategory() {
         return category;
     }
@@ -239,13 +248,13 @@ public abstract class AbstractAbility implements Ability {
 
     @SuppressWarnings("RedundantMethodOverride")
     @Override
-    public boolean supportsDrunk() {
-        return false;
+    public DrunkSupport supportsDrunk() {
+        return DrunkSupport.NO;
     }
 
     @Override
     public boolean isDrunk() {
-        return supportsDrunk() && drunk;
+        return supportsDrunk() != DrunkSupport.NO && drunk;
     }
 
     @Override
@@ -297,7 +306,7 @@ public abstract class AbstractAbility implements Ability {
             @NotNull NocturnePlayer nocturnePlayer,
             @NotNull AbilityContext context) {
         if (isDrunk()) {
-            return executeDrunkLogic(player, nocturnePlayer, context);
+            if (supportsDrunk() == DrunkSupport.CUSTOM_LOGIC) return executeDrunkLogic(player, nocturnePlayer, context);
         }
         return executeLogic(player, nocturnePlayer, context);
     }

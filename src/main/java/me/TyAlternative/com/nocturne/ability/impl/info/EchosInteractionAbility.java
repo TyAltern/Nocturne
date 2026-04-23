@@ -3,12 +3,14 @@ package me.TyAlternative.com.nocturne.ability.impl.info;
 import me.TyAlternative.com.nocturne.Nocturne;
 import me.TyAlternative.com.nocturne.ability.AbilityIds;
 import me.TyAlternative.com.nocturne.ability.AbstractAbility;
+import me.TyAlternative.com.nocturne.ability.DrunkSupport;
 import me.TyAlternative.com.nocturne.api.ability.*;
 import me.TyAlternative.com.nocturne.api.phase.PhaseType;
 import me.TyAlternative.com.nocturne.core.phase.PhaseContext;
 import me.TyAlternative.com.nocturne.mechanics.particle.DelayedParticleScheduler;
 import me.TyAlternative.com.nocturne.player.NocturnePlayer;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -47,6 +49,7 @@ public final class EchosInteractionAbility extends AbstractAbility {
                 "Échos d'Interaction",
                 "Vous percevez des particules violettes autour des joueurs ayant utilisé "
                         + "une capacité active (délai 2–3s). Un leurre est toujours inclus.",
+                Material.AIR,
                 AbilityCategory.CAPACITY,
                 AbilityUseType.PASSIVE,
                 AbilityTrigger.AUTOMATIC
@@ -68,8 +71,8 @@ public final class EchosInteractionAbility extends AbstractAbility {
     }
 
     @Override
-    public boolean supportsDrunk() {
-        return true;
+    public DrunkSupport supportsDrunk() {
+        return DrunkSupport.DEFAULT_LOGIC;
     }
 
     // -------------------------------------------------------------------------
@@ -102,7 +105,7 @@ public final class EchosInteractionAbility extends AbstractAbility {
         int minPhaseDuration = phaseDuration / 6;
         int maxPhaseDuration = phaseDuration / 2;
 
-        scheduleDecoy(nocturnePlayer, minPhaseDuration, maxPhaseDuration);
+//        scheduleDecoy(nocturnePlayer, minPhaseDuration, maxPhaseDuration);
 
     }
 

@@ -4,19 +4,18 @@ import me.TyAlternative.com.nocturne.ability.AbilityIds;
 import me.TyAlternative.com.nocturne.ability.AbstractAbility;
 import me.TyAlternative.com.nocturne.api.ability.*;
 import me.TyAlternative.com.nocturne.api.phase.PhaseType;
+import me.TyAlternative.com.nocturne.api.role.Role;
 import me.TyAlternative.com.nocturne.core.phase.PhaseContext;
-import me.TyAlternative.com.nocturne.elimination.EliminationCause;
 import me.TyAlternative.com.nocturne.mechanics.ability.RandomAbilityPool;
-import me.TyAlternative.com.nocturne.mechanics.vote.VoteEntry;
 import me.TyAlternative.com.nocturne.player.NocturnePlayer;
 
+import me.TyAlternative.com.nocturne.role.AbstractRole;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-import java.util.UUID;
 
 
 /**
@@ -56,6 +55,7 @@ public final class IncandescenceAbility extends AbstractAbility {
                 "Incandescence",
                 "Chaque manche, vous obtenez une capacité aléatoire différente "
                         + "(Bâton ou Flamme). Elle change à chaque début de phase.",
+                Material.AIR,
                 AbilityCategory.CAPACITY,
                 AbilityUseType.PASSIVE,
                 AbilityTrigger.AUTOMATIC
@@ -70,8 +70,8 @@ public final class IncandescenceAbility extends AbstractAbility {
     @Override
     public void onGameplayPhaseStart(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull PhaseContext phaseContext) {
         drawNewAbility(player, nocturnePlayer);
-        if (currentAbility == null) return;
-        dispatchSafely(() -> currentAbility.onGameplayPhaseStart(player, nocturnePlayer, phaseContext));
+//        if (currentAbility == null) return;
+//        dispatchSafely(() -> currentAbility.onGameplayPhaseStart(player, nocturnePlayer, phaseContext));
     }
 
 
@@ -79,8 +79,23 @@ public final class IncandescenceAbility extends AbstractAbility {
      * Tire une nouvelle capacité aléatoire, l'injecte au joueur et l'informe.
      */
     private void drawNewAbility(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer) {
+        Role role = nocturnePlayer.getRole();
+        if (role == null) return;
+        if (lastAbilityId != null) {
+            role.removeAbility(lastAbilityId);
+        }
+
         currentAbility = POOL.draw(lastAbilityId);
+
+        if (currentAbility == null) {
+
+            player.sendMessage(Component.text(
+                    "§7[Incandescence] §fIl semblerait que§c les Flammes§f soient contre vous et vous empêche d'utiliser votre rôle."
+            ));
+            return;
+        }
         lastAbilityId = currentAbility.getId();
+        ((AbstractRole) role).registerAbility(currentAbility);
 
         // Injecter le propriétaire dans la sous-capacité (même mécanique qu'AbstractRole)
         currentAbility.injectOwner(nocturnePlayer);
@@ -102,71 +117,73 @@ public final class IncandescenceAbility extends AbstractAbility {
     // Délégation des hooks à la capacité courante
     // -------------------------------------------------------------------------
 
-    @Override
-    public void onGameplayPhaseEnd(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull PhaseContext phaseContext) {
-        if (currentAbility == null) return;
-        dispatchSafely(() -> currentAbility.onGameplayPhaseEnd(player, nocturnePlayer, phaseContext));
-    }
-
-    @Override
-    public void onVotePhaseStart(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull PhaseContext phaseContext) {
-        if (currentAbility == null) return;
-        dispatchSafely(() -> currentAbility.onVotePhaseStart(player, nocturnePlayer, phaseContext));
-    }
-
-    @Override
-    public void onVotePhaseEnd(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull PhaseContext phaseContext) {
-        if (currentAbility == null) return;
-        dispatchSafely(() -> currentAbility.onVotePhaseEnd(player, nocturnePlayer, phaseContext));
-    }
-
-    @Override
-    public void afterVoteCalculation(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @Nullable UUID votedPlayerId, @NotNull List<VoteEntry> allVotes) {
-        if (currentAbility == null) return;
-        dispatchSafely(() -> currentAbility.afterVoteCalculation(player, nocturnePlayer, votedPlayerId, allVotes));
-    }
-
-    @Override
-    public void onEliminated(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull EliminationCause cause) {
-        if (currentAbility == null) return;
-        dispatchSafely(() -> currentAbility.onEliminated(player, nocturnePlayer, cause));
-    }
-
-    @Override
-    public void onOtherEliminated(@NotNull Player self, @NotNull Player eliminated, @NotNull NocturnePlayer nocturneEliminated, @NotNull EliminationCause cause) {
-        if (currentAbility == null) return;
-        dispatchSafely(() -> currentAbility.onOtherEliminated(self, eliminated, nocturneEliminated, cause));
-    }
-
-    @Override
-    public void onPlayerInteract(@NotNull Player caster, @NotNull NocturnePlayer nocturneCaster, @NotNull Player receiver, @NotNull NocturnePlayer nocturneReceiver, boolean emptyHand) {
-        if (currentAbility == null) return;
-        dispatchSafely(() -> currentAbility.onPlayerInteract(caster, nocturneCaster, receiver, nocturneReceiver, emptyHand));
-    }
-
-    @Override
-    public void onActiveAbilityUsed(@NotNull Player caster, @NotNull NocturnePlayer nocturneCaster, @NotNull AbilityContext context, @NotNull AbilityResult result) {
-        if (currentAbility == null) return;
-        dispatchSafely(() -> currentAbility.onActiveAbilityUsed(caster, nocturneCaster, context, result));
-    }
-
-
-    // -------------------------------------------------------------------------
-    // Exécution directe — déléguer à la sous-capacité si elle est active
-    // -------------------------------------------------------------------------
-
-
+//    @Override
+//    public void onGameplayPhaseEnd(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull PhaseContext phaseContext) {
+//        if (currentAbility == null) return;
+//        dispatchSafely(() -> currentAbility.onGameplayPhaseEnd(player, nocturnePlayer, phaseContext));
+//    }
+//
+//    @Override
+//    public void onVotePhaseStart(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull PhaseContext phaseContext) {
+//        if (currentAbility == null) return;
+//        dispatchSafely(() -> currentAbility.onVotePhaseStart(player, nocturnePlayer, phaseContext));
+//    }
+//
+//    @Override
+//    public void onVotePhaseEnd(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull PhaseContext phaseContext) {
+//        if (currentAbility == null) return;
+//        dispatchSafely(() -> currentAbility.onVotePhaseEnd(player, nocturnePlayer, phaseContext));
+//    }
+//
+//    @Override
+//    public void afterVoteCalculation(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @Nullable UUID votedPlayerId, @NotNull List<VoteEntry> allVotes) {
+//        if (currentAbility == null) return;
+//        dispatchSafely(() -> currentAbility.afterVoteCalculation(player, nocturnePlayer, votedPlayerId, allVotes));
+//    }
+//
+//    @Override
+//    public void onEliminated(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull EliminationCause cause) {
+//        if (currentAbility == null) return;
+//        dispatchSafely(() -> currentAbility.onEliminated(player, nocturnePlayer, cause));
+//    }
+//
+//    @Override
+//    public void onOtherEliminated(@NotNull Player self, @NotNull Player eliminated, @NotNull NocturnePlayer nocturneEliminated, @NotNull EliminationCause cause) {
+//        if (currentAbility == null) return;
+//        dispatchSafely(() -> currentAbility.onOtherEliminated(self, eliminated, nocturneEliminated, cause));
+//    }
+//
+//    @Override
+//    public void onPlayerInteract(@NotNull Player caster, @NotNull NocturnePlayer nocturneCaster, @NotNull Player receiver, @NotNull NocturnePlayer nocturneReceiver, boolean emptyHand) {
+//        if (currentAbility == null) return;
+//        dispatchSafely(() -> currentAbility.onPlayerInteract(caster, nocturneCaster, receiver, nocturneReceiver, emptyHand));
+//    }
+//
+//    @Override
+//    public void onActiveAbilityUsed(@NotNull Player caster, @NotNull NocturnePlayer nocturneCaster, @NotNull AbilityContext context, @NotNull AbilityResult result) {
+//        if (currentAbility == null) return;
+//        dispatchSafely(() -> currentAbility.onActiveAbilityUsed(caster, nocturneCaster, context, result));
+//    }
+//
+//
+//    // -------------------------------------------------------------------------
+//    // Exécution directe — déléguer à la sous-capacité si elle est active
+//    // -------------------------------------------------------------------------
+//
+//
     @Override
     public boolean canExecute(@NotNull Player p, @NotNull NocturnePlayer np, @NotNull AbilityContext ctx) {
-        if (currentAbility == null) return false;
-        return currentAbility.canExecute(p, np, ctx);
+//        if (currentAbility == null) return false;
+//        return currentAbility.canExecute(p, np, ctx);
+        return false;
     }
 
 
     @Override
     protected @NotNull AbilityResult executeLogic(@NotNull Player p, @NotNull NocturnePlayer np, @NotNull AbilityContext ctx) {
-        if (currentAbility == null) return AbilityResult.silentFailure();
-        return currentAbility.execute(p, np, ctx);
+//        if (currentAbility == null) return AbilityResult.silentFailure();
+//        return currentAbility.execute(p, np, ctx);
+        return AbilityResult.silentSuccess();
     }
 
     // -------------------------------------------------------------------------

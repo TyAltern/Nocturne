@@ -1,6 +1,8 @@
 package me.TyAlternative.com.nocturne.role;
 
 import me.TyAlternative.com.nocturne.Nocturne;
+import me.TyAlternative.com.nocturne.ability.DrunkSupport;
+import me.TyAlternative.com.nocturne.ability.impl.curse.AmnesieAbility;
 import me.TyAlternative.com.nocturne.api.ability.Ability;
 import me.TyAlternative.com.nocturne.api.ability.AbilityContext;
 import me.TyAlternative.com.nocturne.api.ability.AbilityResult;
@@ -184,6 +186,11 @@ public abstract class AbstractRole implements Role {
         return getAbility(abilityId) != null;
     }
 
+    @Override
+    public boolean removeAbility(@NotNull String abilityId) {
+        return abilities.remove(getAbility(abilityId));
+    }
+
 
     // -------------------------------------------------------------------------
     // Enregistrement des capacités (à appeler uniquement dans le constructeur)
@@ -196,7 +203,7 @@ public abstract class AbstractRole implements Role {
      * @return la capacité enregistrée (pour chaînage si nécessaire)
      * @throws IllegalArgumentException si {@code ability} est {@code null}
      */
-    protected final @NotNull Ability registerAbility(@NotNull Ability ability) {
+    public final @NotNull Ability registerAbility(@NotNull Ability ability) {
         abilities.add(ability);
         return ability;
     }
@@ -207,7 +214,7 @@ public abstract class AbstractRole implements Role {
      * @param ability capacité à masquer, jamais {@code null}
      * @return la capacité enregistrée
      */
-    protected final @NotNull Ability registerHiddenAbility(@NotNull Ability ability) {
+    public final @NotNull Ability registerHiddenAbility(@NotNull Ability ability) {
         if (ability instanceof AbstractAbility abstractAbility) abstractAbility.setHidden(true);
 
         abilities.add(ability);
@@ -220,10 +227,18 @@ public abstract class AbstractRole implements Role {
      * @param ability capacité à rendre "drunk", jamais {@code null}
      * @return la capacité enregistrée
      */
-    protected final @NotNull Ability registerDrunkAbility(@NotNull Ability ability) {
+    public final @NotNull Ability registerDrunkAbility(@NotNull Ability ability) {
         ability.setDrunk(true);
         abilities.add(ability);
         return ability;
+    }
+
+    /** Determine si un rôle peut être faussé en fonction de la compatibilité de ses capacités. */
+    public boolean canBeDrunk() {
+        for (Ability ability : abilities) {
+            if (ability.supportsDrunk() == DrunkSupport.NO) return false;
+        }
+        return true;
     }
 
     // -------------------------------------------------------------------------
@@ -241,14 +256,18 @@ public abstract class AbstractRole implements Role {
     @Override
     public void onAssigned(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer) {
         // Injecter le propriétaire dans chaque ability (une fois pour toute la vie du rôle)
+        boolean isAmnesic = false;
         for (Ability ability : abilities) {
             if (ability instanceof AbstractAbility abstractAbility) {
                 abstractAbility.injectOwner(nocturnePlayer);
+                if (ability instanceof AmnesieAbility) {
+                    isAmnesic = true;
+                }
             }
         }
 
-        // Présentation du rôle au joueur
-        game().getMessageManager().sendRolePresentation(player, this);
+        // Présentation du rôle au joueur s'il n'est pas amnésique
+        if (!isAmnesic) game().getMessageManager().sendRolePresentation(player, this);
 
         // Délégation aux capacités
         dispatchToAbilities(ability -> ability.onAssigned(player, nocturnePlayer));

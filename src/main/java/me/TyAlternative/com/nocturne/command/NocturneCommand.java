@@ -34,7 +34,7 @@ public final class NocturneCommand implements CommandExecutor, TabCompleter {
     private static final List<String> SUBCOMMANDS =
             Arrays.asList("start","stop","skip","role","debug","reload","player");
     private static final List<String> PLAYERS_SUBCOMMAND =
-            Arrays.asList("weight","canVote","canBeVote","isHidden","hideVoteImmunity");
+            Arrays.asList("weight","canVote","canBeVote","isHidden","hideVoteImmunity","debug");
 
     private final NocturneGame game;
     private final ConfigManager configManager;
@@ -74,7 +74,7 @@ public final class NocturneCommand implements CommandExecutor, TabCompleter {
             case "skip"   -> handleSkip(player);
             case "role"   -> handleRole(player, args);
             case "debug"  -> handleDebug(player);
-//            case "player" -> handlePlayer(player, args);
+            case "player" -> handlePlayer(player, args);
             case "reload" -> handleReload(player);
             default       -> sendHelp(player);
         }
@@ -130,13 +130,13 @@ public final class NocturneCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleDebug(@NotNull Player player) {
-        player.sendMessage("§8══════ §eNocturne Debug §8══════");
+        player.sendMessage("§8====== §eNocturne Debug §8======");
         player.sendMessage("§7Partie : " + (game.isGameRunning() ? "§aEn cours" : "§cArrêtée"));
         player.sendMessage("§7Phase : §e" + game.getCurrentPhase().getDisplayName());
         player.sendMessage("§7Manche : §e" + game.getRoundNumber());
         player.sendMessage("§7Vivants : §e" + game.getPlayerManager().getAliveCount());
         player.sendMessage("§7Timer restant : §e" + game.getPhaseManager().getRemainingSeconds() + "s");
-        player.sendMessage("§8══════════════════════════");
+        player.sendMessage("§8==========================");
     }
 
     private void handlePlayer(@NotNull Player player, @NotNull String @NotNull[] args) {
@@ -152,12 +152,12 @@ public final class NocturneCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        NocturnePlayer nocturneTarget = game.getPlayerManager().get(player);
+        NocturnePlayer nocturneTarget = game.getPlayerManager().get(target);
         if (nocturneTarget == null && !nocturneTarget.isAlive()) {
             player.sendMessage("§7" + target.getName() + " §cn'est pas en vie.");
         }
         boolean isSetter = args.length >= 4 && args[3].equalsIgnoreCase("set");
-        if (isSetter && (args.length < 5 || !PLAYERS_SUBCOMMAND.contains(args[4]))) {
+        if (isSetter && (args.length < 5 || !PLAYERS_SUBCOMMAND.contains(args[2]))) {
             player.sendMessage("§cVous devez rentrer une propriété que vous voulez modifier.");
         }
 
@@ -207,6 +207,16 @@ public final class NocturneCommand implements CommandExecutor, TabCompleter {
                     player.sendMessage("§eL'immunité du joueur §6" + target.getName() + "§e " + (nocturneTarget.isVoteImmunityHidden() ? "est" : "n'est pas") + " cachée.");
                 }
             }
+            case "debug" -> {
+
+                player.sendMessage("§8====== §e" + args[1] +" Debug §8======");
+                player.sendMessage("§7Can Vote :            " + (nocturneTarget.canVote()  ? "§aTrue" : "§cFalse"));
+                player.sendMessage("§7Can Be Vote :         " + (nocturneTarget.canBeVoted() ? "§aTrue" : "§cFalse"));
+                player.sendMessage("§7Is Hidden :           " + (nocturneTarget.isHiddenInVote() ? "§aTrue" : "§cFalse"));
+                player.sendMessage("§7Is Vote Imm Hidden :  " + (nocturneTarget.isVoteImmunityHidden() ? "§aTrue" : "§cFalse"));
+                player.sendMessage("§7Can Vote :            §e" +  nocturneTarget.getVoteWeight());
+                player.sendMessage("§8======="+"§8=".repeat(args[1].length())+"§8=============");
+            }
         }
     }
 
@@ -217,7 +227,7 @@ public final class NocturneCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendHelp(@NotNull Player player) {
-        player.sendMessage("§8══════ §eNocturne §8══════");
+        player.sendMessage("§8====== §eNocturne §8======");
         player.sendMessage("§e/noc start §7— Démarrer la partie");
         player.sendMessage("§e/noc stop §7— Arrêter la partie");
         player.sendMessage("§e/noc skip §7— Passer la phase");
@@ -225,7 +235,7 @@ public final class NocturneCommand implements CommandExecutor, TabCompleter {
         player.sendMessage("§e/noc debug §7— État interne");
         player.sendMessage("§e/noc player §7— Modification des données internes");
         player.sendMessage("§e/noc reload §7— Recharger la config");
-        player.sendMessage("§8══════════════════════");
+        player.sendMessage("§8======================");
     }
 
     // -------------------------------------------------------------------------
@@ -245,26 +255,26 @@ public final class NocturneCommand implements CommandExecutor, TabCompleter {
         if (args.length == 2 && args[0].equalsIgnoreCase("role")){
             return  filterPlayerName(args[1], sender);
         }
-//        if (args.length >= 2 && args[0].equalsIgnoreCase("player")) {
-//            if (args.length == 2) {
-//                return  filterPlayerName(args[1], sender);
-//            }
-//            if (args.length == 3){
-//                return filterStart(args[2], PLAYERS_SUBCOMMAND);
-//            }
-//            if (args.length == 4) {
-//                return filterStart(args[3], List.of("get","set"));
-//            }
-//            if (args.length == 5 && args[3].equalsIgnoreCase("set")) {
-//                String property = args[2];
-//                return switch (property) {
-//                    case "weight" -> List.of("...","-5","-4","-3","-2","-1","0","1","2","3","4","5","...");
-//
-//                    case "canVote", "canBeVote", "isHidden", "hideVoteImmunity" -> filterStart(args[2],List.of("true", "false"));
-//                    default -> List.of();
-//                };
-//            }
-//        }
+        if (args.length >= 2 && args[0].equalsIgnoreCase("player")) {
+            if (args.length == 2) {
+                return  filterPlayerName(args[1], sender);
+            }
+            if (args.length == 3){
+                return filterStart(args[2], PLAYERS_SUBCOMMAND);
+            }
+            if (args.length == 4) {
+                return filterStart(args[3], List.of("get","set"));
+            }
+            if (args.length == 5 && args[3].equalsIgnoreCase("set")) {
+                String property = args[2];
+                return switch (property.toLowerCase()) {
+                    case "weight" -> List.of("-5","-4","-3","-2","-1","0","1","2","3","4","5","...");
+
+                    case "canvote", "canbevote", "ishidden", "hidevoteimmunity" -> filterStart(args[4],List.of("true", "false"));
+                    default -> List.of();
+                };
+            }
+        }
         return List.of();
     }
 

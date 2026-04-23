@@ -1,8 +1,10 @@
 package me.TyAlternative.com.nocturne.role.impl.baton;
 
+import me.TyAlternative.com.nocturne.ability.impl.protection.AlizeAbility;
 import me.TyAlternative.com.nocturne.api.role.RoleTeam;
 import me.TyAlternative.com.nocturne.api.role.RoleType;
 import me.TyAlternative.com.nocturne.role.AbstractRole;
+import me.TyAlternative.com.nocturne.role.RoleIds;
 import org.bukkit.Material;
 /**
  * Le Frémissement — Bâton protecteur de proximité.
@@ -16,7 +18,7 @@ import org.bukkit.Material;
  */
 public final class Fremissement extends AbstractRole {
 
-    public static final String ID = "FREMISSEMENT";
+    public static final String ID = RoleIds.FREMISSEMENT;
 
     public Fremissement() {
         super(
@@ -27,6 +29,6 @@ public final class Fremissement extends AbstractRole {
                 RoleTeam.BATONS,
                 Material.SNOWBALL
         );
-        // TODO : registerAbility(new AlizeAbility());
+        registerAbility(new AlizeAbility());
     }
 }

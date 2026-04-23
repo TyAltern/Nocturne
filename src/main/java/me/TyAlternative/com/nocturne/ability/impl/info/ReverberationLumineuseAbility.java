@@ -4,6 +4,7 @@ import me.TyAlternative.com.nocturne.Nocturne;
 import me.TyAlternative.com.nocturne.ability.AbilityIds;
 import me.TyAlternative.com.nocturne.ability.AbstractAbility;
 
+import me.TyAlternative.com.nocturne.ability.DrunkSupport;
 import me.TyAlternative.com.nocturne.api.ability.*;
 
 import me.TyAlternative.com.nocturne.api.phase.PhaseType;
@@ -12,6 +13,7 @@ import me.TyAlternative.com.nocturne.mechanics.particle.DelayedParticleScheduler
 import me.TyAlternative.com.nocturne.player.NocturnePlayer;
 
 import net.kyori.adventure.text.Component;
+import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -61,6 +63,7 @@ public final class ReverberationLumineuseAbility extends AbstractAbility {
                 "Réverbération Lumineuse",
                 "Vous percevez des particules dorées autour des joueurs ayant été ciblés "
                         + "par une capacité active (délai 2–3s). Un leurre est toujours inclus.",
+                Material.AIR,
                 AbilityCategory.CAPACITY,
                 AbilityUseType.PASSIVE,
                 AbilityTrigger.AUTOMATIC
@@ -82,8 +85,8 @@ public final class ReverberationLumineuseAbility extends AbstractAbility {
     }
 
     @Override
-    public boolean supportsDrunk() {
-        return true;
+    public DrunkSupport supportsDrunk() {
+        return DrunkSupport.DEFAULT_LOGIC;
     }
 
     // -------------------------------------------------------------------------
@@ -114,7 +117,7 @@ public final class ReverberationLumineuseAbility extends AbstractAbility {
         int minPhaseDuration = phaseDuration / 6;
         int maxPhaseDuration = phaseDuration / 2;
 
-        scheduleDecoy(nocturnePlayer, minPhaseDuration, maxPhaseDuration);
+//        scheduleDecoy(nocturnePlayer, minPhaseDuration, maxPhaseDuration);
 
     }
 

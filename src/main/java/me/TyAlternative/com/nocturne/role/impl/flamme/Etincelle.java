@@ -1,8 +1,11 @@
 package me.TyAlternative.com.nocturne.role.impl.flamme;
 
+import me.TyAlternative.com.nocturne.ability.impl.flamme.EmbrasementAbility;
+import me.TyAlternative.com.nocturne.ability.impl.flamme.SelfEmbrasementAbility;
 import me.TyAlternative.com.nocturne.api.role.RoleTeam;
 import me.TyAlternative.com.nocturne.api.role.RoleType;
 import me.TyAlternative.com.nocturne.role.AbstractRole;
+import me.TyAlternative.com.nocturne.role.RoleIds;
 import org.bukkit.Material;
 
 /**
@@ -18,7 +21,7 @@ import org.bukkit.Material;
  */
 public final class Etincelle extends AbstractRole {
 
-    public static final String ID = "ETINCELLE";
+    public static final String ID = RoleIds.ETINCELLE;
 
     public Etincelle() {
         super(
@@ -30,7 +33,8 @@ public final class Etincelle extends AbstractRole {
                 Material.BLAZE_POWDER
         );
 
-        // TODO : registerAbility(new EmbrasementAbility());
+        registerAbility(new EmbrasementAbility());
+        registerAbility(new SelfEmbrasementAbility()); // TODO: A SUPPRIMER S'IL TE PLAIT NE FAIT PAS L'ERREUR DE LE LAISSER!!!!!!!!!!!!!!!
         // TODO : registerAbility(new PoudreChemineeAbility());
     }
 }

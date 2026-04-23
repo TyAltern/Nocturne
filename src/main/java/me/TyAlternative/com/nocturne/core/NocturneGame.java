@@ -22,6 +22,7 @@ import me.TyAlternative.com.nocturne.player.PlayerManager;
 import me.TyAlternative.com.nocturne.player.PlayerState;
 import me.TyAlternative.com.nocturne.role.RoleDistributor;
 import me.TyAlternative.com.nocturne.role.RoleRegistry;
+import me.TyAlternative.com.nocturne.ui.ActionBarManager;
 import me.TyAlternative.com.nocturne.ui.BossBarManager;
 import me.TyAlternative.com.nocturne.ui.MessageManager;
 import me.TyAlternative.com.nocturne.ui.SoundManager;
@@ -90,6 +91,7 @@ public final class NocturneGame {
     private final PhaseManager       phaseManager;
     private final MessageManager     messageManager;
     private final BossBarManager     bossBarManager;
+    private final ActionBarManager   actionBarManager;
     private final SoundManager       soundManager;
     private final GlowingManager     glowingManager;
     private final GameSettings       settings;
@@ -153,10 +155,13 @@ public final class NocturneGame {
 
         // Managers UI
         this.bossBarManager      = new BossBarManager(this);
+        this.actionBarManager    = new ActionBarManager(this);
         this.soundManager        = new SoundManager(this, logger);
 
         // PhaseManager avec callback de transition
         this.phaseManager        = new PhaseManager(this::handlePhaseTransition, logger);
+
+        actionBarManager.start();
     }
 
     // -------------------------------------------------------------------------
@@ -203,7 +208,7 @@ public final class NocturneGame {
             np.setState(PlayerState.PLAYING);
             np.setSpectralArrowsRemaining(settings.getDefaultSpectralArrows());
         }
-        anonymityManager.hideAllNametagsEnd();
+        anonymityManager.hideAllNametagsEnd(players);
 
         // Distribuer les rôles
         roleDistributor.distribute(players, compositionManager);
@@ -358,7 +363,7 @@ public final class NocturneGame {
             }
             anonymityManager.cleanupPlayer(np);
         }
-        anonymityManager.showAllNametagsEnd();
+//        anonymityManager.showAllNametagsEnd(playerManager.getAllPlayers());
 
         playerManager.clearAll();
         currentRound = null;
@@ -408,6 +413,7 @@ public final class NocturneGame {
     public @NotNull PhaseManager       getPhaseManager()        { return phaseManager; }
     public @NotNull MessageManager     getMessageManager()      { return messageManager; }
     public @NotNull BossBarManager     getBossBarManager()      { return bossBarManager; }
+    public @NotNull ActionBarManager   getActionBarManager()    { return actionBarManager; }
     public @NotNull SoundManager       getSoundManager()        { return soundManager; }
     public @NotNull GlowingManager     getGlowingManager()      { return glowingManager; }
     public @NotNull RoleDistributor    getRoleDistributor()     { return roleDistributor; }

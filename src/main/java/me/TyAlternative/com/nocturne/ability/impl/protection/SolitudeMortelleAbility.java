@@ -2,6 +2,7 @@ package me.TyAlternative.com.nocturne.ability.impl.protection;
 
 import me.TyAlternative.com.nocturne.ability.AbilityIds;
 import me.TyAlternative.com.nocturne.ability.AbstractAbility;
+import me.TyAlternative.com.nocturne.ability.DrunkSupport;
 import me.TyAlternative.com.nocturne.api.ability.*;
 import me.TyAlternative.com.nocturne.api.phase.PhaseType;
 import me.TyAlternative.com.nocturne.core.phase.PhaseContext;
@@ -9,6 +10,7 @@ import me.TyAlternative.com.nocturne.mechanics.protection.ProtectionManager;
 import me.TyAlternative.com.nocturne.mechanics.protection.ProtectionType;
 import me.TyAlternative.com.nocturne.player.NocturnePlayer;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -25,6 +27,7 @@ public final class SolitudeMortelleAbility extends AbstractAbility {
                 AbilityIds.SOLITUDE_MORTELLE,
                 "Solitude Mortelle",
                 "Vous êtes protégé par défaut contre tous types §cd'Embrasement§r, cependant, si vous vous retrouvez seul à la fin d'un round (personne à moins de 10.0 blocs) vous perdez cette résistance.",
+                Material.AIR,
                 AbilityCategory.CAPACITY,
                 AbilityUseType.PASSIVE,
                 AbilityTrigger.AUTOMATIC
@@ -43,8 +46,8 @@ public final class SolitudeMortelleAbility extends AbstractAbility {
     }
 
     @Override
-    public boolean supportsDrunk() {
-        return true;
+    public DrunkSupport supportsDrunk() {
+        return DrunkSupport.DEFAULT_LOGIC;
     }
 
     // -------------------------------------------------------------------------

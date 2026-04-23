@@ -64,6 +64,7 @@ public final class VotePhase implements GamePhase {
                     nocturnePlayer.getRole().onVotePhaseStart(player, nocturnePlayer, context),
                     player.getName(), "onVotePhaseStart"
             );
+            game.getActionBarManager().updatePlayerActionBar(player, nocturnePlayer, getType());
         }
 
         // Démarrer le ticker des particules TICKS

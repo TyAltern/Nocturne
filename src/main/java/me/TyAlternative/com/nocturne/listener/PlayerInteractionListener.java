@@ -130,6 +130,7 @@ public final class PlayerInteractionListener implements Listener {
 
         if (isDouble) {
             dispatchAbilityTrigger(player, nocturnePlayer, null, AbilityTrigger.DOUBLE_SWAP_HAND, emptyHand);
+            player.sendMessage("§e[Boite d'Allumettes] §bDouble Swap");
         } else {
             // Simple swap : exécuter après le délai de détection
             long delayTicks = Math.max(1L, (game.getSettings().getDoubleSwapMaxDelayMs() / 50L) + 1L);
@@ -138,7 +139,7 @@ public final class PlayerInteractionListener implements Listener {
             Nocturne.getInstance().getServer().getScheduler().runTaskLater(
                     Nocturne.getInstance(),
                     () -> {
-                        if (! doubleSwapDetector.hasPendingSwap(playerId)) return;
+                        if (!doubleSwapDetector.hasPendingSwap(playerId)) return;
                         // Re-résoudre le joueur (il peut s'être déconnecté)
                         Player playerLater = Nocturne.getInstance().getServer().getPlayer(playerId);
                         if (playerLater == null) return;
@@ -147,6 +148,7 @@ public final class PlayerInteractionListener implements Listener {
                         // Lire emptyHand au moment de l'exécution, pas de la capture
                         boolean emptyHandLater = playerLater.getInventory().getItemInMainHand().isEmpty();
                         dispatchAbilityTrigger(playerLater, npLater, null, AbilityTrigger.SWAP_HAND, emptyHandLater);
+                        player.sendMessage("§e[Boite d'Allumettes] §bSimple Swap");
                     },
                     delayTicks
             );
@@ -229,6 +231,7 @@ public final class PlayerInteractionListener implements Listener {
 
             // Notifier tous les joueurs vivants si la capacité a réussi
             if (result.isSuccess()) {
+                game.getActionBarManager().updatePlayerActionBar(caster, np, phase);
                 for (NocturnePlayer nocturneOther : game.getPlayerManager().getAlive()) {
                     if (!nocturneOther.hasRole()) continue;
                     Player otherPlayer = nocturneOther.getPlayer();

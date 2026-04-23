@@ -5,7 +5,6 @@ import me.TyAlternative.com.nocturne.ability.AbstractAbility;
 import me.TyAlternative.com.nocturne.ability.DrunkSupport;
 import me.TyAlternative.com.nocturne.ability.UsageLimit;
 import me.TyAlternative.com.nocturne.api.ability.*;
-import me.TyAlternative.com.nocturne.core.phase.PhaseContext;
 import me.TyAlternative.com.nocturne.mechanics.embrasement.EmbrasementCause;
 import me.TyAlternative.com.nocturne.player.NocturnePlayer;
 import net.kyori.adventure.text.Component;
@@ -22,57 +21,48 @@ import org.jetbrains.annotations.Nullable;
  * Utilisable une seule fois par manche.
  */
 @SuppressWarnings("DataFlowIssue")
-public final class EmbrasementAbility extends AbstractAbility {
+public final class SelfEmbrasementAbility extends AbstractAbility {
 
-    public EmbrasementAbility() {
+    public SelfEmbrasementAbility() {
         super(
-                AbilityIds.EMBRASEMENT,
+                AbilityIds.SELF_EMBRASEMENT,
                 "Embrasement",
                 "Une fois par phase de Gameplay, vous pouvez cibler un joueur. "
                         + "Ce dernier sera éliminé à la fin de la phase.",
                 Material.BLAZE_POWDER,
                 AbilityCategory.CAPACITY,
                 AbilityUseType.ACTIVE,
-                AbilityTrigger.RIGHT_CLICK_PLAYER
+                AbilityTrigger.DOUBLE_SWAP_HAND
         );
         setUsageLimit(UsageLimit.perRound(1));
     }
 
     @Override
     public boolean canExecute(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull AbilityContext context) {
-        if (!context.hasTarget() || !context.isEmptyHand()) return false;
-
-        NocturnePlayer nocturneTarget = game().getPlayerManager().get(context.getTarget());
-        return nocturneTarget != null && nocturneTarget.isAlive();
+        return true;
     }
 
     @Override
     protected @NotNull AbilityResult executeLogic(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull AbilityContext context) {
-        Player target = context.getTarget();
-        if (target == null ) return AbilityResult.silentFailure();
+
 
         game().getCurrentRound().getEmbrasementManager()
-                .embrase(target.getUniqueId(), EmbrasementCause.ETINCELLE);
+                .embrase(player.getUniqueId(), EmbrasementCause.ETINCELLE);
 
 
-        return AbilityResult.success(Component.text("§cVous avez embrasé un joueur."));
+        return AbilityResult.success(Component.text("§cVous vous êtes embrasé (pour le debug hein)."));
 
     }
 
     @Override
     protected @NotNull AbilityResult executeDrunkLogic(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull AbilityContext context) {
 
-        return AbilityResult.success(Component.text("§cVous avez embrasé un joueur."));
+        return AbilityResult.success(Component.text("§cVous vous êtes embrasé (pour le debug hein (sinon peut être arrêter de boire...)). "));
     }
 
     @Override
     public DrunkSupport supportsDrunk() {
         return DrunkSupport.CUSTOM_LOGIC;
-    }
-
-    @Override
-    public void onGameplayPhaseStart(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull PhaseContext phaseContext) {
-        game().getAbilityManager().setCooldown(nocturnePlayer.getPlayerId(), getId(), game().getSettings().getEmbrasementStartingCooldown());
     }
 
     @Override

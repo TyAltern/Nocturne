@@ -68,17 +68,18 @@ public final class VoteManager {
 
 
 //        Non votable invisible
-        if (!nocturneVoter.canBeVoted() && nocturneVoted.isHiddenInVote()) {
+        if (!nocturneVoted.canBeVoted() && nocturneVoted.isHiddenInVote()) {
+            return;
         }
 //        Non votable visible mais notifier
-        else if (!nocturneVoter.canBeVoted() && !nocturneVoted.isVoteImmunityHidden()) {
+        else if (!nocturneVoted.canBeVoted() && !nocturneVoted.isVoteImmunityHidden()) {
             nocturneVoter.getPlayer().sendMessage(messageManager.buildBroadcast("§7Vous ne pouvez pas voter contre §e" + votedPlayer.getName() + " §7!"));
         }
-//        Non votable visible mais non notifier +
+//        Non votable visible, mais non notifier +
 //        Votable et visible
         else {
             nocturneVoter.getPlayer().sendMessage(messageManager.buildBroadcast("§7Vous avez §dvoté §7contre §e" + votedPlayer.getName() + " §7!"));
-            Nocturne.getInstance().getGame().getAnonymityManager().setCustomNametagWithPrefix(nocturneVoter, nocturneVoted, "§6> ");
+            Nocturne.getInstance().getGame().getAnonymityManager().addCustomPrefixSuffixToNametag(nocturneVoter, nocturneVoted, "§6>> ", " <<");
             Nocturne.getInstance().getGame().getTickingParticleTimer().addTickingParticles(
                     nocturneVoter,
                     nocturneVoted,

@@ -64,7 +64,7 @@ public final class DoubleSwapDetector {
         lastSwapTime.put(playerId, now);
         pendingSwap.put(playerId, true);
 
-        long delayTicks = Math.max(1L, (maxDelay/50L) + 1L);
+        long delayTicks = Math.max(1L, (maxDelay/50L) + 2L);
         Bukkit.getScheduler().runTaskLater(
                 Nocturne.getInstance(),
                 () -> pendingSwap.remove(playerId),
@@ -79,6 +79,7 @@ public final class DoubleSwapDetector {
      * Utilisé par le listener pour savoir si l'exécution différée doit encore avoir lieu.
      */
     public boolean hasPendingSwap(@NotNull UUID playerId) {
+        Nocturne.getInstance().getLogger().info("Inside the vacuum: " + pendingSwap.get(playerId) + " -> "+ Boolean.TRUE.equals(pendingSwap.get(playerId)));
         return Boolean.TRUE.equals(pendingSwap.get(playerId));
     }
 

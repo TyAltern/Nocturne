@@ -1,8 +1,10 @@
 package me.TyAlternative.com.nocturne.role.impl.baton;
 
+import me.TyAlternative.com.nocturne.ability.impl.protection.BriseAbility;
 import me.TyAlternative.com.nocturne.api.role.RoleTeam;
 import me.TyAlternative.com.nocturne.api.role.RoleType;
 import me.TyAlternative.com.nocturne.role.AbstractRole;
+import me.TyAlternative.com.nocturne.role.RoleIds;
 import org.bukkit.Material;
 
 /**
@@ -16,7 +18,7 @@ import org.bukkit.Material;
  */
 public final class Souffle extends AbstractRole {
 
-    public static final String ID = "SOUFFLE";
+    public static final String ID = RoleIds.SOUFFLE;
 
     public Souffle() {
         super(
@@ -27,6 +29,6 @@ public final class Souffle extends AbstractRole {
                 RoleTeam.BATONS,
                 Material.FEATHER
         );
-        // TODO : registerAbility(new BriseAbility());
+        registerAbility(new BriseAbility());
     }
 }
