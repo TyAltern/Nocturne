@@ -1,5 +1,6 @@
 package me.TyAlternative.com.nocturne.ability.impl.misc;
 
+import me.TyAlternative.com.nocturne.Nocturne;
 import me.TyAlternative.com.nocturne.ability.AbilityIds;
 import me.TyAlternative.com.nocturne.ability.AbstractAbility;
 import me.TyAlternative.com.nocturne.api.ability.*;
@@ -70,8 +71,12 @@ public final class IncandescenceAbility extends AbstractAbility {
     @Override
     public void onGameplayPhaseStart(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull PhaseContext phaseContext) {
         drawNewAbility(player, nocturnePlayer);
-//        if (currentAbility == null) return;
-//        dispatchSafely(() -> currentAbility.onGameplayPhaseStart(player, nocturnePlayer, phaseContext));
+        if (currentAbility == null) return;
+
+        Nocturne.getInstance().getServer().getScheduler().runTask(
+                Nocturne.getInstance(),
+                () -> dispatchSafely(() -> currentAbility.onGameplayPhaseStart(player, nocturnePlayer, phaseContext))
+        );
     }
 
 
@@ -81,8 +86,14 @@ public final class IncandescenceAbility extends AbstractAbility {
     private void drawNewAbility(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer) {
         Role role = nocturnePlayer.getRole();
         if (role == null) return;
+
+        // Retirer l'ancienne ability APRÈS le dispatch courant via le scheduler
         if (lastAbilityId != null) {
-            role.removeAbility(lastAbilityId);
+            String idToRemove = lastAbilityId;
+            Nocturne.getInstance().getServer().getScheduler().runTask(
+                    Nocturne.getInstance(),
+                    () -> role.removeAbility(idToRemove)
+            );
         }
 
         currentAbility = POOL.draw(lastAbilityId);
@@ -105,12 +116,10 @@ public final class IncandescenceAbility extends AbstractAbility {
         player.sendMessage(Component.text(
                 "§7[Incandescence] §fCette manche : §e" + currentAbility.getDisplayName()
         ));
-        player.sendMessage(Component.text(
-                "§8  " + currentAbility.getDescription()
-        ));
+        player.sendMessage(game().getMessageManager().buildAbilityLine(currentAbility));
 
-        // Propager onAssigned à la sous-capacité (initialisation du scheduler, etc.)
         dispatchSafely(() -> currentAbility.onAssigned(player, nocturnePlayer));
+        // Propager onAssigned à la sous-capacité (initialisation du scheduler, etc.)
     }
 
     // -------------------------------------------------------------------------

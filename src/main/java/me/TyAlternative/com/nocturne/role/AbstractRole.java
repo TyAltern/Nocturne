@@ -188,7 +188,9 @@ public abstract class AbstractRole implements Role {
 
     @Override
     public boolean removeAbility(@NotNull String abilityId) {
-        return abilities.remove(getAbility(abilityId));
+        Ability toRemove = getAbility(abilityId);
+        if (toRemove == null) return false;
+        return abilities.remove(toRemove);
     }
 
 
@@ -331,7 +333,10 @@ public abstract class AbstractRole implements Role {
      * @param action lambda à exécuter pour chaque capacité
      */
     private void dispatchToAbilities(@NotNull AbilityAction action) {
-        for (Ability ability : abilities) {
+        // Snapshot pour éviter le ConcurrentModificationException
+        // si une ability modifie la liste pendant l'itération
+        List<Ability> snapshot = new ArrayList<>(abilities);
+        for (Ability ability : snapshot) {
             try {
                 action.execute(ability);
             } catch (Exception e) {

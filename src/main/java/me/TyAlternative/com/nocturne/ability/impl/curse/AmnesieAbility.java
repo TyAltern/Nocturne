@@ -47,6 +47,7 @@ import java.util.List;
  * </ul>
  */
 
+@SuppressWarnings("DataFlowIssue")
 public final class AmnesieAbility extends AbstractAbility {
 
 
@@ -116,12 +117,19 @@ public final class AmnesieAbility extends AbstractAbility {
 //
         if (fakeRole == null || !(owner instanceof AbstractRole abstractRole)) return;
 //
-        for (Ability ability : fakeRole.getAbilities()) {
-            abstractRole.registerDrunkAbility(ability);
-//            ability.onAssigned(player, nocturnePlayer);
-        }
-//
-        game().getMessageManager().sendRolePresentation(player, fakeRole);
+        Nocturne.getInstance().getServer().getScheduler().runTask(
+                Nocturne.getInstance(),
+                () -> {
+                    for (Ability ability : fakeRole.getAbilities()) {
+                        abstractRole.registerDrunkAbility(ability);
+                        ability.onAssigned(player, nocturnePlayer);
+                        if (game().getPhaseManager().getCurrentContext() == null) continue;
+                        ability.onGameplayPhaseStart(player, nocturnePlayer, game().getPhaseManager().getCurrentContext());
+                        game().getActionBarManager().updatePlayerActionBar(player, nocturnePlayer,game().getCurrentPhase());
+                    }
+                    game().getMessageManager().sendRolePresentation(player, fakeRole);
+                }
+        );
     }
 
     // -------------------------------------------------------------------------

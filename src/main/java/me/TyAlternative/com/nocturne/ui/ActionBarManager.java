@@ -7,8 +7,6 @@ import me.TyAlternative.com.nocturne.api.ability.AbilityUseType;
 import me.TyAlternative.com.nocturne.api.phase.PhaseType;
 import me.TyAlternative.com.nocturne.core.NocturneGame;
 import me.TyAlternative.com.nocturne.player.NocturnePlayer;
-import me.TyAlternative.com.nocturne.util.TimeUtil;
-import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.ShadowColor;
@@ -19,10 +17,7 @@ import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public final class ActionBarManager {
     private final NocturneGame game;
@@ -85,6 +80,7 @@ public final class ActionBarManager {
         if (nocturnePlayer.getRole() == null) return;
         List<Ability> abilities = nocturnePlayer.getRole().getAbilities();
         int counter = 1;
+        List<String> abilityId = new ArrayList<>();
 
         Ability firstAbility = null;
 
@@ -95,12 +91,14 @@ public final class ActionBarManager {
         for (Ability ability : abilities) {
             if (ability == null) continue;
             if (ability.isHidden()) continue;
+            if (abilityId.contains(ability.getId())) continue;
             if (ability.getUseType() == AbilityUseType.ACTIVE) {
                 switch (counter) {
                     case 1 -> firstAbility = ability;
                     case 2 -> secondAbility = ability;
                     case 3 -> thirdAbility = ability;
                 }
+                abilityId.add(ability.getId());
                 counter++;
             }
         }

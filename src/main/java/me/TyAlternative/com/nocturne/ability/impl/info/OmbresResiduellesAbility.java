@@ -78,21 +78,18 @@ public final class OmbresResiduellesAbility extends AbstractAbility {
             @Nullable UUID votedPlayerId,
             @NotNull List<VoteEntry> allVotes
     ) {
-        // TODO : FIX DEBUG MODIFICATION
-//        if (votedPlayerId == null) {
-//            player.sendMessage(Component.text(
-//                    "§7[Ombres Résiduelles] §8Aucun joueur éliminé — aucune information."
-//            ));
-//            return;
-//        }
+        if (votedPlayerId == null) {
+            player.sendMessage(Component.text(
+                    "§7[Ombres Résiduelles] §8Aucun joueur éliminé — aucune information."
+            ));
+            return;
+        }
 
         // Construire la liste des UUID ayant voté CONTRE l'éliminé
         Set<UUID> votedAgainst = new HashSet<>();
-        if (votedPlayerId != null)  {
-            for (VoteEntry vote : allVotes) {
-                if (vote.hasTarget() && votedPlayerId.equals(vote.getTargetId())) {
-                    votedAgainst.add(vote.getVoterId());
-                }
+        for (VoteEntry vote : allVotes) {
+            if (vote.hasTarget() && votedPlayerId.equals(vote.getTargetId())) {
+                votedAgainst.add(vote.getVoterId());
             }
         }
 
@@ -100,7 +97,7 @@ public final class OmbresResiduellesAbility extends AbstractAbility {
         List<String> nonVoters = new ArrayList<>();
         for (VoteEntry vote : allVotes) {
             UUID voterId = vote.getVoterId();
-//            if (voterId.equals(nocturnePlayer.getPlayerId()))  continue; // s'exclure soi-même
+            if (voterId.equals(nocturnePlayer.getPlayerId()))  continue; // s'exclure soi-même
             if (voterId.equals(votedPlayerId))                 continue; // exclure l'éliminé
             if (!votedAgainst.contains(voterId)) {
                 String name = resolvePlayerName(voterId);
@@ -123,9 +120,9 @@ public final class OmbresResiduellesAbility extends AbstractAbility {
         List<String> revealed = nonVoters.subList(0, revealCount);
 
         player.sendMessage(Component.text(
-                "§7[Ombres Résiduelles] §7Ces joueurs n'ont §eNOT§7 voté contre §e"
+                "§7[Ombres Résiduelles] §7Ces joueurs n'ont§e PAS§7 voté contre §e"
 //                        + resolvePlayerName(votedPlayerId) + "§7 : §f"
-                        + "le voté" + "§7 : §f"
+                        + "le joueur éliminé" + "§7 : §f"
                         + String.join("§7, §f", revealed)
         ));
 

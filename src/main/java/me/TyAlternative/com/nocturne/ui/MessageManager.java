@@ -98,7 +98,7 @@ public final class MessageManager {
                     .append(Component.text("§r§7 :")
             ));
             for (Ability ability : capacities) {
-                player.sendMessage(buildAbilityLine(ability, AbilityCategory.CAPACITY));
+                player.sendMessage(buildAbilityLine(ability));
             }
         }
 
@@ -110,7 +110,7 @@ public final class MessageManager {
                     .append(Component.text("§r§7 :")
                     ));
             for (Ability ability : effects) {
-                player.sendMessage(buildAbilityLine(ability, AbilityCategory.EFFECT));
+                player.sendMessage(buildAbilityLine(ability));
             }
         }
 
@@ -122,7 +122,7 @@ public final class MessageManager {
                     .append(Component.text("§r§7 :")
                     ));
             for (Ability ability : curses) {
-                player.sendMessage(buildAbilityLine(ability, AbilityCategory.CURSE));
+                player.sendMessage(buildAbilityLine(ability));
             }
         }
 
@@ -166,7 +166,8 @@ public final class MessageManager {
     // Construction des lignes de capacité
     // -------------------------------------------------------------------------
 
-    private @NotNull Component buildAbilityLine(@NotNull Ability ability, @NotNull AbilityCategory category) {
+    public @NotNull Component buildAbilityLine(@NotNull Ability ability) {
+        AbilityCategory category = ability.getCategory();
         Component line = Component.text("  §n" + ability.getDisplayName()).color(category.getColor())
                 .append(Component.text(
                         "§r§f : " + ability.getDescription()
@@ -176,10 +177,10 @@ public final class MessageManager {
         // Ajouter le bouton de touche pour les capacités actives à swap
         if (ability.getTrigger() == AbilityTrigger.SWAP_HAND) {
             line = line.append(Component.text(" "))
-                       .append(buildKeyButton("key.swapOffHand", false));
+                       .append(buildKeyButton("key.swapOffhand", false));
         } else if (ability.getTrigger() == AbilityTrigger.DOUBLE_SWAP_HAND) {
             line = line.append(Component.text(" "))
-                    .append(buildKeyButton("key.swapOffHand", true));
+                    .append(buildKeyButton("key.swapOffhand", true));
         }
 
         return line;
@@ -193,9 +194,7 @@ public final class MessageManager {
      */
     @SuppressWarnings("SameParameterValue")
     private @NotNull Component buildKeyButton(@NotNull String keybind, boolean doublePress) {
-        Component key = Component.keybind(keybind)
-                .style(Style.style(TextColor.color(255, 85, 255)));
-
+        Component key = Component.keybind(keybind, Style.style(TextColor.color(255, 85, 255)));
         if (doublePress) {
             return Component.text("[2x ", Style.style(TextColor.color(255, 85, 255)))
                     .append(key)

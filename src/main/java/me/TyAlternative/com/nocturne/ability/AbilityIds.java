@@ -29,7 +29,7 @@ public final class AbilityIds {
     // -------------------------------------------------------------------------
 
     public static final String EMBRASEMENT            = "EMBRASEMENT";
-    public static final String SELF_EMBRASEMENT            = "SELF_EMBRASEMENT";
+    public static final String SELF_EMBRASEMENT       = "SELF_EMBRASEMENT";
     public static final String POUDRE_CHEMINEE        = "POUDRE_CHEMINEE";
     public static final String RAYONNEMENT            = "RAYONNEMENT";
     public static final String ETOUFFEMENT_FLAMME     = "ETOUFFEMENT_FLAMME";
