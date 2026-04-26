@@ -47,7 +47,7 @@ public final class SelfEmbrasementAbility extends AbstractAbility {
 
 
         game().getCurrentRound().getEmbrasementManager()
-                .embrase(player.getUniqueId(), EmbrasementCause.ETINCELLE);
+                .embrase(player.getUniqueId(), EmbrasementCause.ETINCELLE, nocturnePlayer.getPlayerId());
 
 
         return AbilityResult.success(Component.text("§cVous vous êtes embrasé (pour le debug hein)."));

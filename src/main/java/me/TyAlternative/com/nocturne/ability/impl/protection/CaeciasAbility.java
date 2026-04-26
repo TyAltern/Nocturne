@@ -1,5 +1,4 @@
 package me.TyAlternative.com.nocturne.ability.impl.protection;
-
 import me.TyAlternative.com.nocturne.ability.AbilityIds;
 import me.TyAlternative.com.nocturne.ability.AbstractAbility;
 import me.TyAlternative.com.nocturne.ability.DrunkSupport;
@@ -18,14 +17,14 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 @SuppressWarnings("DataFlowIssue")
-public final class SolitudeMortelleAbility extends AbstractAbility {
+public final class CaeciasAbility extends AbstractAbility {
 
-    private final double radius = 10.0;
+    private final double radius;
 
-    public SolitudeMortelleAbility() {
+    public CaeciasAbility() {
         super(
-                AbilityIds.SOLITUDE_MORTELLE,
-                "Solitude Mortelle",
+                AbilityIds.CAECIAS,
+                "Bénédiction de Caecias",
                 "Vous êtes protégé par défaut contre tous types §cd'Embrasement§r, cependant, si vous vous retrouvez seul à la fin d'un round (personne à moins de 10.0 blocs) vous perdez cette résistance.",
                 Material.AIR,
                 AbilityCategory.CAPACITY,
@@ -33,6 +32,7 @@ public final class SolitudeMortelleAbility extends AbstractAbility {
                 AbilityTrigger.AUTOMATIC
         );
         setAllowedPhases(PhaseType.GAMEPLAY);
+        radius = game().getSettings().getCaeciasRadiusProtection();
     }
 
     @Override
@@ -57,24 +57,24 @@ public final class SolitudeMortelleAbility extends AbstractAbility {
 
     @Override
     public void onGameplayPhaseStart(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull PhaseContext phaseContext) {
+        if (isDrunk()) return;
 
         if (game().getCurrentRound() == null) return;
         ProtectionManager protectionManager  = game().getCurrentRound().getProtectionManager();
 
-        if (isDrunk()) return;
-        protectionManager.protect(nocturnePlayer.getPlayerId(), ProtectionType.SOLITUDE_MORTELLE);
+        protectionManager.protect(nocturnePlayer.getPlayerId(), ProtectionType.CAECIAS);
     }
 
     @Override
     public void onGameplayPhaseEnd(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull PhaseContext phaseContext) {
+        if (isDrunk()) return;
 
         if (game().getCurrentRound() == null) return;
         ProtectionManager protectionManager  = game().getCurrentRound().getProtectionManager();
 
-        if (isDrunk()) return;
         List<NocturnePlayer> aroundPlayers = game().getPlayerManager().getAliveInRadius(nocturnePlayer, radius);
         if (aroundPlayers.isEmpty()) {
-            protectionManager.removeProtectionByType(nocturnePlayer.getPlayerId(), ProtectionType.SOLITUDE_MORTELLE);
+            protectionManager.removeProtectionByType(nocturnePlayer.getPlayerId(), ProtectionType.CAECIAS);
         }
 
     }

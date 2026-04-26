@@ -52,7 +52,7 @@ public final class EmbrasementAbility extends AbstractAbility {
         if (target == null ) return AbilityResult.silentFailure();
 
         game().getCurrentRound().getEmbrasementManager()
-                .embrase(target.getUniqueId(), EmbrasementCause.ETINCELLE);
+                .embrase(target.getUniqueId(), EmbrasementCause.ETINCELLE, nocturnePlayer.getPlayerId());
 
 
         return AbilityResult.success(Component.text("§cVous avez embrasé un joueur."));

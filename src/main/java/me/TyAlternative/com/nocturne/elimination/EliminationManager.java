@@ -2,6 +2,10 @@ package me.TyAlternative.com.nocturne.elimination;
 
 
 import me.TyAlternative.com.nocturne.Nocturne;
+import me.TyAlternative.com.nocturne.ability.AbilityIds;
+import me.TyAlternative.com.nocturne.ability.impl.misc.CicatricesAbility;
+import me.TyAlternative.com.nocturne.api.ability.Ability;
+import me.TyAlternative.com.nocturne.api.role.Role;
 import me.TyAlternative.com.nocturne.core.NocturneGame;
 import me.TyAlternative.com.nocturne.core.round.RoundContext;
 import me.TyAlternative.com.nocturne.mechanics.disparition.DisparitionCause;
@@ -14,10 +18,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Logger;
 
 /**
@@ -45,6 +46,8 @@ public final class EliminationManager {
     private final PlayerManager playerManager;
     private final Logger logger;
 
+    private final Map<UUID,EmbrasementCause> cicatricesId;
+
     /**
      * @param playerManager gestionnaire des joueurs
      * @param logger        logger du plugin pour les erreurs
@@ -54,6 +57,7 @@ public final class EliminationManager {
             @NotNull Logger logger) {
         this.playerManager = playerManager;
         this.logger = logger;
+        this.cicatricesId = new HashMap<>();
     }
 
     // -------------------------------------------------------------------------
@@ -72,12 +76,34 @@ public final class EliminationManager {
     public void processEmbrasements(@NotNull RoundContext roundContext) {
         Map<UUID, EmbrasementCause> embrased = roundContext.getEmbrasementManager().getAll();
 
+        List<Map.Entry<UUID, EmbrasementCause>> cicatricesSnapshot = new ArrayList<>(cicatricesId.entrySet());
+        for (Map.Entry<UUID, EmbrasementCause> entry : cicatricesSnapshot) {
+            UUID playerId = entry.getKey();
+            EliminationCause cause = toEliminationCause(entry.getValue());
+
+            eliminate(playerId, cause);
+            cicatricesId.remove(playerId);
+
+
+        }
+
         // Snapshot pout éviter les modifications concurrentes pendant l'itération
         List<Map.Entry<UUID, EmbrasementCause>> snapshot = new ArrayList<>(embrased.entrySet());
-
         for (Map.Entry<UUID, EmbrasementCause> entry : snapshot) {
             UUID playerId = entry.getKey();
             EliminationCause cause = toEliminationCause(entry.getValue());
+
+            NocturnePlayer nocturnePlayer = playerManager.get(playerId);
+            if (nocturnePlayer.getRole() == null) continue;
+            Role role = nocturnePlayer.getRole();
+            Ability ability = role.getAbility(AbilityIds.CICATRICES);
+            if (ability instanceof CicatricesAbility cicatrices && !ability.isDrunk()) {
+                if (!cicatricesId.containsKey(playerId)) {
+                    cicatricesId.put(playerId, entry.getValue());
+                    continue;
+                }
+            }
+
 
             if (roundContext.getProtectionManager().isProtected(playerId)) continue;
 
@@ -195,7 +221,7 @@ public final class EliminationManager {
         return switch (cause) {
             case ETINCELLE    -> EliminationCause.EMBRASEMENT_ETINCELLE;
             case TORCHE       -> EliminationCause.EMBRASEMENT_TORCHE;
-            case PRISE_DE_FEU -> EliminationCause.EMBRASEMENT_PRISE_DE_FEU;
+            case MURMURATION -> EliminationCause.EMBRASEMENT_MURMURATION;
             case OTHER        -> EliminationCause.EMBRASEMENT;
         };
     }

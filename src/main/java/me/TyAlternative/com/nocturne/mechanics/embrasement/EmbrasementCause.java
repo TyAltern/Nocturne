@@ -14,7 +14,7 @@ public enum EmbrasementCause {
 
     ETINCELLE("Étincelle"),
     TORCHE("Torche"),
-    PRISE_DE_FEU("Prise de Feu"),
+    MURMURATION("Murmuration"),
     OTHER("Autre");
 
     private final @NotNull String displayName;

@@ -1,5 +1,6 @@
 package me.TyAlternative.com.nocturne.config;
 
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -73,9 +74,11 @@ public final class GameSettings {
     private int eclaircissementStartingCooldown = 10;
     private int embrasementStartingCooldown = 10;
     private int etouffementStartingCooldown = 10;
-    private int briseStartingCooldown = 10;
-    private int aquilonStartingCooldown = 10;
-    private int austerStartingCooldown = 10;
+    private int apelioteStartingCooldown = 10;
+    private int boreeStartingCooldown = 10;
+    private int lipsStartingCooldown = 10;
+    private int notosStartingCooldown = 10;
+    private int scironStartingCooldown = 10;
 
 
 
@@ -84,14 +87,24 @@ public final class GameSettings {
 
     // PROTECTION
 
-        // ALIZE
-        private double alizeRadius = 45.0;
-        private boolean alizeProtectOnlyUnprotected = true;
+        // ZEPHYR
+        private double zephyrRadius = 45.0;
+        private boolean zephyrProtectOnlyUnprotected = true;
 
-        // AUSTER
-        private int austerCooldown = 0;
-        private boolean austerShowProtectedCount = false;
-        private boolean austerRemoveIfBefore = false;
+        // NOTOS
+        private int notosCooldown = 0;
+        private boolean notosShowProtectedCount = false;
+        private boolean notosRemoveIfBefore = false;
+
+        // EUROS
+        private boolean eurosSelfProtectionIfNotMarked = true;
+
+        // CAECIAS
+        private double caeciasRadiusProtection = 10.0;
+
+        // SCIRON
+        private int scironCooldown = 0;
+        private int scironMaxUse = -1;
 
 
     // FLAMMES
@@ -109,8 +122,16 @@ public final class GameSettings {
         // INCANDESCENCE
         private List<String> incandescenceAbilityCandidates = new ArrayList<>();
 
+        // CORROSION
+        private int corrosionNegativeWeight = -2;
+        private int corrosionPositiveWeight = 2;
+        private Color corrosionNegativeColor = Color.fromBGR(85, 255, 85);
+        private Color corrosionPositiveColor = Color.fromBGR(255, 85, 85);
+
 
     // CURSE
+    private double murmurationRadius = 10;
+
     private List<String> amnesiaRoleCandidates = new ArrayList<>();
 
     // -------------------------------------------------------------------------
@@ -163,17 +184,29 @@ public final class GameSettings {
     public int getEclaircissementStartingCooldown()                   { return eclaircissementStartingCooldown; }
     public int getEmbrasementStartingCooldown()                       { return embrasementStartingCooldown; }
     public int getEtouffementStartingCooldown()                       { return etouffementStartingCooldown; }
-    public int getBriseStartingCooldown()                             { return briseStartingCooldown; }
-    public int getAquilonStartingCooldown()                           { return aquilonStartingCooldown; }
-    public int getAusterStartingCooldown()                            { return austerStartingCooldown; }
+    public int getApelioteStartingCooldown()                          { return apelioteStartingCooldown; }
+    public int getBoreeStartingCooldown()                             { return boreeStartingCooldown; }
+    public int getLipsStartingCooldown()                              { return lipsStartingCooldown; }
+    public int getNotosStartingCooldown()                             { return notosStartingCooldown; }
+    public int getScironStartingCooldown()                            { return scironStartingCooldown; }
 // ABILITIES
-    public double getAlizeRadius()                                    { return alizeRadius; }
-    public boolean shouldAlizeProtectOnlyUnprotected()                { return alizeProtectOnlyUnprotected; }
-    public int getAusterCooldown()                                    { return austerCooldown; }
-    public boolean shouldAusterShowProtectedCount()                   { return austerShowProtectedCount; }
-    public boolean shouldAusterRemoveIfBefore()                       { return austerRemoveIfBefore; }
+    public double getZephyrRadius()                                   { return zephyrRadius; }
+    public boolean shouldZephyrProtectOnlyUnprotected()               { return zephyrProtectOnlyUnprotected; }
+    public int getNotosCooldown()                                     { return notosCooldown; }
+    public boolean shouldNotosShowProtectedCount()                    { return notosShowProtectedCount; }
+    public boolean shouldNotosRemoveIfBefore()                        { return notosRemoveIfBefore; }
+    public boolean shouldEurosSelfProtectionIfNotMarked()             { return eurosSelfProtectionIfNotMarked; }
+    public double getCaeciasRadiusProtection()                        { return caeciasRadiusProtection; }
+    public double getMurmurationRadius()                              { return murmurationRadius; }
+    public int getScironMaxUse()                                      { return scironMaxUse; }
+    public int getScironCooldown()                                    { return scironCooldown; }
 
     public @NotNull List<String> getIncandescenceAbilityCandidates()  { return incandescenceAbilityCandidates; }
+    public int getCorrosionNegativeWeight()                           { return corrosionNegativeWeight; }
+    public int getCorrosionPositiveWeight()                           { return corrosionPositiveWeight; }
+    public Color getCorrosionNegativeColor()                          { return corrosionNegativeColor; }
+    public Color getCorrosionPositiveColor()                          { return corrosionPositiveColor; }
+
     public int getPoudreChemineeCooldownSeconds()                     { return poudreChemineeCooldownSeconds; }
     public double getRayonnementRadius()                              { return rayonnementRadius; }
     public boolean shouldRayonnementShowValue()                       { return rayonnementShowValue; }
@@ -212,16 +245,27 @@ public final class GameSettings {
     void setEclaircissementStartingCooldown(int cooldown)             { this.eclaircissementStartingCooldown = cooldown; }
     void setEmbrasementStartingCooldown(int cooldown)                 { this.embrasementStartingCooldown = cooldown; }
     void setEtouffementStartingCooldown(int cooldown)                 { this.etouffementStartingCooldown = cooldown; }
-    void setBriseStartingCooldown(int cooldown)                       { this.briseStartingCooldown = cooldown; }
-    void setAquilonStartingCooldown(int cooldown)                     { this.aquilonStartingCooldown = cooldown; }
-    void setAusterStartingCooldown(int cooldown)                      { this.austerStartingCooldown = cooldown; }
+    void setApelioteStartingCooldown(int cooldown)                    { this.apelioteStartingCooldown = cooldown; }
+    void setBoreeStartingCooldown(int cooldown)                       { this.boreeStartingCooldown = cooldown; }
+    void setLipsStartingCooldown(int cooldown)                        { this.lipsStartingCooldown = cooldown; }
+    void setNotosStartingCooldown(int cooldown)                       { this.notosStartingCooldown = cooldown; }
+    void setScironStartingCooldown(int cooldown)                      { this.scironStartingCooldown = cooldown; }
 // ABILITIES
-    void setAlizeRadius(double radius)                                { this.alizeRadius = radius; }
-    void setAlizeProtectOnlyUnprotected(boolean protect)              { this.alizeProtectOnlyUnprotected = protect; }
-    void setAusterCooldown(int cooldown)                              { this.austerCooldown = cooldown; }
-    void setAusterShowProtectedCount(boolean show)                    { this.austerShowProtectedCount = show; }
-    void setAusterRemoveIfBefore(boolean remove)                      { this.austerRemoveIfBefore = remove; }
+    void setZephyrRadius(double radius)                               { this.zephyrRadius = radius; }
+    void setZephyrProtectOnlyUnprotected(boolean protect)             { this.zephyrProtectOnlyUnprotected = protect; }
+    void setNotosCooldown(int cooldown)                               { this.notosCooldown = cooldown; }
+    void setNotosShowProtectedCount(boolean show)                     { this.notosShowProtectedCount = show; }
+    void setNotosRemoveIfBefore(boolean remove)                       { this.notosRemoveIfBefore = remove; }
+    void setEurosSelfProtectionIfNotMarked(boolean protect)           { this.eurosSelfProtectionIfNotMarked = protect; }
+    void setCaeciasRadiusProtection(double radius)                    { this.caeciasRadiusProtection = radius; }
+    void setMurmurationRadius(double radius)                          { this.murmurationRadius = radius; }
+    void setScironMaxUse(int maxUse)                                  { this.scironMaxUse = maxUse; }
+    void setScironCooldown(int cooldown)                              { this.scironCooldown = cooldown; }
     void setIncandescenceAbilityCandidates(List<String> candidates)   { this.incandescenceAbilityCandidates = candidates; }
+    void setCorrosionNegativeWeight(int weight)                       { this.corrosionNegativeWeight = weight; }
+    void setCorrosionPositiveWeight(int weight)                       { this.corrosionPositiveWeight = weight; }
+    void setCorrosionNegativeColor(Color color)                       { this.corrosionNegativeColor = color; }
+    void setCorrosionPositiveColor(Color color)                       { this.corrosionPositiveColor = color; }
     void setRayonnementRadius(double radius)                          { this.rayonnementRadius = radius; }
     void setRayonnementMinExposureSeconds(int seconds)                { this.rayonnementMinExposureSeconds = seconds; }
     void setRayonnementShowValue(boolean showValue)                   { this.rayonnementShowValue = showValue; }

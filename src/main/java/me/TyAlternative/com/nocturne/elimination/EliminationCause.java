@@ -18,8 +18,8 @@ public enum EliminationCause {
     /** Éliminé par la capacité Rayonnement de la Torche. */
     EMBRASEMENT_TORCHE("Embrasement (Torche)", true, false, false),
 
-    /** Éliminé par la capacité Prise de Feu du Gaz. */
-    EMBRASEMENT_PRISE_DE_FEU("Embrasement (Prise de Feu)", true, false, false),
+    /** Éliminé par la capacité Murmuration du Frémissement. */
+    EMBRASEMENT_MURMURATION("Embrasement (Murmuration)", true, false, false),
 
     /** Éliminé par un Embrasement dont la source n'est pas précisée. */
     EMBRASEMENT("Embrasement", true, false, false),

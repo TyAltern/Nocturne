@@ -4,7 +4,7 @@ import me.TyAlternative.com.nocturne.Nocturne;
 import me.TyAlternative.com.nocturne.ability.AbstractAbility;
 import me.TyAlternative.com.nocturne.ability.impl.info.*;
 import me.TyAlternative.com.nocturne.ability.impl.flamme.*;
-//import me.TyAlternative.com.nocturne.ability.impl.misc.*;
+import me.TyAlternative.com.nocturne.ability.impl.misc.*;
 import me.TyAlternative.com.nocturne.ability.impl.protection.*;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,11 +38,11 @@ public final class RandomAbilityPool {
 
     /** Liste des fabriques de capacités disponibles. */
     private final List<Supplier<AbstractAbility>> suppliers;
-    private final List<String> possibleOptions;
+    private List<String> possibleOptions;
 
     public RandomAbilityPool() {
         suppliers = new ArrayList<>();
-        possibleOptions = Nocturne.getInstance().getGame().getSettings().getIncandescenceAbilityCandidates();
+        possibleOptions = new ArrayList<>();
         registerAll();
     }
 
@@ -57,6 +57,7 @@ public final class RandomAbilityPool {
      * @return nouvelle instance de capacité prête à l'emploi
      */
     public @Nullable AbstractAbility draw(@Nullable String excludedId) {
+        possibleOptions = Nocturne.getInstance().getGame().getSettings().getIncandescenceAbilityCandidates();
         List<AbstractAbility> possiblePick = new ArrayList<>();
         for (Supplier<AbstractAbility> supplier : suppliers) {
             if (!possibleOptions.contains(supplier.get().getId())) continue;
@@ -100,10 +101,14 @@ public final class RandomAbilityPool {
         suppliers.add(EclaircissementAbility::new);
 
         // Protection
-        suppliers.add(BriseAbility::new);
-        suppliers.add(AlizeAbility::new);
-        suppliers.add(AquilonAbility::new);
-        suppliers.add(AusterAbility::new);
+        suppliers.add(ApelioteAbility::new);
+        suppliers.add(CaeciasAbility::new);
+        suppliers.add(LipsAbility::new);
+        suppliers.add(ScironAbility::new);
+        suppliers.add(BoreeAbility::new);
+        suppliers.add(NotosAbility::new);
+        suppliers.add(EurosAbility::new);
+        suppliers.add(ZephyrAbility::new);
 
         // Info
         suppliers.add(DiscernementMatinalAbility::new);
@@ -112,9 +117,9 @@ public final class RandomAbilityPool {
         suppliers.add(ReverberationLumineuseAbility::new);
 
         // Misc
-//        suppliers.add(CicatricesAbility::new);
-//        suppliers.add(CorrosionAbility::new);
-//        suppliers.add(SolitudeMortelleAbility::new);
+        suppliers.add(CicatricesAbility::new);
+        suppliers.add(CorrosionAbility::new);
+        suppliers.add(CaeciasAbility::new);
     }
 
 }

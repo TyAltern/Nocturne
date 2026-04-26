@@ -7,7 +7,12 @@ import me.TyAlternative.com.nocturne.config.ConfigManager;
 import me.TyAlternative.com.nocturne.core.NocturneGame;
 import me.TyAlternative.com.nocturne.listener.*;
 import me.TyAlternative.com.nocturne.role.RoleRegistry;
-import me.TyAlternative.com.nocturne.role.impl.baton.*;
+import me.TyAlternative.com.nocturne.role.impl.baton.information.Aube;
+import me.TyAlternative.com.nocturne.role.impl.baton.information.Aurore;
+import me.TyAlternative.com.nocturne.role.impl.baton.information.Crepuscule;
+import me.TyAlternative.com.nocturne.role.impl.baton.information.Lueur;
+import me.TyAlternative.com.nocturne.role.impl.baton.misc.*;
+import me.TyAlternative.com.nocturne.role.impl.baton.protection.*;
 import me.TyAlternative.com.nocturne.role.impl.flamme.*;
 import me.TyAlternative.com.nocturne.role.impl.neutre.*;
 import org.bukkit.plugin.PluginManager;
@@ -111,10 +116,14 @@ public final class Nocturne extends JavaPlugin {
 
 
         // ── Bâtons — protection ──────────────────────────────────────────────
-        roleRegistry.register(Souffle.ID,      Souffle::new);
-        roleRegistry.register(Fremissement.ID, Fremissement::new);
-        roleRegistry.register(Bourrasque.ID,   Bourrasque::new);
-        roleRegistry.register(Rafale.ID,       Rafale::new);
+        roleRegistry.register(Autan.ID,        Autan::new);
+        roleRegistry.register(Bise.ID,         Bise::new);
+        roleRegistry.register(Galerne.ID,      Galerne::new);
+        roleRegistry.register(Eissaure.ID,     Eissaure::new);
+        roleRegistry.register(Foehn.ID,        Foehn::new);
+        roleRegistry.register(Mistral.ID,      Mistral::new);
+        roleRegistry.register(Sirocco.ID,      Sirocco::new);
+        roleRegistry.register(Lombarde.ID,     Lombarde::new);
 
 
         // ── Bâtons — divers ──────────────────────────────────────────────────
@@ -122,7 +131,6 @@ public final class Nocturne extends JavaPlugin {
         roleRegistry.register(Scorie.ID,       Scorie::new);
         roleRegistry.register(Calcine.ID,      Calcine::new);
         roleRegistry.register(Cendre.ID,       Cendre::new);
-        roleRegistry.register(Gaz.ID,          Gaz::new);
         roleRegistry.register(Braise.ID,       Braise::new);
         roleRegistry.register(Fumee.ID,        Fumee::new);
         roleRegistry.register(Tison.ID,        Tison::new);

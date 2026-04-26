@@ -6,34 +6,24 @@ import me.TyAlternative.com.nocturne.ability.DrunkSupport;
 import me.TyAlternative.com.nocturne.ability.UsageLimit;
 import me.TyAlternative.com.nocturne.api.ability.*;
 import me.TyAlternative.com.nocturne.core.phase.PhaseContext;
-import me.TyAlternative.com.nocturne.mechanics.protection.ProtectionType;
 import me.TyAlternative.com.nocturne.player.NocturnePlayer;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * Brise — capacité active du Souffle.
- *
- * <p>Clic droit à main vide sur un joueur vivant : ce joueur est protégé contre
- * l'Embrasement des Flammes pour la phase de Gameplay en cours.
- * Utilisable une seule fois par manche.
- *
- * <p>En mode drunk : affiche le message, mais n'applique aucune protection réelle.
- */
-public final class BriseAbility extends AbstractAbility {
+@SuppressWarnings("DataFlowIssue")
+public final class LipsAbility extends AbstractAbility {
 
-    public BriseAbility() {
-        super(
-                AbilityIds.BRISE,
-                "Brise",
-                "Protégez un joueur contre l'Embrasement des Flammes jusqu'à la fin de la phase.",
+    public LipsAbility() {
+        super(AbilityIds.LIPS,
+                "Bénédiction de Lips",
+                "",
                 Material.AIR,
                 AbilityCategory.CAPACITY,
                 AbilityUseType.ACTIVE,
-                AbilityTrigger.RIGHT_CLICK_PLAYER
-        );
+                AbilityTrigger.RIGHT_CLICK_PLAYER);
+
         setUsageLimit(UsageLimit.perRound(1));
     }
 
@@ -46,30 +36,22 @@ public final class BriseAbility extends AbstractAbility {
     }
 
     @Override
-    public DrunkSupport supportsDrunk() {
-        return DrunkSupport.CUSTOM_LOGIC;
-    }
-
-    @SuppressWarnings("DataFlowIssue")
-    @Override
     protected @NotNull AbilityResult executeLogic(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull AbilityContext context) {
-        game().getCurrentRound().getProtectionManager().protect(context.getTarget().getUniqueId(), ProtectionType.BRISE);
+        if (!isDrunk()) game().getCurrentRound().getEmbrasementManager().addNewLipsBanFlamme(context.getTarget().getUniqueId());
         return AbilityResult.success(
-                Component.text("§bVotre §6Brise§b a protégé un joueur. Celui-ci ne craindra plus les §cFlammes§b pour un tour.")
+                Component.text("[Bénédiction de Lips] Vous avez empêché un joueur d'embraser des joueurs pour cette manche.")
         );
-    }
 
-    @Override
-    protected @NotNull AbilityResult executeDrunkLogic(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull AbilityContext context) {
-        return AbilityResult.success(
-                Component.text("§bVotre §6Brise§b a protégé un joueur. Celui-ci ne craindra plus les §cFlammes§b pour un tour.")
-        );
     }
 
     @Override
     public void onGameplayPhaseStart(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull PhaseContext phaseContext) {
-        game().getAbilityManager().setCooldown(nocturnePlayer.getPlayerId(), getId(), game().getSettings().getBriseStartingCooldown());
+        game().getAbilityManager().setCooldown(nocturnePlayer.getPlayerId(), getId(), game().getSettings().getLipsStartingCooldown());
+    }
 
+    @Override
+    public DrunkSupport supportsDrunk() {
+        return DrunkSupport.DEFAULT_LOGIC;
     }
 
     @Override
@@ -77,6 +59,6 @@ public final class BriseAbility extends AbstractAbility {
             @NotNull Player player,
             @NotNull NocturnePlayer nocturnePlayer
     ) {
-        return Component.text("§cVous avez déjà utilisé votre Brise cette manche !");
+        return Component.text("§cVous avez déjà utilisé la Bénédiction de Lips cette manche !");
     }
 }

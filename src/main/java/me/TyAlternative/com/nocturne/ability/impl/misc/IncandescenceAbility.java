@@ -92,7 +92,10 @@ public final class IncandescenceAbility extends AbstractAbility {
             String idToRemove = lastAbilityId;
             Nocturne.getInstance().getServer().getScheduler().runTask(
                     Nocturne.getInstance(),
-                    () -> role.removeAbility(idToRemove)
+                    () -> {
+                        role.removeAbility(idToRemove);
+                        game().getActionBarManager().updatePlayerActionBar(player, nocturnePlayer, game().getCurrentPhase());
+                    }
             );
         }
 

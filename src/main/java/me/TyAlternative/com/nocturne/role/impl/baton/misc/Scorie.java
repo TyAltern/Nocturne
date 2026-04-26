@@ -1,5 +1,6 @@
-package me.TyAlternative.com.nocturne.role.impl.baton;
+package me.TyAlternative.com.nocturne.role.impl.baton.misc;
 
+import me.TyAlternative.com.nocturne.ability.impl.misc.CorrosionAbility;
 import me.TyAlternative.com.nocturne.api.role.RoleTeam;
 import me.TyAlternative.com.nocturne.api.role.RoleType;
 import me.TyAlternative.com.nocturne.role.AbstractRole;
@@ -28,6 +29,6 @@ public final class Scorie extends AbstractRole {
                 RoleTeam.BATONS,
                 Material.COAL_BLOCK
         );
-        // TODO : registerAbility(new CorrosionAbility());
+        registerAbility(new CorrosionAbility());
     }
 }

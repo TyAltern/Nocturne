@@ -1,5 +1,6 @@
-package me.TyAlternative.com.nocturne.role.impl.baton;
+package me.TyAlternative.com.nocturne.role.impl.baton.misc;
 
+import me.TyAlternative.com.nocturne.ability.impl.misc.CicatricesAbility;
 import me.TyAlternative.com.nocturne.api.role.RoleTeam;
 import me.TyAlternative.com.nocturne.api.role.RoleType;
 import me.TyAlternative.com.nocturne.role.AbstractRole;
@@ -29,6 +30,6 @@ public final class Calcine extends AbstractRole {
                 RoleTeam.BATONS,
                 Material.GRAY_CONCRETE_POWDER
         );
-        // TODO : registerAbility(new CicatricesAbility());
+        registerAbility(new CicatricesAbility());
     }
 }

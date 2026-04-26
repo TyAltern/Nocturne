@@ -1,4 +1,4 @@
-package me.TyAlternative.com.nocturne.role.impl.baton;
+package me.TyAlternative.com.nocturne.role.impl.baton.information;
 
 import me.TyAlternative.com.nocturne.ability.impl.info.OmbresResiduellesAbility;
 import me.TyAlternative.com.nocturne.api.role.RoleTeam;

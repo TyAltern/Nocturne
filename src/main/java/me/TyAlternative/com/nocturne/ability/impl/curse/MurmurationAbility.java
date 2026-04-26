@@ -1,8 +1,8 @@
-package me.TyAlternative.com.nocturne.ability.impl.misc;
+package me.TyAlternative.com.nocturne.ability.impl.curse;
 
 import me.TyAlternative.com.nocturne.ability.AbilityIds;
 import me.TyAlternative.com.nocturne.ability.AbstractAbility;
-import me.TyAlternative.com.nocturne.ability.impl.protection.SolitudeMortelleAbility;
+import me.TyAlternative.com.nocturne.ability.impl.protection.CaeciasAbility;
 import me.TyAlternative.com.nocturne.api.ability.*;
 import me.TyAlternative.com.nocturne.api.phase.PhaseType;
 import me.TyAlternative.com.nocturne.core.phase.PhaseContext;
@@ -22,36 +22,34 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * Prise de Feu — malédiction passive du Gaz.
- *
  * <p>En fin de phase de Gameplay, si un ou plusieurs joueurs embrasés se trouvent
- * à moins de 10.0 blocs du Gaz, celui-ci vole leurs embrasements :
+ * à moins de 10.0 blocs du propriétaire, celui-ci vole leurs embrasements :
  * <ul>
  *   <li>Les joueurs embrasés à portée sont <strong>protégés</strong> (leur embrasement
  *       est retiré).</li>
- *   <li>Le Gaz <strong>s'embrase</strong> à leur place, même s'il était protégé
- *       par {@link SolitudeMortelleAbility}.</li>
+ *   <li>Le propriétaire <strong>s'embrase</strong> à leur place, même s'il était protégé
+ *       par {@link CaeciasAbility}.</li>
  * </ul>
  *
- * <p>Si plusieurs joueurs embrasés sont à portée, le Gaz en absorbe autant
- * qu'il y en a, mais ne s'embrase qu'une seule fois (il ne peut mourir qu'une fois).
+ * <p>Si plusieurs joueurs embrasés sont à portée, le propriétaire en absorbe autant
+ * qu'il y en a, mais ne s'embrase qu'une seule fois.
  *
- * <h2>Interaction avec SolitudeMortelle</h2>
- * La Prise de Feu est traitée <em>après</em> SolitudeMortelle dans {@code onGameplayPhaseEnd}.
- * Elle bypasse explicitement la protection de SolitudeMortelle en retirant le joueur
+ * <h2>Interaction avec l'Alizé</h2>
+ * La Murmuration est traitée <em>après</em> l'Alizé dans {@code onGameplayPhaseEnd}.
+ * Elle bypass explicitement la protection de l'Alizé en retirant le joueur
  * de la liste des protégés avant de l'embraser.
  */
 @SuppressWarnings("DataFlowIssue")
-public final class PriseDeFeuAbility extends AbstractAbility {
+public final class MurmurationAbility extends AbstractAbility {
 
     /** Rayon de détection des joueurs embrasés (en blocs). */
-    private final double radius = 10.0;
+    private final double radius;
 
-    public PriseDeFeuAbility() {
+    public MurmurationAbility() {
 
         super(
-                AbilityIds.PRISE_DE_FEU,
-                "Prise de Feu",
+                AbilityIds.MURMURATION,
+                "Murmuration",
                 "Si un joueur Embrasé se trouve à moins de " + 10.0
                         + " blocs de vous en fin de phase, vous volez son Embrasement "
                         + "(il est protégé, vous vous embrasez à sa place, même si protégé).",
@@ -61,6 +59,7 @@ public final class PriseDeFeuAbility extends AbstractAbility {
                 AbilityTrigger.AUTOMATIC
         );
         setAllowedPhases(PhaseType.GAMEPLAY);
+        radius = game().getSettings().getMurmurationRadius();
     }
 
     @Override
@@ -93,16 +92,16 @@ public final class PriseDeFeuAbility extends AbstractAbility {
             embrasementManager.removeEmbrasement(stolenId);
         }
 
-        // Le Gaz s'embrase à la place — bypass de toute protection
+        // Le propriétaire s'embrase à la place — bypass de toute protection
         // On force l'embrasement en retirant aussi les autres protections actives.
         protectionManager.removeProtection(nocturnePlayer.getPlayerId());
 
         // Embraser directement (le ProtectionManager est maintenant vide pour ce joueur)
-        boolean result = embrasementManager.embrase(nocturnePlayer.getPlayerId(), EmbrasementCause.PRISE_DE_FEU);
+        boolean result = embrasementManager.embrase(nocturnePlayer.getPlayerId(), EmbrasementCause.MURMURATION, null);
 
         if (result) {
             player.sendMessage(Component.text(
-                    "§7[Prise de Feu] §cVous avez absorbé l'Embrasement d'un joueur proche. Votre sacrifice est honorable..."
+                    "§7[Murmuration] §cVous avez absorbé l'Embrasement d'un joueur proche. Votre sacrifice est honorable..."
             ));
         }
     }
@@ -113,7 +112,7 @@ public final class PriseDeFeuAbility extends AbstractAbility {
 
     /**
      * Retourne la liste des UUID de joueurs vivants embrasés se trouvant
-     * à moins de 10.0 blocs du Gaz.
+     * à moins de 10.0 blocs du propriétaire.
      */
     private @NotNull List<UUID> collectNearbyEmbrased(
             @NotNull Player player,
@@ -125,10 +124,10 @@ public final class PriseDeFeuAbility extends AbstractAbility {
         for (Map.Entry<UUID, EmbrasementCause> entry : embrasementManager.getAll().entrySet()) {
             UUID targetId = entry.getKey();
             NocturnePlayer nocturneTarget = game().getPlayerManager().get(targetId);
-            if (nocturneTarget == null || !nocturneTarget.isAlive()) continue;
+            if (nocturneTarget == null || !nocturneTarget.isAlive() ) continue;
 
             Player targetPlayer = nocturneTarget.getPlayer();
-            if (targetPlayer == null) continue;
+            if (targetPlayer == null || targetPlayer == player) continue;
             if (!targetPlayer.getWorld().equals(player.getWorld())) continue;
 
             double distanceSquared = player.getLocation().distanceSquared(targetPlayer.getLocation());

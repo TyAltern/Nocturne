@@ -11,23 +11,20 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 
 /**
- * Aquilon — capacité active de la Bourrasque.
- *
- * <p>Une seule fois par partie, protège tous les joueurs vivants contre
+ * Une seule fois par partie, protège tous les joueurs vivants contre
  * l'Embrasement des Flammes jusqu'à la fin de la phase de Gameplay en cours.
  *
  * <p>En mode drunk : affiche le message de succès, mais n'applique aucune protection.
  */
-public final class AquilonAbility extends AbstractAbility {
+public final class BoreeAbility extends AbstractAbility {
 
-    public AquilonAbility() {
+    public BoreeAbility() {
         super(
-                AbilityIds.AQUILON,
-                "Aquilon",
+                AbilityIds.BOREE,
+                "Bénédiction de Borée",
                 "Une fois par partie, protégez tous les joueurs contre l'Embrasement des Flammes.",
                 Material.AIR,
                 AbilityCategory.CAPACITY,
@@ -56,11 +53,11 @@ public final class AquilonAbility extends AbstractAbility {
         var protectionManager = game().getCurrentRound().getProtectionManager();
 
         for (NocturnePlayer np : game().getPlayerManager().getAlive()) {
-            protectionManager.protect(np.getPlayerId(), ProtectionType.AQUILON);
+            protectionManager.protect(np.getPlayerId(), ProtectionType.BOREE);
         }
 
         return AbilityResult.success(
-                Component.text("§9Votre §6Aquilon §9a recouvert toute la partie: tous les joueurs ont été protégé de §cl'Embrasement§9 !")
+                Component.text("§9Votre §6Borée §9a recouvert toute la partie: tous les joueurs ont été protégé de §cl'Embrasement§9 !")
         );
     }
 
@@ -76,13 +73,13 @@ public final class AquilonAbility extends AbstractAbility {
             @NotNull AbilityContext context
     ) {
         return AbilityResult.success(
-                Component.text("§9Votre §6Aquilon §9a recouvert toute la partie: tous les joueurs ont été protégé de §Cl'Embrasement§9 !")
+                Component.text("§9Votre §6Borée §9a recouvert toute la partie: tous les joueurs ont été protégé de §Cl'Embrasement§9 !")
         );
     }
 
     @Override
     public void onGameplayPhaseStart(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull PhaseContext phaseContext) {
-        game().getAbilityManager().setCooldown(nocturnePlayer.getPlayerId(), getId(), game().getSettings().getAquilonStartingCooldown());
+        game().getAbilityManager().setCooldown(nocturnePlayer.getPlayerId(), getId(), game().getSettings().getBoreeStartingCooldown());
 
     }
 
@@ -91,7 +88,7 @@ public final class AquilonAbility extends AbstractAbility {
             @NotNull Player player,
             @NotNull NocturnePlayer nocturnePlayer
     ) {
-        return Component.text("§cVous avez déjà utilisé votre Aquilon cette partie !");
+        return Component.text("§cVous avez déjà utilisé votre §6Borée§c cette partie !");
     }
 
 }

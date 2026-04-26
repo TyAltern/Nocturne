@@ -1,4 +1,5 @@
 package me.TyAlternative.com.nocturne.ability.impl.protection;
+
 import me.TyAlternative.com.nocturne.ability.AbilityIds;
 import me.TyAlternative.com.nocturne.ability.AbstractAbility;
 import me.TyAlternative.com.nocturne.ability.DrunkSupport;
@@ -14,20 +15,18 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Alizé — capacité passive du Frémissement.
- *
- * <p>En fin de phase de Gameplay, protège le joueur vivant non-protégé le plus
+ * En fin de phase de Gameplay, protège le joueur vivant non-protégé le plus
  * proche dans un rayon de 45 blocs. Si personne n'est à portée, se protège lui-même.
  */
 @SuppressWarnings("DataFlowIssue")
-public final class AlizeAbility extends AbstractAbility {
+public final class ZephyrAbility extends AbstractAbility {
     private final double radius;
     private final boolean onlyUnprotected;
 
-    public AlizeAbility() {
+    public ZephyrAbility() {
         super(
-                AbilityIds.ALIZE,
-                "Alizé",
+                AbilityIds.ZEPHYR,
+                "Bénédiction de Zéphyr",
                 "En fin de phase, protège le joueur non-protégé le plus proche (45 blocs). "
                         + "À défaut, vous vous protégez vous-même.",
                 Material.AIR,
@@ -35,15 +34,15 @@ public final class AlizeAbility extends AbstractAbility {
                 AbilityUseType.PASSIVE,
                 AbilityTrigger.AUTOMATIC
         );
-        radius = game().getSettings().getAlizeRadius();
-        onlyUnprotected = game().getSettings().shouldAlizeProtectOnlyUnprotected();
+        radius = game().getSettings().getZephyrRadius();
+        onlyUnprotected = game().getSettings().shouldZephyrProtectOnlyUnprotected();
     }
 
 
     @Override
     public @NotNull String getDescription() {
         return "En fin de phase, protège le joueur non-protégé le plus proche §7(" + radius +" blocs)§r. "
-                        + "À défaut, vous vous protégez vous-même.";
+                + "À défaut, vous vous protégez vous-même.";
     }
 
     @Override
@@ -55,7 +54,7 @@ public final class AlizeAbility extends AbstractAbility {
     public boolean canExecute(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull AbilityContext context) {
         return false;
     }
-        @Override
+    @Override
     protected @NotNull AbilityResult executeLogic(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull AbilityContext context) {
         return AbilityResult.silentSuccess();
 
@@ -87,7 +86,7 @@ public final class AlizeAbility extends AbstractAbility {
                 closestDistSq = distSq;
             }
         }
-        protectionManager.protect(closest.getPlayerId(), ProtectionType.ALIZE);
+        protectionManager.protect(closest.getPlayerId(), ProtectionType.ZEPHYR);
 
     }
 }

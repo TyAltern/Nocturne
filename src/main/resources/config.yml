@@ -56,9 +56,11 @@ starting_cooldowns:
   eclaircissement: 10
   embrasement: 10
   etouffement: 10
-  brise: 10
-  aquilon: 10
-  auster: 10
+  apeliote: 10
+  boree: 10
+  lips: 10
+  notos: 10
+  sciron: 10
 
 
 # ============================================================
@@ -75,28 +77,46 @@ abilities:
       min_exposure_seconds: 10
       show_value: false
 
-    alize:
+    zephyr:
       radius: 45.0
       only_not_protected: true
 
-    auster:
+    notos:
       cooldown: 0
       show_protected_count: false
       cancel_if_before: false
+
+    euros:
+      self_protect_if_not_marked: true
+
+    caecias:
+      radius: 10
+      
+    sciron:
+      cooldown: 0
+      maxUsePerRound: -1
 
     incandescence:
       targets:
         - ""
 
+    corrosion:
+      negative_weight: -2
+      negative_color: [85,255, 85]
+      positive_weight: 2
+      positive_color: [255,85, 85]
 
   effect:
 
 
   curse:
+    murmuration:
+      radius: 10
+
     amnesia:
       targets:
         - "BATON"
-        - "SOUFFLE"
+        - "AUTAN"
         - "CALCINE"
         - "TORCHE"
 

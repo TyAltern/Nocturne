@@ -129,7 +129,10 @@ public final class PlayerInteractionListener implements Listener {
         boolean isDouble = game.getSettings().isDoubleSwapEnabled() && doubleSwapDetector.detect(player.getUniqueId());
 
         if (isDouble) {
-            dispatchAbilityTrigger(player, nocturnePlayer, null, AbilityTrigger.DOUBLE_SWAP_HAND, emptyHand);
+            // -------------------------------------------------------------------------------------------------------------------------------
+            //                                      remettre null une fois le debug fini (IMPERATIVEMENT)
+            // -----------------------------------------------------------\!!!!!!!/-----------------------------------------------------------
+            dispatchAbilityTrigger(player, nocturnePlayer, player, AbilityTrigger.DOUBLE_SWAP_HAND, emptyHand);
             player.sendMessage("§e[Boite d'Allumettes] §bDouble Swap");
         } else {
             // Simple swap : exécuter après le délai de détection

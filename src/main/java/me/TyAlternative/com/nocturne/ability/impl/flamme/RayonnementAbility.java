@@ -34,7 +34,6 @@ import java.util.UUID;
 @SuppressWarnings("DataFlowIssue")
 public final class RayonnementAbility extends AbstractAbility {
 
-    // TODO: ADD RADIUS CONFIGURATION
     /** Rayon de détection en blocs. */
     private final double radius;
 
@@ -147,7 +146,7 @@ public final class RayonnementAbility extends AbstractAbility {
         NocturnePlayer target = game().getPlayerManager().get(mostExposedId);
         if (target == null || !target.isAlive()) return;
 
-        game().getCurrentRound().getEmbrasementManager().embrase(mostExposedId, EmbrasementCause.TORCHE);
+        game().getCurrentRound().getEmbrasementManager().embrase(mostExposedId, EmbrasementCause.TORCHE, nocturnePlayer.getPlayerId());
 
     }
 

@@ -47,11 +47,12 @@ public class UsageLimit {
     /**
      * Limite de {@code maxUses} utilisations par manche.
      *
-     * @param maxUses nombre maximum d'utilisations par manche, doit être > 0
+     * @param maxUses nombre maximum d'utilisations par manche, doit être > 0 ou égale à -1
      * @throws IllegalArgumentException si {@code maxUses} ≤ 0
      */
     public static @NotNull UsageLimit perRound(int maxUses) {
-        if (maxUses <= 0) {
+        if (maxUses == -1) return UNLIMITED;
+        else if (maxUses <= 0) {
             throw new IllegalArgumentException("maxUses doit être >x 0, récu : " + maxUses);
         }
         return new UsageLimit(Scope.PER_ROUND, maxUses);
@@ -60,11 +61,12 @@ public class UsageLimit {
     /**
      * Limite de {@code maxUses} utilisations pour toute la partie.
      *
-     * @param maxUses nombre maximum d'utilisations pour la partie, doit être > 0
+     * @param maxUses nombre maximum d'utilisations pour la partie, doit être > 0 ou égale à -1
      * @throws IllegalArgumentException si {@code maxUses} ≤ 0
      */
     public static @NotNull UsageLimit perGame(int maxUses) {
-        if (maxUses <= 0) {
+        if (maxUses == -1) return UNLIMITED;
+        else if (maxUses <= 0) {
             throw new IllegalArgumentException("maxUses doit être >x 0, récu : " + maxUses);
         }
         return new UsageLimit(Scope.PER_GAME, maxUses);

@@ -1,6 +1,7 @@
 package me.TyAlternative.com.nocturne.config;
 
 import me.TyAlternative.com.nocturne.Nocturne;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
@@ -76,19 +77,29 @@ public final class ConfigManager {
         settings.setEclaircissementStartingCooldown(cfg.getInt("starting_cooldowns.eclaircissement", 10));
         settings.setEmbrasementStartingCooldown(cfg.getInt("starting_cooldowns.embrasement", 10));
         settings.setEtouffementStartingCooldown(cfg.getInt("starting_cooldowns.etouffement", 10));
-        settings.setBriseStartingCooldown(cfg.getInt("starting_cooldowns.brise", 10));
-        settings.setAquilonStartingCooldown(cfg.getInt("starting_cooldowns.aquilon", 10));
-        settings.setAusterStartingCooldown(cfg.getInt("starting_cooldowns.auster", 10));
+        settings.setApelioteStartingCooldown(cfg.getInt("starting_cooldowns.apeliote", 10));
+        settings.setBoreeStartingCooldown(cfg.getInt("starting_cooldowns.boree", 10));
+        settings.setLipsStartingCooldown(cfg.getInt("starting_cooldowns.lips", 10));
+        settings.setNotosStartingCooldown(cfg.getInt("starting_cooldowns.notos", 10));
+        settings.setScironStartingCooldown(cfg.getInt("starting_cooldowns.sciron", 10));
 
 
         // Capacités
-        settings.setAlizeRadius(cfg.getDouble("abilities.capacity.alize.radius", 45.0));
-        settings.setAlizeProtectOnlyUnprotected(cfg.getBoolean("abilities.capacity.alize.only_not_protected", true));
-        settings.setAusterCooldown(cfg.getInt("abilities.capacity.auster.cooldown", 0));
-        settings.setAusterShowProtectedCount(cfg.getBoolean("abilities.capacity.auster.show_protected_count", false));
-        settings.setAusterRemoveIfBefore(cfg.getBoolean("abilities.capacity.auster.cancel_if_before", false));
+        settings.setZephyrRadius(cfg.getDouble("abilities.capacity.zephyr.radius", 45.0));
+        settings.setZephyrProtectOnlyUnprotected(cfg.getBoolean("abilities.capacity.zephyr.only_not_protected", true));
+        settings.setNotosCooldown(cfg.getInt("abilities.capacity.notos.cooldown", 0));
+        settings.setNotosShowProtectedCount(cfg.getBoolean("abilities.capacity.notos.show_protected_count", false));
+        settings.setNotosRemoveIfBefore(cfg.getBoolean("abilities.capacity.notos.cancel_if_before", false));
+        settings.setEurosSelfProtectionIfNotMarked(cfg.getBoolean("abilities.capacity.euros.self_protect_if_not_marked", true));
+        settings.setCaeciasRadiusProtection(cfg.getDouble("abilities.capacity.caecias.radius", 10.0));
+        settings.setMurmurationRadius(cfg.getDouble("abilities.curse.murmuration.radius", 10.0));
+        settings.setScironCooldown(cfg.getInt("abilities.capacity.sciron.cooldown", 0));
+        settings.setScironMaxUse(cfg.getInt("abilities.capacity.sciron.maxUsePerRound", -1));
         settings.setIncandescenceAbilityCandidates(cfg.getStringList("abilities.capacity.incandescence.targets"));
-
+        settings.setCorrosionNegativeWeight(cfg.getInt("abilities.capacity.corrosion.negative_weight",-2));
+        settings.setCorrosionPositiveWeight(cfg.getInt("abilities.capacity.corrosion.positive_weight",2));
+        settings.setCorrosionNegativeColor(parseColor(cfg.getIntegerList("abilities.capacity.corrosion.negative_color")));
+        settings.setCorrosionPositiveColor(parseColor(cfg.getIntegerList("abilities.capacity.corrosion.positive_color")));
 
         settings.setRayonnementRadius(cfg.getDouble("abilities.capacity.rayonnement.radius", 10.0));
         settings.setRayonnementMinExposureSeconds(cfg.getInt("abilities.capacity.rayonnement.min_exposure_seconds", 5));
@@ -183,6 +194,11 @@ public final class ConfigManager {
             }
         }
         return sounds;
+    }
+
+    private @NotNull Color parseColor(@NotNull List<Integer> color) {
+        if (color.size() != 3) return Color.fromBGR(85, 85, 255);
+        return Color.fromBGR(color.get(2),color.get(1),color.get(1));
     }
 
 

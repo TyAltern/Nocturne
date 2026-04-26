@@ -20,6 +20,7 @@ public final class EmbrasementManager {
 
     /** Map UUID joueur → cause de l'embrasement. */
     private final Map<UUID, EmbrasementCause> embrased = new LinkedHashMap<>();
+    private final List<UUID> lipsBannedFlamme = new ArrayList<>();
 
     // -------------------------------------------------------------------------
     // Embrasement
@@ -35,7 +36,8 @@ public final class EmbrasementManager {
      * @param cause    source de l'embrasement
      * @return {@code true} si l'embrasement a été appliquée, {@code false} si le joueur l'était déjà
      */
-    public boolean embrase(@NotNull UUID playerId, @NotNull EmbrasementCause cause) {
+    public boolean embrase(@NotNull UUID playerId, @NotNull EmbrasementCause cause, @Nullable UUID casterID) {
+        if (casterID != null && lipsBannedFlamme.contains(casterID)) return false;
         boolean returnValue = !embrased.containsKey(playerId);
 
         embrased.put(playerId, cause);
@@ -56,6 +58,13 @@ public final class EmbrasementManager {
     // -------------------------------------------------------------------------
     // Lecture
     // -------------------------------------------------------------------------
+
+    public boolean addNewLipsBanFlamme(@NotNull UUID playerId) {
+        return lipsBannedFlamme.add(playerId);
+    }
+    public boolean removeLipsBanFlamme(@NotNull UUID playerId) {
+        return lipsBannedFlamme.remove(playerId);
+    }
 
     /** {@code true} si le joueur est actuellement embrasé. */
     public boolean isEmbrased(@NotNull UUID playerId) {
@@ -86,5 +95,6 @@ public final class EmbrasementManager {
     /** Vide tous les embrasements. Appelé en début de manche via le {@code RoundContext}. */
     public void clear() {
         embrased.clear();
+        lipsBannedFlamme.clear();
     }
 }

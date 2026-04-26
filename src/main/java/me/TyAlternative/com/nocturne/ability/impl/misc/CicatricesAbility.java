@@ -28,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * <p>En mode drunk : l'embrasement n'est pas retardé.
  */
-public final class CicatriceAbility extends AbstractAbility {
+public final class CicatricesAbility extends AbstractAbility {
 
     /**
      * Cause d'élimination en attente pour la prochaine manche.
@@ -36,7 +36,7 @@ public final class CicatriceAbility extends AbstractAbility {
      */
     private @Nullable EliminationCause pendingEliminationCause = null;
 
-    public CicatriceAbility() {
+    public CicatricesAbility() {
         super(
                 AbilityIds.CICATRICES,
                 "Cicatrices",

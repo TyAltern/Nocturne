@@ -22,7 +22,7 @@ import java.util.*;
  * <pre>{@code
  * composition.set("ETINCELLE", 1);
  * composition.set("BATON", 5);
- * composition.set("SOUFFLE", 1);
+ * composition.set("AUTAN", 1);
  * // Résultat : 7 joueurs, 1 Flamme, 6 Bâtons
  * }</pre>
  */

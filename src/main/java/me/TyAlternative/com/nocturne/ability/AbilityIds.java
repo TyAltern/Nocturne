@@ -49,10 +49,15 @@ public final class AbilityIds {
     // Protection
     // -------------------------------------------------------------------------
 
-    public static final String BRISE                  = "BRISE";
-    public static final String ALIZE                  = "ALIZE";
-    public static final String AQUILON                = "AQUILON";
-    public static final String AUSTER                 = "AUSTER";
+    public static final String APELIOTE               = "APELIOTE";
+    public static final String CAECIAS                = "CAECIAS";
+    public static final String MURMURATION            = "MURMURATION";
+    public static final String BOREE                  = "BOREE";
+    public static final String LIPS                   = "LIPS";
+    public static final String SCIRON                 = "SCIRON";
+    public static final String NOTOS                  = "NOTOS";
+    public static final String EUROS                  = "EUROS";
+    public static final String ZEPHYR                 = "ZEPHYR";
 
     // -------------------------------------------------------------------------
     // Divers
@@ -61,7 +66,6 @@ public final class AbilityIds {
     public static final String CENDRE                 = "CENDRE";
     public static final String CICATRICES             = "CICATRICES";
     public static final String CORROSION              = "CORROSION";
-    public static final String PRISE_DE_FEU           = "PRISE_DE_FEU";
     public static final String SOLITUDE_MORTELLE      = "SOLITUDE_MORTELLE";
     public static final String INCANDESCENCE          = "INCANDESCENCE";
 

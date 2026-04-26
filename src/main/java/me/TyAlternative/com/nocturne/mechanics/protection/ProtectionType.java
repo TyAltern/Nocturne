@@ -10,12 +10,13 @@ import org.jetbrains.annotations.NotNull;
 @SuppressWarnings("unused")
 public enum ProtectionType {
 
-    BRISE("Brise"),
-    ALIZE("Alizé"),
-    AQUILON("Aquilon"),
-    AUSTER("Auster"),
-    SOLITUDE_MORTELLE("Solitude Mortelle"),
-    PRISE_DE_FEU("Prise de Feu"),
+    APELIOTE("Apéliote"),
+    CAECIAS("Caecias"),
+    BOREE("Borée"),
+    NOTOS("Notos"),
+    EUROS("Euros"),
+    SCIRON("Sciron"),
+    ZEPHYR("Zéphyr"),
     OTHER("Autre");
 
     private final @NotNull String displayName;
