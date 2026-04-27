@@ -7,6 +7,7 @@ import me.TyAlternative.com.nocturne.core.NocturneGame;
 import me.TyAlternative.com.nocturne.player.NocturnePlayer;
 import me.TyAlternative.com.nocturne.util.TimeUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
@@ -77,7 +78,7 @@ public final class BossBarManager {
             removeAll();
             return;
         }
-        for (NocturnePlayer nocturnePlayer : game.getPlayerManager().getAlive()) {
+        for (NocturnePlayer nocturnePlayer : game.getPlayerManager().getAll()) {
             Player player = nocturnePlayer.getPlayer();
             if (player == null) continue;
             updatePlayerBossBar(player, nocturnePlayer, phase);
@@ -139,7 +140,8 @@ public final class BossBarManager {
     private boolean canSeeTimer(@NotNull NocturnePlayer nocturnePlayer, @NotNull PhaseType phase) {
         if (phase == PhaseType.VOTE) return true;
         if (phase != PhaseType.GAMEPLAY) return false;
-        if (!nocturnePlayer.hasRole()) return false;
+        if (!nocturnePlayer.hasRole()) return true;
+        if (nocturnePlayer.getPlayer().getGameMode() == GameMode.SPECTATOR) return true;
         return nocturnePlayer.getRole().hasAbility(
                 AbilityIds.CLAIRVOYANCE
         );

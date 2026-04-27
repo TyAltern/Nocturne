@@ -11,6 +11,7 @@ import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.ShadowColor;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
@@ -72,6 +73,7 @@ public final class ActionBarManager {
     }
 
     public void updatePlayerActionBar(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull PhaseType phase) {
+        if (player.getGameMode() == GameMode.SPECTATOR) return;
         if (!phase.isInGame() || !nocturnePlayer.isAlive()) {
             player.sendActionBar(getUnicodeWithFont(unicode("E000"), "hud","hotbar", false));
             return;

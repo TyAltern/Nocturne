@@ -8,6 +8,7 @@ import me.TyAlternative.com.nocturne.api.ability.Ability;
 import me.TyAlternative.com.nocturne.api.role.Role;
 import me.TyAlternative.com.nocturne.core.NocturneGame;
 import me.TyAlternative.com.nocturne.core.round.RoundContext;
+import me.TyAlternative.com.nocturne.mechanics.anonymity.AnonymityManager;
 import me.TyAlternative.com.nocturne.mechanics.disparition.DisparitionCause;
 import me.TyAlternative.com.nocturne.mechanics.embrasement.EmbrasementCause;
 import me.TyAlternative.com.nocturne.player.NocturnePlayer;
@@ -44,6 +45,7 @@ import java.util.logging.Logger;
 public final class EliminationManager {
 
     private final PlayerManager playerManager;
+    private final AnonymityManager anonymityManager;
     private final Logger logger;
 
     private final Map<UUID,EmbrasementCause> cicatricesId;
@@ -54,8 +56,10 @@ public final class EliminationManager {
      */
     public EliminationManager(
             @NotNull PlayerManager playerManager,
+            @NotNull AnonymityManager anonymityManager,
             @NotNull Logger logger) {
         this.playerManager = playerManager;
+        this.anonymityManager = anonymityManager;
         this.logger = logger;
         this.cicatricesId = new HashMap<>();
     }
@@ -159,6 +163,8 @@ public final class EliminationManager {
     public void eliminate(@NotNull UUID playerId, @NotNull EliminationCause cause) {
         NocturnePlayer nocturnePlayer = playerManager.get(playerId);
         if (nocturnePlayer == null || !nocturnePlayer.isAlive()) return;
+
+        anonymityManager.cleanupPlayer(nocturnePlayer);
 
         Player player = nocturnePlayer.getPlayer();
         if (player == null) return;

@@ -147,7 +147,7 @@ public final class NocturneGame {
         this.tickingAbilityManager = new TickingAbilityManager(playerManager, abilityManager, logger);
         this.voteManager         = new VoteManager(playerManager, messageManager);
         this.anonymityManager    = new AnonymityManager(playerManager, settings);
-        this.eliminationManager  = new EliminationManager(playerManager, logger);
+        this.eliminationManager  = new EliminationManager(playerManager, anonymityManager, logger);
         this.roleDistributor     = new RoleDistributor(registry, playerManager, logger);
 
         // VictoryManager référence this -> initialisé après le reste
