@@ -24,7 +24,7 @@ public final class Autan extends AbstractRole {
         super(
                 ID,
                 "§b§lL'Autan",
-                "Vous êtes l'allié le plus fort pour contrer les Flammes. Protégez vos alliés et gagnez ensemble.",
+                "Brise du sud-ouest, douce mais déterminée. Chaque manche, votre bénédiction protège un allié des §cEmbrasements§f. Éliminez les §cFlammes§f et gagnez avec les autres§e Bâtons§f.",
                 RoleType.BATON,
                 RoleTeam.BATONS,
                 Material.FEATHER

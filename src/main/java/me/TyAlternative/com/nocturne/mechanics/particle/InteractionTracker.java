@@ -1,7 +1,7 @@
 package me.TyAlternative.com.nocturne.mechanics.particle;
 
-import me.TyAlternative.com.nocturne.ability.impl.info.EchosInteractionAbility;
-import me.TyAlternative.com.nocturne.ability.impl.info.ReverberationLumineuseAbility;
+import me.TyAlternative.com.nocturne.ability.impl.info.DiffractionAbility;
+import me.TyAlternative.com.nocturne.ability.impl.info.RefractionAbility;
 import me.TyAlternative.com.nocturne.core.round.RoundContext;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
@@ -17,9 +17,9 @@ import java.util.UUID;
  * <p>Enregistre deux types d'événements distincts :</p>
  * <ul>
  *   <li><b>Casters</b> — joueurs ayant <em>utilisé</em> une capacité active sur quelqu'un
- *       (utilisé par {@link EchosInteractionAbility}).</li>
+ *       (utilisé par {@link DiffractionAbility}).</li>
  *   <li><b>Targets</b> — joueurs ayant <em>été ciblés</em> par une capacité
- *       (utilisé par {@link ReverberationLumineuseAbility}).</li>
+ *       (utilisé par {@link RefractionAbility}).</li>
  * </ul>
  *
  * <p>Une instance est créée par manche dans le

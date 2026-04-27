@@ -48,8 +48,7 @@ public final class NotosAbility extends AbstractAbility {
         super(
                 AbilityIds.NOTOS,
                 "Bénédiction de Notos",
-                "Marquez autant de joueurs que vous voulez. En fin de phase, ils sont protégés "
-                        + "— à moins que l'un d'eux utilise une capacité active.",
+                "Vous pouvez protéger autant de §eBâtons§f que vous le souhaitez, mais dès que l'un d'entre eux utilise une capacité, tous redeviennent fragiles.",
                 Material.AIR,
                 AbilityCategory.CAPACITY,
                 AbilityUseType.ACTIVE,
@@ -86,11 +85,11 @@ public final class NotosAbility extends AbstractAbility {
 
         markedPlayers.add(targetId);
         String addition = (game().getSettings().shouldNotosShowProtectedCount()) ?
-                " §1Au total, votre §6Notos§1 a frappé §e" + markedPlayers.size() + "§1 joueur" + (markedPlayers.size() > 1 ? "s." : ".")
+                " §7(" + markedPlayers.size() + ")"
                     :
                 "";
         return AbilityResult.success(
-                Component.text("§1Votre §6Notos§1 a frappé un " + (markedPlayers.size() > 1 ? "nouveau " : "") + "joueur." + addition)
+                Component.text("\n§6[Bénédiction de Notos]§f Vous avez marqué un " + (markedPlayers.size() > 1 ? "autre " : "") + "§eBâton§f." + addition)
         );
 
     }
@@ -153,6 +152,6 @@ public final class NotosAbility extends AbstractAbility {
             @NotNull Player player,
             @NotNull NocturnePlayer nocturnePlayer
     ) {
-        return Component.text("§cVous ne pouvez pas utiliser votre Notos maintenant.");
+        return Component.text("§cVous ne pouvez pas utiliser la §6[Bénédiction de Notos]§c maintenant.");
     }
 }

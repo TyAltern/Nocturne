@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
  * Les {@code NEUTRE} ont des objectifs propres, indépendants des deux camps.</p>
  */
 public enum RoleType {
-    FLAMME("Flamme", TextColor.color(208, 4, 17)),
+    FLAMME("Flamme", TextColor.color(255, 85, 85)),
     BATON("Bâton", TextColor.color(230, 201, 14)),
     NEUTRE("Neutre", TextColor.color(200, 200, 200));
 

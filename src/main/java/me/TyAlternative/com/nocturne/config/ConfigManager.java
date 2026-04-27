@@ -82,6 +82,7 @@ public final class ConfigManager {
         settings.setLipsStartingCooldown(cfg.getInt("starting_cooldowns.lips", 10));
         settings.setNotosStartingCooldown(cfg.getInt("starting_cooldowns.notos", 10));
         settings.setScironStartingCooldown(cfg.getInt("starting_cooldowns.sciron", 10));
+        settings.setPolarisationStartingCooldown(cfg.getInt("starting_cooldowns.polarisation", 10));
 
 
         // Capacités
@@ -95,6 +96,9 @@ public final class ConfigManager {
         settings.setMurmurationRadius(cfg.getDouble("abilities.curse.murmuration.radius", 10.0));
         settings.setScironCooldown(cfg.getInt("abilities.capacity.sciron.cooldown", 0));
         settings.setScironMaxUse(cfg.getInt("abilities.capacity.sciron.maxUsePerRound", -1));
+        settings.setPolarisationCooldown(cfg.getInt("abilities.capacity.polarisation.cooldown", 3));
+        settings.setPolarisationMinDecoy(cfg.getInt("abilities.capacity.polarisation.min_decoy", 0));
+        settings.setPolarisationMaxDecoy(cfg.getInt("abilities.capacity.polarisation.max_decoy", 2));
         settings.setIncandescenceAbilityCandidates(cfg.getStringList("abilities.capacity.incandescence.targets"));
         settings.setCorrosionNegativeWeight(cfg.getInt("abilities.capacity.corrosion.negative_weight",-2));
         settings.setCorrosionPositiveWeight(cfg.getInt("abilities.capacity.corrosion.positive_weight",2));

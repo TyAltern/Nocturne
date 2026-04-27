@@ -18,7 +18,7 @@ public final class Bise extends AbstractRole {
         super(
                 ID,
                 "§f§lLa Bise",
-                "",
+                "Vent du nord-est, protecteur mais sacrificiel. Éliminez les §cFlammes§f et gagnez avec les autres §eBâtons§f.",
                 RoleType.BATON,
                 RoleTeam.BATONS,
                 Material.SNOWBALL

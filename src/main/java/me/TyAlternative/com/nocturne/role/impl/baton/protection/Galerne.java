@@ -7,15 +7,6 @@ import me.TyAlternative.com.nocturne.role.AbstractRole;
 import me.TyAlternative.com.nocturne.role.RoleIds;
 import org.bukkit.Material;
 
-/**
- * La Galerne — Bâton protecteur de masse, version évoluée du Autan.
- *
- * <p>Capacités :
- * <ul>
- *   <li><b>Borée</b> (Actif, 1/partie) — protège tous les joueurs vivants contre
- *       l'Embrasement des Flammes pour la phase en cours.</li>
- * </ul>
- */
 public final class Galerne extends AbstractRole {
 
     public static final String ID = RoleIds.GALERNE;
@@ -24,7 +15,7 @@ public final class Galerne extends AbstractRole {
         super(
                 ID,
                 "§9§lLa Galerne",
-                "Votre puissance peut tout balayer. Utilisez-la au bon moment pour sauver vos alliés.",
+                "Vent du nord-ouest, insaisissable et retors. Votre protection ne vient pas de vous, mais de ceux que vous observez. Éliminez les §cFlammes§f et gagnez avec les autres §eBâtons§f.",
                 RoleType.BATON,
                 RoleTeam.BATONS,
                 Material.PRISMARINE_SHARD

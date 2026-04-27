@@ -7,10 +7,7 @@ import me.TyAlternative.com.nocturne.config.ConfigManager;
 import me.TyAlternative.com.nocturne.core.NocturneGame;
 import me.TyAlternative.com.nocturne.listener.*;
 import me.TyAlternative.com.nocturne.role.RoleRegistry;
-import me.TyAlternative.com.nocturne.role.impl.baton.information.Aube;
-import me.TyAlternative.com.nocturne.role.impl.baton.information.Aurore;
-import me.TyAlternative.com.nocturne.role.impl.baton.information.Crepuscule;
-import me.TyAlternative.com.nocturne.role.impl.baton.information.Lueur;
+import me.TyAlternative.com.nocturne.role.impl.baton.information.*;
 import me.TyAlternative.com.nocturne.role.impl.baton.misc.*;
 import me.TyAlternative.com.nocturne.role.impl.baton.protection.*;
 import me.TyAlternative.com.nocturne.role.impl.flamme.*;
@@ -109,10 +106,14 @@ public final class Nocturne extends JavaPlugin {
 //        roleRegistry.register(Lanterne.ID,     Lanterne::new);
 
         // ── Bâtons — information ─────────────────────────────────────────────
-        roleRegistry.register(Aube.ID,         Aube::new);
-        roleRegistry.register(Crepuscule.ID,   Crepuscule::new);
         roleRegistry.register(Lueur.ID,        Lueur::new);
+        roleRegistry.register(Aube.ID,         Aube::new);
         roleRegistry.register(Aurore.ID,       Aurore::new);
+        roleRegistry.register(Jour.ID,         Jour::new);
+        roleRegistry.register(Zenith.ID,       Zenith::new);
+        roleRegistry.register(Crepuscule.ID,   Crepuscule::new);
+        roleRegistry.register(Vesper.ID,       Vesper::new);
+        roleRegistry.register(Nuit.ID,         Nuit::new);
 
 
         // ── Bâtons — protection ──────────────────────────────────────────────

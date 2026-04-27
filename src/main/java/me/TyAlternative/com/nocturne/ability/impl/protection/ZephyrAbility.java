@@ -27,8 +27,8 @@ public final class ZephyrAbility extends AbstractAbility {
         super(
                 AbilityIds.ZEPHYR,
                 "Bénédiction de Zéphyr",
-                "En fin de phase, protège le joueur non-protégé le plus proche (45 blocs). "
-                        + "À défaut, vous vous protégez vous-même.",
+                "En fin de phase, vous protégez automatiquement le §eBâton§f vivant non-protégé le plus proche dans" +
+                        " un rayon de §745§r blocs. Si personne n'est à portée, vous vous protégez vous-même.",
                 Material.AIR,
                 AbilityCategory.CAPACITY,
                 AbilityUseType.PASSIVE,
@@ -41,8 +41,8 @@ public final class ZephyrAbility extends AbstractAbility {
 
     @Override
     public @NotNull String getDescription() {
-        return "En fin de phase, protège le joueur non-protégé le plus proche §7(" + radius +" blocs)§r. "
-                + "À défaut, vous vous protégez vous-même.";
+        return "En fin de phase, vous protégez automatiquement le §eBâton§f vivant " + (onlyUnprotected ? "§7non-protégé§f " : "") + "le plus proche dans un rayon de §7" + radius +"§f blocs. "
+                + "Si personne n'est à portée, vous vous protégez vous-même.";
     }
 
     @Override

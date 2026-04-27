@@ -111,10 +111,14 @@ public final class RandomAbilityPool {
         suppliers.add(ZephyrAbility::new);
 
         // Info
-        suppliers.add(DiscernementMatinalAbility::new);
-        suppliers.add(EchosInteractionAbility::new);
-        suppliers.add(OmbresResiduellesAbility::new);
-        suppliers.add(ReverberationLumineuseAbility::new);
+        suppliers.add(ScintillementAbility::new);
+        suppliers.add(DiffractionAbility::new);
+        suppliers.add(PenombreAbility::new);
+        suppliers.add(RefractionAbility::new);
+        suppliers.add(PolarisationAbility::new);
+        suppliers.add(IrradiationAbility::new);
+        suppliers.add(TransmissionAbility::new);
+        suppliers.add(OccultationAbility::new);
 
         // Misc
         suppliers.add(CicatricesAbility::new);

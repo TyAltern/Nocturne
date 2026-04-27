@@ -50,9 +50,7 @@ public final class MurmurationAbility extends AbstractAbility {
         super(
                 AbilityIds.MURMURATION,
                 "Murmuration",
-                "Si un joueur Embrasé se trouve à moins de " + 10.0
-                        + " blocs de vous en fin de phase, vous volez son Embrasement "
-                        + "(il est protégé, vous vous embrasez à sa place, même si protégé).",
+                "Si un §cEmbrasé§f se trouve à moins de §710§f blocs de vous en fin de phase, vous absorbez son §cEmbrasement§f : il est protégé, mais vous brûlez à sa place",
                 Material.AIR,
                 AbilityCategory.CURSE,
                 AbilityUseType.PASSIVE,
@@ -101,7 +99,7 @@ public final class MurmurationAbility extends AbstractAbility {
 
         if (result) {
             player.sendMessage(Component.text(
-                    "§7[Murmuration] §cVous avez absorbé l'Embrasement d'un joueur proche. Votre sacrifice est honorable..."
+                    "§d[Murmuration] §fVous avez absorbé §cl'Embrasement§f d'un §eBâtons§f proche. Votre sacrifice est honorable..."
             ));
         }
     }
@@ -139,9 +137,7 @@ public final class MurmurationAbility extends AbstractAbility {
 
     @Override
     public @NotNull String getDescription() {
-        return "Si un joueur Embrasé se trouve à moins de §6" + radius
-                + "§r blocs de vous en fin de phase, vous volez son Embrasement "
-                + "(il est protégé, vous vous embrasez à sa place, même si protégé).";
+        return "Si un §cEmbrasé§f se trouve à moins de §7" + (int) radius + "§f blocs de vous en fin de phase, vous absorbez son §cEmbrasement§f : il est protégé, mais vous brûlez à sa place";
     }
 
     @Override

@@ -16,7 +16,7 @@ public final class Lombarde extends AbstractRole {
         super(
                 ID,
                 "§f§lLa Lombarde",
-                "",
+                "Vent violent d'est. Votre protection récompense celui qui ose vous chercher. Éliminez les §cFlammes§f et gagnez avec les autres §eBâtons§f.",
                 RoleType.BATON,
                 RoleTeam.BATONS,
                 Material.CALCITE

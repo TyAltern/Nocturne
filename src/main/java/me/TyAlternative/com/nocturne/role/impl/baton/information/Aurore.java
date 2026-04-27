@@ -1,6 +1,7 @@
 package me.TyAlternative.com.nocturne.role.impl.baton.information;
 
-import me.TyAlternative.com.nocturne.ability.impl.info.EchosInteractionAbility;
+import me.TyAlternative.com.nocturne.ability.impl.info.DiffractionAbility;
+import me.TyAlternative.com.nocturne.ability.impl.info.PolarisationAbility;
 import me.TyAlternative.com.nocturne.api.role.RoleTeam;
 import me.TyAlternative.com.nocturne.api.role.RoleType;
 import me.TyAlternative.com.nocturne.role.AbstractRole;
@@ -12,7 +13,7 @@ import org.bukkit.Material;
  *
  * <p>Capacités :
  * <ul>
- *   <li>{@link EchosInteractionAbility} (drunk) — affiche des particules violettes
+ *   <li>{@link DiffractionAbility} (drunk) — affiche des particules violettes
  *       autour des joueurs ayant utilisé une capacité active. En mode drunk,
  *       les signaux sont tous des leurres aléatoires : l'information est sans valeur.</li>
  * </ul>
@@ -27,12 +28,12 @@ public final class Aurore extends AbstractRole {
     public Aurore() {
         super(
                 ID,
-                "§d§lL'Aurore",
+                "§6§lL'Aurore",
                 "Votre sagesse illumine le groupe. Éliminez les Flammes et gagnez avec les autres Bâtons.",
                 RoleType.BATON,
                 RoleTeam.BATONS,
-                Material.MAGENTA_STAINED_GLASS
+                Material.ORANGE_CONCRETE_POWDER
         );
-        registerDrunkAbility(new EchosInteractionAbility());
+        registerAbility(new PolarisationAbility());
     }
 }

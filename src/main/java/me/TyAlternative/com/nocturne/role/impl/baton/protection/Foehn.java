@@ -16,7 +16,7 @@ public final class Foehn extends AbstractRole {
         super(
                 ID,
                 "§8§lLe Foehn",
-                "",
+                "Vent d'ouest chaud et discret qui descend des montagnes. Votre protection passive se porte naturellement vers ceux qui en ont le plus besoin. Éliminez les §cFlammes§f et gagnez avec les autres §eBâtons§f.",
                 RoleType.BATON,
                 RoleTeam.BATONS,
                 Material.TUFF

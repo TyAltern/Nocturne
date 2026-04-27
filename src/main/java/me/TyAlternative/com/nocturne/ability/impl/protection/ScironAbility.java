@@ -9,7 +9,6 @@ import me.TyAlternative.com.nocturne.core.phase.PhaseContext;
 import me.TyAlternative.com.nocturne.mechanics.protection.ProtectionType;
 import me.TyAlternative.com.nocturne.player.NocturnePlayer;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -25,7 +24,7 @@ public final class ScironAbility extends AbstractAbility {
     public ScironAbility() {
         super(AbilityIds.SCIRON,
                 "Bénédiction de Sciron",
-                "",
+                "Lorsque vous marquez un §eBâton§f, la prochaine fois que celui-ci utilisera une capacité active sur quelqu'un, cette cible sera protégée en fin de phase.",
                 Material.AIR,
                 AbilityCategory.CAPACITY,
                 AbilityUseType.ACTIVE,
@@ -49,7 +48,7 @@ public final class ScironAbility extends AbstractAbility {
 
         game().getAbilityManager().setCooldown(nocturnePlayer.getPlayerId(), getId(), game().getSettings().getScironCooldown());
         return AbilityResult.success(
-                Component.text("§6[Bénédiction de Sciron]§7 Vous avez marqué un joueur. Le prochain joueur marqué par ce joueur sera protégé.")
+                Component.text("\n§6[Bénédiction de Sciron]§f Vous avez marqué un §eBâton§f. Votre tâche est maintenant accompli.")
         );
     }
 
@@ -58,7 +57,7 @@ public final class ScironAbility extends AbstractAbility {
             @NotNull Player player,
             @NotNull NocturnePlayer nocturnePlayer
     ) {
-        return Component.text("§cVous avez déjà utilisé la Bénédiction de Lips cette manche !");
+        return Component.text("§cVous avez déjà utilisé la §6Bénédiction de Lips§c cette manche !");
     }
 
     @Override
@@ -87,7 +86,6 @@ public final class ScironAbility extends AbstractAbility {
         if (nocturneCaster.getPlayerId() != lastTargetId) return;
         if (!context.hasTarget())  return; // seules les capacités avec cible explicite comptent
         lastMarkedByTargetId = context.getTarget().getUniqueId();
-        getOwner().getPlayer().sendMessage("§e[Boite d'Allumettes]§7 Caster: " + Bukkit.getPlayer(lastTargetId).getName() + " ----> Target: " + Bukkit.getPlayer(lastMarkedByTargetId).getName());
         lastTargetId = null;
     }
 }

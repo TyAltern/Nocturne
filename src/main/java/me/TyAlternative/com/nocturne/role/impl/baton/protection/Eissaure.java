@@ -25,7 +25,7 @@ public final class Eissaure extends AbstractRole {
         super(
                 ID,
                 "§3§lL'Eissaure",
-                "Votre protection est puissante mais fragile. Choisissez bien vos protégés.",
+                "Vent glacé du sud-ouest qui éteint les braises avant qu'elles ne s'embrasent. Éliminez les §cFlammes§f et gagnez avec les autres §eBâtons§f.",
                 RoleType.BATON,
                 RoleTeam.BATONS,
                 Material.WIND_CHARGE

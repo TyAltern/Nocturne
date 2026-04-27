@@ -39,6 +39,15 @@ public final class AbilityIds {
     // Information
     // -------------------------------------------------------------------------
 
+    public static final String REFRACTION             = "REFRACTION";
+    public static final String DIFFRACTION            = "DIFFRACTION";
+    public static final String POLARISATION           = "POLARISATION";
+    public static final String TRANSMISSION           = "TRANSMISSION";
+    public static final String IRRADIATION            = "IRRADIATION";
+    public static final String PENOMBRE               = "PENOMBRE";
+    public static final String SCINTILLEMENT          = "SCINTILLEMENT";
+    public static final String OCCULTATION            = "OCCULTATION";
+
     public static final String DISCERNEMENT_MATINAL   = "DISCERNEMENT_MATINAL";
     public static final String OMBRES_RESIDUELLES     = "OMBRES_RESIDUELLES";
     public static final String CLAIRVOYANCE           = "CLAIRVOYANCE";

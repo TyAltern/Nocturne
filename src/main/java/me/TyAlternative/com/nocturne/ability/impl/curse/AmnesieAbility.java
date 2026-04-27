@@ -122,6 +122,7 @@ public final class AmnesieAbility extends AbstractAbility {
                 () -> {
                     for (Ability ability : fakeRole.getAbilities()) {
                         abstractRole.registerDrunkAbility(ability);
+                        if (ability instanceof AbstractAbility abstractAbility) abstractAbility.injectOwner(nocturnePlayer);
                         ability.onAssigned(player, nocturnePlayer);
                         if (game().getPhaseManager().getCurrentContext() == null) continue;
                         ability.onGameplayPhaseStart(player, nocturnePlayer, game().getPhaseManager().getCurrentContext());

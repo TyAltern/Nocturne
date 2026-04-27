@@ -61,6 +61,7 @@ starting_cooldowns:
   lips: 10
   notos: 10
   sciron: 10
+  polarisation: 10
 
 
 # ============================================================
@@ -93,8 +94,13 @@ abilities:
       radius: 10
       
     sciron:
-      cooldown: 0
+      cooldown: 3
       maxUsePerRound: -1
+
+    polarisation:
+      cooldown: 3
+      min_decoy: 0
+      max_decoy: 2
 
     incandescence:
       targets:

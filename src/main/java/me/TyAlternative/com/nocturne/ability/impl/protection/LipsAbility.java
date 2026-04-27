@@ -18,7 +18,7 @@ public final class LipsAbility extends AbstractAbility {
     public LipsAbility() {
         super(AbilityIds.LIPS,
                 "Bénédiction de Lips",
-                "",
+                "Vous pouvez marquer une personne pour lui interdire d'utiliser son §cEmbrasement§f cette manche (s'il en a un). Tous ceux qu'il tenterait§c d'embraser§f seront épargnés.",
                 Material.AIR,
                 AbilityCategory.CAPACITY,
                 AbilityUseType.ACTIVE,
@@ -39,7 +39,7 @@ public final class LipsAbility extends AbstractAbility {
     protected @NotNull AbilityResult executeLogic(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull AbilityContext context) {
         if (!isDrunk()) game().getCurrentRound().getEmbrasementManager().addNewLipsBanFlamme(context.getTarget().getUniqueId());
         return AbilityResult.success(
-                Component.text("[Bénédiction de Lips] Vous avez empêché un joueur d'embraser des joueurs pour cette manche.")
+                Component.text("\n§6[Bénédiction de Lips]§f Vos actions vont permettre de peut être sauver des bâtons.")
         );
 
     }
@@ -59,6 +59,6 @@ public final class LipsAbility extends AbstractAbility {
             @NotNull Player player,
             @NotNull NocturnePlayer nocturnePlayer
     ) {
-        return Component.text("§cVous avez déjà utilisé la Bénédiction de Lips cette manche !");
+        return Component.text("§cVous avez déjà utilisé la §6Bénédiction de Lips§f cette manche !");
     }
 }

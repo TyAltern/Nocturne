@@ -18,33 +18,16 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Discernement Matinal — capacité passive de l'Aube.
- *
- * <p>À la fin de chaque vote, l'Aube reçoit une information binaire sur les votants
- * ayant voté <em>contre</em> le joueur éliminé :
- * <ul>
- *   <li>Si <strong>tous</strong> ces votants apparaissent comme des Bâtons (selon leur
- *       {@link RoleType}), l'Aube en est informée.</li>
- *   <li>Sinon, l'Aube sait qu'<strong>au moins une Flamme</strong> a voté contre le voté,
- *       sans connaître son identité.</li>
- * </ul>
- *
- * <p>Note : "apparaître comme Bâton" se base sur le {@code RoleType} affiché,
- * ce qui signifie qu'un Silex/Acier (type {@code FLAMME}) sera détecté comme
- * non-Bâton s'il a voté contre le joueur éliminé.
- */
-@SuppressWarnings({"DataFlowIssue","unused"})
-public final class DiscernementMatinalAbility extends AbstractAbility {
-    /** ID public pour référence depuis d'autres classes (ex: AbilityIds). */
-    public static final String ABILITY_ID = AbilityIds.DISCERNEMENT_MATINAL; // réutilise la constante existante
 
-    public DiscernementMatinalAbility() {
+@SuppressWarnings({"DataFlowIssue","unused"})
+public final class ScintillementAbility extends AbstractAbility {
+
+    public ScintillementAbility() {
         super(
-                AbilityIds.DISCERNEMENT_MATINAL,
-                "Discernement Matinal",
-                "À la fin de chaque vote, vous saurez si au moins une Flamme a voté "
-                        + "contre le joueur éliminé.",
+                AbilityIds.SCINTILLEMENT,
+                "Scintillement",
+                "À la fin de chaque vote, vous saurez si au moins une §cFlamme§f a voté "
+                        + "contre l'éliminé.",
                 Material.AIR,
                 AbilityCategory.CAPACITY,
                 AbilityUseType.PASSIVE,
@@ -82,11 +65,10 @@ public final class DiscernementMatinalAbility extends AbstractAbility {
             @Nullable UUID votedPlayerId,
             @NotNull List<VoteEntry> allVotes
     ) {
-        super.afterVoteCalculation(player, nocturnePlayer, votedPlayerId, allVotes);
 
         if (votedPlayerId == null) {
             player.sendMessage(Component.text(
-                    "§7[Discernement Matinal] §8Aucun joueur n'a été éliminé au vote."
+                    "\n§6[Scintillement] §fPersonne n'a été éliminé aux précédents votes. Cela vous suffit comme bonne nouvelle."
             ));
             return;
         }
@@ -100,7 +82,7 @@ public final class DiscernementMatinalAbility extends AbstractAbility {
             // Ne dois pas arriver (un joueur ne peut être éliminé sans votes),
             // mais on gère le cas pour la robustesse.
             player.sendMessage(Component.text(
-                    "§7[Discernement Matinal] §8Impossible de déterminer les votants."
+                    "\n§6[Scintillement] §fUne force obscure vous cache les votants, méfiez-vous..."
             ));
             return;
         }
@@ -119,15 +101,15 @@ public final class DiscernementMatinalAbility extends AbstractAbility {
 
         if (allAreBatons) {
             player.sendMessage(Component.text(
-                    "§7[Discernement Matinal] §aTous les votants contre §e"
+                    "\n§6[Scintillement] §fTous les votants contre §e"
                             + getPlayerName(votedPlayerId)
-                            + "§a apparaissent comme des Bâtons."
+                            + "§f apparaissent comme des §eBâtons§f."
             ));
         } else {
             player.sendMessage(Component.text(
-                    "§7[Discernement Matinal] §cAu moins une Flamme a voté contre §e"
+                    "\n§6[Scintillement] §fAu moins une §cFlamme§f a voté contre §e"
                             + getPlayerName(votedPlayerId)
-                            + "§c ! Leur identité et nombre vous est inconnue."
+                            + "§f ! Leur identité et nombre vous est inconnue."
             ));
         }
 

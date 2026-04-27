@@ -18,8 +18,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 /**
- * Ombres Résiduelles — capacité passive du Crépuscule.
- *
  * <p>À la fin de chaque vote, le Crépuscule apprend la moitié des noms
  * (arrondi inférieur) des joueurs n'ayant <em>pas</em> voté contre le
  * joueur éliminé. Les noms révélés sont choisis aléatoirement parmi
@@ -31,17 +29,15 @@ import java.util.*;
  * <p>Un joueur qui s'abstient (vote sans cible) est considéré comme n'ayant
  * pas voté contre le joueur éliminé.
  */
-public final class OmbresResiduellesAbility extends AbstractAbility {
-    /** ID public pour référence depuis d'autres classes (ex: AbilityIds). */
-    public static final String ABILITY_ID = AbilityIds.OMBRES_RESIDUELLES; // réutilise la constante existante
+public final class PenombreAbility extends AbstractAbility {
 
     private final Random random = game().getRandom();
 
-    public OmbresResiduellesAbility() {
+    public PenombreAbility() {
         super(
-                AbilityIds.OMBRES_RESIDUELLES,
-                "Ombres Résiduelles",
-                "À la fin de chaque vote, vous connaissez la moitié des joueurs "
+                AbilityIds.PENOMBRE,
+                "Pénombre",
+                "À la fin de chaque vote, vous connaitrez la moitié des personnes "
                         + "n'ayant pas voté contre l'éliminé.",
                 Material.AIR,
                 AbilityCategory.CAPACITY,
@@ -80,7 +76,7 @@ public final class OmbresResiduellesAbility extends AbstractAbility {
     ) {
         if (votedPlayerId == null) {
             player.sendMessage(Component.text(
-                    "§7[Ombres Résiduelles] §8Aucun joueur éliminé — aucune information."
+                    "\n§6[Pénombre] §fPersonne n'a été éliminé aux précédents votes. Cela vous suffit comme bonne nouvelle."
             ));
             return;
         }
@@ -110,7 +106,7 @@ public final class OmbresResiduellesAbility extends AbstractAbility {
 
         if (revealCount == 0) {
             player.sendMessage(Component.text(
-                    "§7[Ombres Résiduelles] §8Pas assez de non-votants pour révéler des noms."
+                    "\n§6[Pénombre] §fIl n'y a pas eu assez de non-votants pour révéler des noms."
             ));
             return;
         }
@@ -118,11 +114,9 @@ public final class OmbresResiduellesAbility extends AbstractAbility {
         // Sélection aléatoire
         Collections.shuffle(nonVoters, random);
         List<String> revealed = nonVoters.subList(0, revealCount);
-
+        String s = revealed.size()>1? "s":"";
         player.sendMessage(Component.text(
-                "§7[Ombres Résiduelles] §7Ces joueurs n'ont§e PAS§7 voté contre §e"
-//                        + resolvePlayerName(votedPlayerId) + "§7 : §f"
-                        + "le joueur éliminé" + "§7 : §f"
+                "\n§6[Pénombre] §fCe" + s +" §eBâton" + s +"§f n'ont pas voté contre l'éliminé" + "§7 : §f"
                         + String.join("§7, §f", revealed)
         ));
 

@@ -25,7 +25,7 @@ public final class CaeciasAbility extends AbstractAbility {
         super(
                 AbilityIds.CAECIAS,
                 "Bénédiction de Caecias",
-                "Vous êtes protégé par défaut contre tous types §cd'Embrasement§r, cependant, si vous vous retrouvez seul à la fin d'un round (personne à moins de 10.0 blocs) vous perdez cette résistance.",
+                "Vous êtes protégé par défaut contre tout Embrasement. Cependant, si vous vous retrouvez seul en fin de phase (aucun joueur à moins de §710§r blocs), vous perdez cette protection.",
                 Material.AIR,
                 AbilityCategory.CAPACITY,
                 AbilityUseType.PASSIVE,
@@ -86,7 +86,7 @@ public final class CaeciasAbility extends AbstractAbility {
 
     @Override
     public @NotNull String getDescription() {
-        return "Vous êtes protégé par défaut contre tous types §cd'Embrasement§r, cependant, si vous vous retrouvez seul à la fin d'un round (personne à moins de §6" + (int) radius + "§r blocs) vous perdez cette résistance.";
+        return "Vous êtes protégé par défaut contre tout §cEmbrasement§f. Cependant, si vous vous retrouvez seul en fin de phase (personne à moins de §7" + (int) radius + "§r blocs), vous perdez cette protection.";
     }
 
     @Override

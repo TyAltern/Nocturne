@@ -3,12 +3,15 @@ package me.TyAlternative.com.nocturne.ability.impl.info;
 import me.TyAlternative.com.nocturne.Nocturne;
 import me.TyAlternative.com.nocturne.ability.AbilityIds;
 import me.TyAlternative.com.nocturne.ability.AbstractAbility;
+
 import me.TyAlternative.com.nocturne.ability.DrunkSupport;
 import me.TyAlternative.com.nocturne.api.ability.*;
+
 import me.TyAlternative.com.nocturne.api.phase.PhaseType;
 import me.TyAlternative.com.nocturne.core.phase.PhaseContext;
 import me.TyAlternative.com.nocturne.mechanics.particle.DelayedParticleScheduler;
 import me.TyAlternative.com.nocturne.player.NocturnePlayer;
+
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -16,39 +19,45 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
+
 
 /**
- * Échos d'Interaction — capacité passive de l'Aurore.
+ * Symétrique à Diffraction, mais axée sur les <em>cibles</em> plutôt que
+ * sur les utilisateurs de capacité. Chaque fois qu'un joueur est ciblé par la
+ * capacité active d'un autre joueur, la Lueur voit des particules dorées
+ * ({@link Particle#END_ROD}) apparaître autour de ce joueur après un délai
+ * aléatoire de 10 à 60 secondes.
  *
- * <p>Chaque fois qu'un joueur utilise une capacité active sur quelqu'un,
- * l'Aurore voit des particules violettes ({@link Particle#WITCH}) apparaître autour
- * de ce joueur après un délai aléatoire de 2 à 3 secondes.
+ * <p>Un joueur leurre aléatoire reçoit également des particules au même moment.
+ * Géré par {@link DelayedParticleScheduler}.
  *
- * <p>Un joueur leurre aléatoire reçoit également des particules au même moment
- * pour empêcher toute déduction certaine. Géré par {@link DelayedParticleScheduler}.
- *
- * <p>Seules les utilisations de succès génèrent un signal visuel.
+ * <p>Un {@link AbilityContext} avec une cible explicite ({@code context.hasTarget()})
+ * est nécessaire pour enregistrer un signal.
  */
-public final class EchosInteractionAbility extends AbstractAbility {
-    /** ID public pour référence depuis d'autres classes (ex: AbilityIds). */
-    public static final String ABILITY_ID = AbilityIds.ECHOS_INTERACTION; // réutilise la constante existante
 
-    private static final int      MIN_DELAY = 2; // secondes
-    private static final int      MAX_DELAY = 3; // secondes
-    private static final Particle PARTICLE = Particle.WITCH; // Violet
+public final class RefractionAbility extends AbstractAbility {
+
+    private static final int      MIN_DELAY  = 2;  // secondes
+    private static final int      MAX_DELAY  = 3;  // secondes
+    private static final Particle PARTICLE   = Particle.END_ROD;   // doré/blanc discret
+
 
     private DelayedParticleScheduler scheduler;
-    private final List<UUID> echosPlayersId;
+    private final List<UUID> refractionPlayersId;
 
     private final Random random = game().getRandom();
 
-    public EchosInteractionAbility() {
+
+    public RefractionAbility() {
         super(
-                AbilityIds.ECHOS_INTERACTION,
-                "Échos d'Interaction",
-                "Vous percevez des particules violettes autour des joueurs ayant utilisé "
-                        + "une capacité active (délai 2–3s). Un leurre est toujours inclus.",
+                AbilityIds.REFRACTION,
+                "Réfraction",
+                "Vous percevez des particules dorées autour des joueurs ayant été ciblés "
+                        + "par une capacité active (délai 2–3s). Un leurre est toujours inclus.",
                 Material.AIR,
                 AbilityCategory.CAPACITY,
                 AbilityUseType.PASSIVE,
@@ -56,7 +65,7 @@ public final class EchosInteractionAbility extends AbstractAbility {
         );
         setAllowedPhases(PhaseType.GAMEPLAY);
 
-        this.echosPlayersId = new ArrayList<>();
+        this.refractionPlayersId = new ArrayList<>();
     }
 
 
@@ -79,27 +88,23 @@ public final class EchosInteractionAbility extends AbstractAbility {
     // Initialisation
     // -------------------------------------------------------------------------
 
-
     @Override
     public void onAssigned(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer) {
-        super.onAssigned(player, nocturnePlayer);
-
 
         // Créer le scheduler une fois pour la durée de vie de cette ability
         scheduler = new DelayedParticleScheduler(Nocturne.getInstance());
     }
 
+
+
     // -------------------------------------------------------------------------
     // Hook : une capacité active vient d'être utilisée
     // -------------------------------------------------------------------------
-
-
     @Override
     public void onGameplayPhaseStart(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull PhaseContext phaseContext) {
-        super.onGameplayPhaseStart(player, nocturnePlayer, phaseContext);
         if (scheduler == null) return;
 
-        echosPlayersId.clear();
+        refractionPlayersId.clear();
 
         int phaseDuration = phaseContext.getRemainingSeconds();
         int minPhaseDuration = phaseDuration / 6;
@@ -110,8 +115,14 @@ public final class EchosInteractionAbility extends AbstractAbility {
     }
 
     @Override
-    public void onActiveAbilityUsed(@NotNull Player caster, @NotNull NocturnePlayer nocturneCaster, @NotNull AbilityContext context, @NotNull AbilityResult result) {
+    public void onActiveAbilityUsed(
+            @NotNull Player caster,
+            @NotNull NocturnePlayer nocturneCaster,
+            @NotNull AbilityContext context,
+            @NotNull AbilityResult result
+    ) {
         if (!result.isSuccess()) return;
+        if (!context.hasTarget())  return; // seules les capacités avec cible explicite comptent
 
         NocturnePlayer self = getOwner();
         if (self == null || scheduler == null) return;
@@ -119,18 +130,23 @@ public final class EchosInteractionAbility extends AbstractAbility {
         if (isDrunk()) {
             manageDrunkAbility(self);
         }
+        Player target   = context.getTarget();
+        if (target == null) return;
+        NocturnePlayer nocturneTarget = game().getPlayerManager().get(target);
+        if (nocturneTarget == null) return;
+
         // Ne pas s'observer soi-même
-        if (caster.getUniqueId().equals(self.getPlayerId())) return;
+//        if (target.getUniqueId().equals(self.getPlayerId())) return;
 
         // Vérifie que le caster n'es pas déja affiché
-        if (echosPlayersId.contains(nocturneCaster.getPlayerId())) return;
+        if (refractionPlayersId.contains(target.getUniqueId())) return;
 
         // Ajoute le caster à la pool.
-        echosPlayersId.add(nocturneCaster.getPlayerId());
+        refractionPlayersId.add(target.getUniqueId());
 
         scheduler.schedule(
                 self,
-                nocturneCaster,
+                nocturneTarget,
                 PARTICLE,
                 MIN_DELAY,
                 MAX_DELAY
@@ -138,9 +154,11 @@ public final class EchosInteractionAbility extends AbstractAbility {
     }
 
     private void manageDrunkAbility(@NotNull NocturnePlayer self) {
-        switch (random.nextInt(0,3)) {
-            case 1 -> scheduleDecoy(self, MIN_DELAY, MAX_DELAY);
-            case 2 -> {
+        int rng = random.nextInt(0,4);
+        switch (rng) {
+            case 1,2 -> scheduleDecoy(self, MIN_DELAY, MAX_DELAY);
+
+            case 3 -> {
                 scheduleDecoy(self, MIN_DELAY, MAX_DELAY);
                 scheduleDecoy(self, MIN_DELAY, MAX_DELAY);
             }
@@ -151,9 +169,9 @@ public final class EchosInteractionAbility extends AbstractAbility {
         NocturnePlayer decoy = findDecoy();
 
         if (decoy == null) return;
-        if (echosPlayersId.contains(decoy.getPlayerId())) return;
+        if (refractionPlayersId.contains(decoy.getPlayerId())) return;
 
-        echosPlayersId.add(decoy.getPlayerId());
+        refractionPlayersId.add(decoy.getPlayerId());
 
         scheduler.schedule(
                 self,
@@ -166,7 +184,7 @@ public final class EchosInteractionAbility extends AbstractAbility {
 
     private @Nullable NocturnePlayer findDecoy() {
         List<NocturnePlayer> players = new ArrayList<>(game().getPlayerManager().getAlive().stream()
-                .filter(np -> !echosPlayersId.contains(np.getPlayerId()))
+                .filter(np -> !refractionPlayersId.contains(np.getPlayerId()))
                 .toList());
         players.remove(getOwner());
         if (players.isEmpty()) return null;
@@ -179,4 +197,5 @@ public final class EchosInteractionAbility extends AbstractAbility {
     public @Nullable Component getCannotExecuteMessage(@NotNull Player p, @NotNull NocturnePlayer np) {
         return null;
     }
+
 }

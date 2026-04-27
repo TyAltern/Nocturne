@@ -79,6 +79,7 @@ public final class GameSettings {
     private int lipsStartingCooldown = 10;
     private int notosStartingCooldown = 10;
     private int scironStartingCooldown = 10;
+    private int polarisationStartingCooldown = 10;
 
 
 
@@ -106,6 +107,12 @@ public final class GameSettings {
         private int scironCooldown = 0;
         private int scironMaxUse = -1;
 
+    // PROTECTION
+
+        // POLARISATION
+        private int polarisationCooldown = 3;
+        private int polarisationMinDecoy = 0;
+        private int polarisationMaxDecoy = 2;
 
     // FLAMMES
         // POUDRE DE CHEMIEE
@@ -189,6 +196,7 @@ public final class GameSettings {
     public int getLipsStartingCooldown()                              { return lipsStartingCooldown; }
     public int getNotosStartingCooldown()                             { return notosStartingCooldown; }
     public int getScironStartingCooldown()                            { return scironStartingCooldown; }
+    public int getPolarisationStartingCooldown()                      { return polarisationStartingCooldown; }
 // ABILITIES
     public double getZephyrRadius()                                   { return zephyrRadius; }
     public boolean shouldZephyrProtectOnlyUnprotected()               { return zephyrProtectOnlyUnprotected; }
@@ -200,6 +208,10 @@ public final class GameSettings {
     public double getMurmurationRadius()                              { return murmurationRadius; }
     public int getScironMaxUse()                                      { return scironMaxUse; }
     public int getScironCooldown()                                    { return scironCooldown; }
+
+    public int getPolarisationCooldown()                              { return polarisationCooldown; }
+    public int getPolarisationMinDecoy()                              { return polarisationMinDecoy; }
+    public int getPolarisationMaxDecoy()                              { return polarisationMaxDecoy; }
 
     public @NotNull List<String> getIncandescenceAbilityCandidates()  { return incandescenceAbilityCandidates; }
     public int getCorrosionNegativeWeight()                           { return corrosionNegativeWeight; }
@@ -250,6 +262,7 @@ public final class GameSettings {
     void setLipsStartingCooldown(int cooldown)                        { this.lipsStartingCooldown = cooldown; }
     void setNotosStartingCooldown(int cooldown)                       { this.notosStartingCooldown = cooldown; }
     void setScironStartingCooldown(int cooldown)                      { this.scironStartingCooldown = cooldown; }
+    void setPolarisationStartingCooldown(int cooldown)                { this.polarisationStartingCooldown = cooldown; }
 // ABILITIES
     void setZephyrRadius(double radius)                               { this.zephyrRadius = radius; }
     void setZephyrProtectOnlyUnprotected(boolean protect)             { this.zephyrProtectOnlyUnprotected = protect; }
@@ -261,6 +274,9 @@ public final class GameSettings {
     void setMurmurationRadius(double radius)                          { this.murmurationRadius = radius; }
     void setScironMaxUse(int maxUse)                                  { this.scironMaxUse = maxUse; }
     void setScironCooldown(int cooldown)                              { this.scironCooldown = cooldown; }
+    void setPolarisationCooldown(int cooldown)                        { this.polarisationCooldown = cooldown; }
+    void setPolarisationMinDecoy(int minDecoy)                        { this.polarisationMinDecoy = minDecoy; }
+    void setPolarisationMaxDecoy(int maxDecoy)                        { this.polarisationMaxDecoy = maxDecoy; }
     void setIncandescenceAbilityCandidates(List<String> candidates)   { this.incandescenceAbilityCandidates = candidates; }
     void setCorrosionNegativeWeight(int weight)                       { this.corrosionNegativeWeight = weight; }
     void setCorrosionPositiveWeight(int weight)                       { this.corrosionPositiveWeight = weight; }

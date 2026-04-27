@@ -1,6 +1,6 @@
 package me.TyAlternative.com.nocturne.role.impl.baton.information;
 
-import me.TyAlternative.com.nocturne.ability.impl.info.OmbresResiduellesAbility;
+import me.TyAlternative.com.nocturne.ability.impl.info.PenombreAbility;
 import me.TyAlternative.com.nocturne.api.role.RoleTeam;
 import me.TyAlternative.com.nocturne.api.role.RoleType;
 import me.TyAlternative.com.nocturne.role.AbstractRole;
@@ -12,7 +12,7 @@ import org.bukkit.Material;
  *
  * <p>Capacités :
  * <ul>
- *   <li>{@link OmbresResiduellesAbility} — après chaque vote, révèle la moitié
+ *   <li>{@link PenombreAbility} — après chaque vote, révèle la moitié
  *       des joueurs n'ayant pas voté contre l'éliminé.</li>
  * </ul>
  */
@@ -23,12 +23,12 @@ public final class Crepuscule extends AbstractRole {
     public Crepuscule() {
         super(
                 ID,
-                "§c§lLe Crépuscule",
+                "§d§lLe Crépuscule",
                 "Les ombres vous livrent leurs secrets. Éliminez les Flammes et gagnez avec les autres Bâtons.",
                 RoleType.BATON,
                 RoleTeam.BATONS,
-                Material.RED_STAINED_GLASS
+                Material.PURPLE_CONCRETE_POWDER
         );
-        registerAbility(new OmbresResiduellesAbility());
+        registerAbility(new PenombreAbility());
     }
 }

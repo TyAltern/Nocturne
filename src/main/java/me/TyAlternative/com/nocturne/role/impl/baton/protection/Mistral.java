@@ -16,7 +16,7 @@ public final class Mistral extends AbstractRole {
         super(
                 ID,
                 "§7§lLe Mistral",
-                "",
+                "Vent violent et imprévisible du nord. Quand vous frappez, vous frappez fort : une seule fois, mais pour tous. Éliminez les §cFlammes§f et gagnez avec les autres§e Bâtons§f.",
                 RoleType.BATON,
                 RoleTeam.BATONS,
                 Material.PHANTOM_MEMBRANE

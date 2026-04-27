@@ -23,7 +23,7 @@ public final class EurosAbility extends AbstractAbility {
     public EurosAbility() {
         super(AbilityIds.EUROS,
                 "Bénédiction d'Euros",
-                "",
+                "La grâce d'§6Euros§f fait que vous protéger la dernière personne qui vous à marqué.",
                 Material.AIR,
                 AbilityCategory.CAPACITY,
                 AbilityUseType.PASSIVE,
@@ -77,6 +77,14 @@ public final class EurosAbility extends AbstractAbility {
             return;
         }
         game().getCurrentRound().getProtectionManager().protect(lastCasterId, ProtectionType.EUROS);
+
+    }
+
+    @Override
+    public @NotNull String getDescription() {
+        String addition = game().getSettings().shouldEurosSelfProtectionIfNotMarked()? " Cependant, si personne ne vous a ciblé, vous vous protégez vous-même." : "";
+
+        return "La grâce d'§6Euros§f fait que vous protéger la dernière personne qui vous à marqué." + addition;
 
     }
 }

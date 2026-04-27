@@ -1,6 +1,7 @@
 package me.TyAlternative.com.nocturne.role.impl.baton.information;
 
-import me.TyAlternative.com.nocturne.ability.impl.info.DiscernementMatinalAbility;
+import me.TyAlternative.com.nocturne.ability.impl.info.DiffractionAbility;
+import me.TyAlternative.com.nocturne.ability.impl.info.ScintillementAbility;
 import me.TyAlternative.com.nocturne.api.role.RoleTeam;
 import me.TyAlternative.com.nocturne.api.role.RoleType;
 import me.TyAlternative.com.nocturne.role.AbstractRole;
@@ -12,7 +13,7 @@ import org.bukkit.Material;
  *
  * <p>Capacités :
  * <ul>
- *   <li>{@link DiscernementMatinalAbility} — après chaque vote, révèle si au moins
+ *   <li>{@link ScintillementAbility} — après chaque vote, révèle si au moins
  *       une Flamme a voté contre le joueur éliminé.</li>
  * </ul>
  */
@@ -23,12 +24,12 @@ public final class Aube extends AbstractRole {
     public Aube() {
         super(
                 ID,
-                "§6§lL'Aube",
+                "§c§lL'Aube",
                 "Discernez les menaces cachées. Éliminez les Flammes et gagnez avec les autres Bâtons.",
                 RoleType.BATON,
                 RoleTeam.BATONS,
-                Material.ORANGE_STAINED_GLASS
+                Material.RED_CONCRETE_POWDER
         );
-        registerAbility(new DiscernementMatinalAbility());
+        registerAbility(new DiffractionAbility());
     }
 }

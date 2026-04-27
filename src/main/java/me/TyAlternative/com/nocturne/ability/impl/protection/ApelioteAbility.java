@@ -26,7 +26,7 @@ public final class ApelioteAbility extends AbstractAbility {
         super(
                 AbilityIds.APELIOTE,
                 "Bénédiction d'Apéliote",
-                "Protégez un joueur contre l'Embrasement des Flammes jusqu'à la fin de la phase.",
+                "Vous pouvez protéger un joueur de votre choix contre§c l'Embrasement§f des §cFlammes§f jusqu'à la fin de la§b phase§f.",
                 Material.AIR,
                 AbilityCategory.CAPACITY,
                 AbilityUseType.ACTIVE,
@@ -53,14 +53,14 @@ public final class ApelioteAbility extends AbstractAbility {
     protected @NotNull AbilityResult executeLogic(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull AbilityContext context) {
         game().getCurrentRound().getProtectionManager().protect(context.getTarget().getUniqueId(), ProtectionType.APELIOTE);
         return AbilityResult.success(
-                Component.text("§bVotre §6Apéliote§b a protégé un joueur. Celui-ci ne craindra plus les §cFlammes§b pour un tour.")
+                Component.text("\n§6[Bénédiction d'Apéliote]§f Vous avez protégé un joueur. Celui-ci ne craindra plus les §cFlammes§f pour un tour.")
         );
     }
 
     @Override
     protected @NotNull AbilityResult executeDrunkLogic(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull AbilityContext context) {
         return AbilityResult.success(
-                Component.text("§bVotre §6Apéliote§b a protégé un joueur. Celui-ci ne craindra plus les §cFlammes§b pour un tour.")
+                Component.text("\n§6[Bénédiction d'Apéliote]§f Vous avez protégé un joueur. Celui-ci ne craindra plus les §cFlammes§f pour un tour.")
         );
     }
 
@@ -75,6 +75,6 @@ public final class ApelioteAbility extends AbstractAbility {
             @NotNull Player player,
             @NotNull NocturnePlayer nocturnePlayer
     ) {
-        return Component.text("§cVous avez déjà utilisé votre Apéliote cette manche !");
+        return Component.text("§cVous avez déjà utilisé la §6Bénédiction d'Apéliote§c cette manche!");
     }
 }

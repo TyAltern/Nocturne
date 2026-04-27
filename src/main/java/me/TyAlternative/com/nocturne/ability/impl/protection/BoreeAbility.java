@@ -25,7 +25,7 @@ public final class BoreeAbility extends AbstractAbility {
         super(
                 AbilityIds.BOREE,
                 "Bénédiction de Borée",
-                "Une fois par partie, protégez tous les joueurs contre l'Embrasement des Flammes.",
+                "Une fois par partie, protégez tous les joueurs contre §cl'Embrasement§f des§c Flammes§f.",
                 Material.AIR,
                 AbilityCategory.CAPACITY,
                 AbilityUseType.ACTIVE,
@@ -57,7 +57,7 @@ public final class BoreeAbility extends AbstractAbility {
         }
 
         return AbilityResult.success(
-                Component.text("§9Votre §6Borée §9a recouvert toute la partie: tous les joueurs ont été protégé de §cl'Embrasement§9 !")
+                Component.text("\n§6[Bénédiction de Borée]§f Votre vent a recouvert toute la partie: tous les§e bâtons§f ont été protégé de §cl'Embrasement§f.")
         );
     }
 
@@ -73,7 +73,7 @@ public final class BoreeAbility extends AbstractAbility {
             @NotNull AbilityContext context
     ) {
         return AbilityResult.success(
-                Component.text("§9Votre §6Borée §9a recouvert toute la partie: tous les joueurs ont été protégé de §Cl'Embrasement§9 !")
+                Component.text("\n§6[Bénédiction de Borée]§f Votre vent a recouvert toute la partie: tous les§e bâtons§f ont été protégé de §cl'Embrasement§f.")
         );
     }
 
@@ -88,7 +88,7 @@ public final class BoreeAbility extends AbstractAbility {
             @NotNull Player player,
             @NotNull NocturnePlayer nocturnePlayer
     ) {
-        return Component.text("§cVous avez déjà utilisé votre §6Borée§c cette partie !");
+        return Component.text("§cVous avez déjà utilisé la §6Bénédiction de Borée§c cette partie!");
     }
 
 }

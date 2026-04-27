@@ -11,7 +11,7 @@ import java.util.*;
 /**
  * Planificateur de particules retardées avec leurre intégré.
  *
- * <p>Utilisé par les capacités visuelles d'information ({@code EchosInteractionAbility},
+ * <p>Utilisé par les capacités visuelles d'information ({@code DiffractionAbility},
  * {@code ReverbérationLumineuse}) pour afficher des particules autour de joueurs
  * ciblés après un délai aléatoire, accompagnées d'un leurre sur un joueur innocent.
  *

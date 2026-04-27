@@ -16,7 +16,7 @@ public final class Sirocco extends AbstractRole {
         super(
                 ID,
                 "§6§lLe Sirocco",
-                "",
+                "Vent chaud du désert, au sud. Vous pouvez étendre votre protection à plusieurs alliés. Éliminez les §cFlammes§f et gagnez avec les autres§e Bâtons§f.",
                 RoleType.BATON,
                 RoleTeam.BATONS,
                 Material.RED_SAND

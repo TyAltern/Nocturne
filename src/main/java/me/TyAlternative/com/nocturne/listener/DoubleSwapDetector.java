@@ -79,7 +79,6 @@ public final class DoubleSwapDetector {
      * Utilisé par le listener pour savoir si l'exécution différée doit encore avoir lieu.
      */
     public boolean hasPendingSwap(@NotNull UUID playerId) {
-        Nocturne.getInstance().getLogger().info("Inside the vacuum: " + pendingSwap.get(playerId) + " -> "+ Boolean.TRUE.equals(pendingSwap.get(playerId)));
         return Boolean.TRUE.equals(pendingSwap.get(playerId));
     }
 
