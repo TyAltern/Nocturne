@@ -2,6 +2,7 @@ package me.TyAlternative.com.nocturne.core;
 
 import me.TyAlternative.com.nocturne.ability.AbilityManager;
 import me.TyAlternative.com.nocturne.ability.TickingAbilityManager;
+import me.TyAlternative.com.nocturne.api.event.GameEventBus;
 import me.TyAlternative.com.nocturne.api.phase.PhaseType;
 import me.TyAlternative.com.nocturne.api.role.RoleTeam;
 import me.TyAlternative.com.nocturne.composition.CompositionManager;
@@ -16,6 +17,7 @@ import me.TyAlternative.com.nocturne.mechanics.glowing.GlowingManager;
 import me.TyAlternative.com.nocturne.mechanics.particle.TickingParticleTimer;
 import me.TyAlternative.com.nocturne.mechanics.protection.ProtectionManager;
 import me.TyAlternative.com.nocturne.mechanics.sign.SignManager;
+import me.TyAlternative.com.nocturne.mechanics.vent.VentManager;
 import me.TyAlternative.com.nocturne.mechanics.vote.VoteManager;
 import me.TyAlternative.com.nocturne.player.NocturnePlayer;
 import me.TyAlternative.com.nocturne.player.PlayerManager;
@@ -88,6 +90,7 @@ public final class NocturneGame {
     private final AnonymityManager   anonymityManager;
     private final EliminationManager eliminationManager;
     private final VictoryManager     victoryManager;
+    private final VentManager        ventManager;
     private final PhaseManager       phaseManager;
     private final MessageManager     messageManager;
     private final BossBarManager     bossBarManager;
@@ -97,6 +100,7 @@ public final class NocturneGame {
     private final GameSettings       settings;
     private final Logger             logger;
     private final Random             random;
+    private final GameEventBus       eventBus;
 
     // -------------------------------------------------------------------------
     // État de manche (recréé à chaque nouvelle manche)
@@ -133,21 +137,23 @@ public final class NocturneGame {
         this.logger = logger;
 
         // Managers sans dépendances
-        this.playerManager      = new PlayerManager();
-        this.compositionManager = new CompositionManager();
-        this.roleRegistry       = registry;
-        this.signManager        = new SignManager();
-        this.glowingManager     = new GlowingManager();
-        this.random             = new Random();
-        this.messageManager     = new MessageManager(settings);
+        this.playerManager       = new PlayerManager();
+        this.eventBus            = new GameEventBus(playerManager, logger);
+        this.compositionManager  = new CompositionManager();
+        this.roleRegistry        = registry;
+        this.signManager         = new SignManager();
+        this.glowingManager      = new GlowingManager();
+        this.random              = new Random();
+        this.messageManager      = new MessageManager(settings);
         this.tickingParticleTimer = new TickingParticleTimer();
+        this.ventManager         = new VentManager(this);
 
         // Managers avec dépendances simples
         this.abilityManager      = new AbilityManager(playerManager);
         this.tickingAbilityManager = new TickingAbilityManager(playerManager, abilityManager, logger);
-        this.voteManager         = new VoteManager(playerManager, messageManager);
+        this.voteManager         = new VoteManager(playerManager, eventBus, messageManager);
         this.anonymityManager    = new AnonymityManager(playerManager, settings);
-        this.eliminationManager  = new EliminationManager(playerManager, anonymityManager, logger);
+        this.eliminationManager  = new EliminationManager(playerManager, anonymityManager, eventBus, logger);
         this.roleDistributor     = new RoleDistributor(registry, playerManager, logger);
 
         // VictoryManager référence this -> initialisé après le reste
@@ -238,8 +244,8 @@ public final class NocturneGame {
      */
     private void startNewRound(int round) {
         // Chaque manche crée ses propres managers de mécaniques
-        ProtectionManager protection = new ProtectionManager();
-        EmbrasementManager embrasement = new EmbrasementManager();
+        ProtectionManager protection = new ProtectionManager(eventBus);
+        EmbrasementManager embrasement = new EmbrasementManager(eventBus);
         DisparitionManager disparition = new DisparitionManager();
 
         currentRound = new RoundContext(round, embrasement, protection, disparition);
@@ -399,29 +405,31 @@ public final class NocturneGame {
     // Accesseurs (lecture seule)
     // -------------------------------------------------------------------------
 
-    public @NotNull PlayerManager      getPlayerManager()       { return playerManager; }
-    public @NotNull CompositionManager getCompositionManager()  { return compositionManager; }
-    public @NotNull RoleRegistry       getRoleRegistry()        { return roleRegistry; }
-    public @NotNull AbilityManager     getAbilityManager()      { return abilityManager; }
-    public @NotNull TickingAbilityManager getTickingAbilityManager() { return tickingAbilityManager; }
-    public @NotNull TickingParticleTimer getTickingParticleTimer() { return tickingParticleTimer; }
-    public @NotNull VoteManager        getVoteManager()         { return voteManager; }
-    public @NotNull SignManager        getSignManager()         { return signManager; }
-    public @NotNull AnonymityManager   getAnonymityManager()    { return anonymityManager; }
-    public @NotNull EliminationManager getEliminationManager()  { return eliminationManager; }
-    public @NotNull VictoryManager     getVictoryManager()      { return victoryManager; }
-    public @NotNull PhaseManager       getPhaseManager()        { return phaseManager; }
-    public @NotNull MessageManager     getMessageManager()      { return messageManager; }
-    public @NotNull BossBarManager     getBossBarManager()      { return bossBarManager; }
-    public @NotNull ActionBarManager   getActionBarManager()    { return actionBarManager; }
-    public @NotNull SoundManager       getSoundManager()        { return soundManager; }
-    public @NotNull GlowingManager     getGlowingManager()      { return glowingManager; }
-    public @NotNull RoleDistributor    getRoleDistributor()     { return roleDistributor; }
-    public @NotNull GameSettings       getSettings()            { return settings; }
-    public @NotNull Random             getRandom()              { return random; }
+    public @NotNull PlayerManager         getPlayerManager()          { return playerManager; }
+    public @NotNull GameEventBus          getEventBus()               { return eventBus; }
+    public @NotNull CompositionManager    getCompositionManager()     { return compositionManager; }
+    public @NotNull RoleRegistry          getRoleRegistry()           { return roleRegistry; }
+    public @NotNull AbilityManager        getAbilityManager()         { return abilityManager; }
+    public @NotNull TickingAbilityManager getTickingAbilityManager()  { return tickingAbilityManager; }
+    public @NotNull TickingParticleTimer  getTickingParticleTimer()   { return tickingParticleTimer; }
+    public @NotNull VentManager           getVentManager()            { return ventManager; }
+    public @NotNull VoteManager           getVoteManager()            { return voteManager; }
+    public @NotNull SignManager           getSignManager()            { return signManager; }
+    public @NotNull AnonymityManager      getAnonymityManager()       { return anonymityManager; }
+    public @NotNull EliminationManager    getEliminationManager()     { return eliminationManager; }
+    public @NotNull VictoryManager        getVictoryManager()         { return victoryManager; }
+    public @NotNull PhaseManager          getPhaseManager()           { return phaseManager; }
+    public @NotNull MessageManager        getMessageManager()         { return messageManager; }
+    public @NotNull BossBarManager        getBossBarManager()         { return bossBarManager; }
+    public @NotNull ActionBarManager      getActionBarManager()       { return actionBarManager; }
+    public @NotNull SoundManager          getSoundManager()           { return soundManager; }
+    public @NotNull GlowingManager        getGlowingManager()         { return glowingManager; }
+    public @NotNull RoleDistributor       getRoleDistributor()        { return roleDistributor; }
+    public @NotNull GameSettings          getSettings()               { return settings; }
+    public @NotNull Random                getRandom()                 { return random; }
 
-    public @Nullable RoundContext getCurrentRound()              { return currentRound; }
-    public boolean isGameRunning()                              { return gameRunning; }
-    public int getRoundNumber()                                 { return roundNumber; }
-    public @NotNull PhaseType getCurrentPhase()                 {return phaseManager.getCurrentType(); }
+    public @Nullable RoundContext getCurrentRound()                   { return currentRound; }
+    public boolean isGameRunning()                                    { return gameRunning; }
+    public int getRoundNumber()                                       { return roundNumber; }
+    public @NotNull PhaseType getCurrentPhase()                       { return phaseManager.getCurrentType(); }
 }

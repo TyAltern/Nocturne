@@ -77,7 +77,7 @@ public final class OccultationAbility extends AbstractAbility {
             numberOfVotes = Math.min(Math.max(test,min),max);
         }
         player.sendMessage(Component.text(
-                "\n§6[Occultation] §fAu total, §e" + numberOfVotes + (numberOfVotes>1? "personnes§f ont voté":"personne§f a voté") + " contre l'éliminé."
+                "\n§6[Occultation] §fAu total, §e" + numberOfVotes + (numberOfVotes>1? " personnes§f ont voté":" personne§f a voté") + " contre l'éliminé."
         ));
 
     }

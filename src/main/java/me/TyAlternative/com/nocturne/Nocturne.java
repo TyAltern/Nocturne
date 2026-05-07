@@ -176,6 +176,7 @@ public final class Nocturne extends JavaPlugin {
         pm.registerEvents(new BlockListener(game), this);
         pm.registerEvents(new ProjectileListener(game), this);
         pm.registerEvents(new ConnectionListener(game), this);
+        pm.registerEvents(new VentListener(game), this);
 
         // Listener du GUI de composition
         CompositionCommand compoCmd = (CompositionCommand) getCommand("compo").getExecutor();

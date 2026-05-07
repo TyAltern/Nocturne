@@ -51,7 +51,7 @@ public final class ApelioteAbility extends AbstractAbility {
     @SuppressWarnings("DataFlowIssue")
     @Override
     protected @NotNull AbilityResult executeLogic(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull AbilityContext context) {
-        game().getCurrentRound().getProtectionManager().protect(context.getTarget().getUniqueId(), ProtectionType.APELIOTE);
+        game().getCurrentRound().getProtectionManager().protect(context.getTarget().getUniqueId(), nocturnePlayer.getPlayerId(), ProtectionType.APELIOTE);
         return AbilityResult.success(
                 Component.text("\n§6[Bénédiction d'Apéliote]§f Vous avez protégé un joueur. Celui-ci ne craindra plus les §cFlammes§f pour un tour.")
         );

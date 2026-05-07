@@ -1,5 +1,7 @@
 package me.TyAlternative.com.nocturne.mechanics.embrasement;
 
+import me.TyAlternative.com.nocturne.api.event.EmbrasementEvent;
+import me.TyAlternative.com.nocturne.api.event.GameEventBus;
 import me.TyAlternative.com.nocturne.core.round.RoundContext;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -22,26 +24,46 @@ public final class EmbrasementManager {
     private final Map<UUID, EmbrasementCause> embrased = new LinkedHashMap<>();
     private final List<UUID> lipsBannedFlamme = new ArrayList<>();
 
+    private final GameEventBus eventBus;
+
+    public EmbrasementManager(GameEventBus eventBus) {
+        this.eventBus = eventBus;
+    }
+
     // -------------------------------------------------------------------------
     // Embrasement
     // -------------------------------------------------------------------------
 
     /**
-     * Tente d'embraser le joueur identifié par {@code playerId}.
+     * Tente d'embraser un joueur, en passant d'abord par le {@link GameEventBus}.
      *
-     * <p>Si le joueur est déjà embrasé, l'entrée est mise à jour
-     *    avec la nouvelle cause.
+     * <p>Ordre des opérations :
+     * <ol>
+     *   <li>Vérification de la bannière Lips (si le lanceur est banni, retour immédiat).</li>
+     *   <li>Création et dispatch de l'{@link EmbrasementEvent}.</li>
+     *   <li>Si annulé → retour {@code false}.</li>
+     *   <li>Enregistrement de la cible finale (potentiellement redirigée).</li>
+     * </ol>
      *
-     * @param playerId UUID du joueur à embraser
+     * @param playerId UUID du joueur à embraser (cible initiale)
      * @param cause    source de l'embrasement
-     * @return {@code true} si l'embrasement a été appliquée, {@code false} si le joueur l'était déjà
+     * @param casterId UUID du lanceur, ou {@code null} si automatique
+     * @return {@code true} si l'embrasement a été enregistré, {@code false} sinon
      */
-    public boolean embrase(@NotNull UUID playerId, @NotNull EmbrasementCause cause, @Nullable UUID casterID) {
-        if (casterID != null && lipsBannedFlamme.contains(casterID)) return false;
-        boolean returnValue = !embrased.containsKey(playerId);
+    public boolean embrase(@NotNull UUID playerId, @NotNull EmbrasementCause cause, @Nullable UUID casterId) {
+        if (casterId != null && lipsBannedFlamme.contains(casterId)) return false;
 
-        embrased.put(playerId, cause);
-        return returnValue;
+        EmbrasementEvent event = new EmbrasementEvent(playerId, casterId, cause);
+        eventBus.fireEmbrasement(event);
+
+        if (event.isCancelled()) return false;
+
+        UUID finalTarget = event.getTargetId();
+        EmbrasementCause finalCause = event.getCause();
+
+        boolean isNew = !embrased.containsKey(finalTarget);
+        embrased.put(finalTarget, finalCause);
+        return isNew;
     }
 
     /**

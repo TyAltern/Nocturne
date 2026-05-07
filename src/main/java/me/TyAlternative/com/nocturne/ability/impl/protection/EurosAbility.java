@@ -72,11 +72,11 @@ public final class EurosAbility extends AbstractAbility {
 
         if (lastCasterId == null) {
             if (game().getSettings().shouldEurosSelfProtectionIfNotMarked()) {
-                game().getCurrentRound().getProtectionManager().protect(nocturnePlayer.getPlayerId(), ProtectionType.EUROS);
+                game().getCurrentRound().getProtectionManager().protect(nocturnePlayer.getPlayerId(), nocturnePlayer.getPlayerId(), ProtectionType.EUROS);
             }
             return;
         }
-        game().getCurrentRound().getProtectionManager().protect(lastCasterId, ProtectionType.EUROS);
+        game().getCurrentRound().getProtectionManager().protect(lastCasterId, nocturnePlayer.getPlayerId(), ProtectionType.EUROS);
 
     }
 

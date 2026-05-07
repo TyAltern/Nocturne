@@ -76,7 +76,7 @@ public final class ScironAbility extends AbstractAbility {
     public void onGameplayPhaseEnd(@NotNull Player player, @NotNull NocturnePlayer nocturnePlayer, @NotNull PhaseContext phaseContext) {
         if (isDrunk()) return;
         if (lastMarkedByTargetId == null) return;
-        game().getCurrentRound().getProtectionManager().protect(lastMarkedByTargetId, ProtectionType.SCIRON);
+        game().getCurrentRound().getProtectionManager().protect(lastMarkedByTargetId, nocturnePlayer.getPlayerId(), ProtectionType.SCIRON);
     }
 
     @Override

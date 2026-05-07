@@ -59,6 +59,13 @@ public final class GameSettings {
     private @Nullable Location spectatorLocation = null;
 
     // -------------------------------------------------------------------------
+    // Vent
+    // -------------------------------------------------------------------------
+
+    private List<Location> ventLocations = new ArrayList<>();
+
+
+    // -------------------------------------------------------------------------
     // Flèches spectrales
     // -------------------------------------------------------------------------
 
@@ -180,6 +187,7 @@ public final class GameSettings {
     public boolean shouldHideNametags()                               { return hideNametags; }
     public @NotNull String getDefaultSkin()                           { return defaultSkin; }
     public @NotNull List<Location> getVoteTableLocations()            { return voteTableLocations; }
+    public @NotNull List<Location> getVentLocations()                 { return ventLocations; }
     public boolean shouldRevealRoleOnDeath()                          { return revealRoleOnDeath; }
     public boolean shouldTeleportSpectatorsOnDeath()                  { return teleportSpectatorsOnDeath; }
     public @Nullable Location getSpectatorLocation()                  { return spectatorLocation; }
@@ -246,6 +254,7 @@ public final class GameSettings {
     void setHideNametags(boolean hideNametags)                        { this.hideNametags = hideNametags; }
     void setDefaultSkin(String skin)                                  { this.defaultSkin = skin; }
     void setVoteTableLocations(List<Location> locations)              { this.voteTableLocations = locations; }
+    void setVentLocations(List<Location> locations)                   { this.ventLocations = locations; }
     void setRevealRoleOnDeath(boolean reveal)                         { this.revealRoleOnDeath = reveal; }
     void setTeleportSpectatorsOnDeath(boolean teleport)               { this.teleportSpectatorsOnDeath = teleport; }
     void setSpectatorLocation(@Nullable Location location)            { this.spectatorLocation = location; }

@@ -6,6 +6,7 @@ import me.TyAlternative.com.nocturne.ability.impl.curse.AmnesieAbility;
 import me.TyAlternative.com.nocturne.api.ability.Ability;
 import me.TyAlternative.com.nocturne.api.ability.AbilityContext;
 import me.TyAlternative.com.nocturne.api.ability.AbilityResult;
+import me.TyAlternative.com.nocturne.api.event.*;
 import me.TyAlternative.com.nocturne.api.role.Role;
 import me.TyAlternative.com.nocturne.api.role.RoleTeam;
 import me.TyAlternative.com.nocturne.api.role.RoleType;
@@ -319,6 +320,49 @@ public abstract class AbstractRole implements Role {
     public void onOtherEliminated(@NotNull Player self, @NotNull Player eliminated, @NotNull NocturnePlayer nocturneEliminated, @NotNull EliminationCause cause) {
         dispatchToAbilities(ability -> ability.onOtherEliminated(self, eliminated, nocturneEliminated, cause));
     }
+
+
+    /**
+     * Propage un {@link EmbrasementEvent} à toutes les capacités de ce rôle.
+     * Appelé par le {@link me.TyAlternative.com.nocturne.api.event.GameEventBus}.
+     */
+    public void onEmbrasementEvent(@NotNull EmbrasementEvent event, @NotNull Player self, @NotNull NocturnePlayer np) {
+        dispatchToAbilities(ability -> ability.onEmbrasementEvent(event, self, np));
+    }
+
+    /**
+     * Propage un {@link ProtectionEvent} à toutes les capacités de ce rôle.
+     * Appelé par le {@link me.TyAlternative.com.nocturne.api.event.GameEventBus}.
+     */
+    public void onProtectionEvent(@NotNull ProtectionEvent event, @NotNull Player self, @NotNull NocturnePlayer np) {
+        dispatchToAbilities(ability -> ability.onProtectionEvent(event, self, np));
+    }
+
+    /**
+     * Propage un {@link EliminationEvent} à toutes les capacités de ce rôle.
+     * Appelé par le {@link me.TyAlternative.com.nocturne.api.event.GameEventBus}.
+     */
+    public void onEliminationEvent(@NotNull EliminationEvent event, @NotNull Player self, @NotNull NocturnePlayer np) {
+        dispatchToAbilities(ability -> ability.onEliminationEvent(event, self, np));
+    }
+
+    /**
+     * Propage un {@link VoteCastEvent} à toutes les capacités de ce rôle.
+     * Appelé par le {@link me.TyAlternative.com.nocturne.api.event.GameEventBus}.
+     */
+    public void onVoteCastEvent(@NotNull VoteCastEvent event, @NotNull Player self, @NotNull NocturnePlayer np) {
+        dispatchToAbilities(ability -> ability.onVoteCastEvent(event, self, np));
+    }
+
+    /**
+     * Propage un {@link AbilityCastEvent} à toutes les capacités de ce rôle.
+     * Appelé par le {@link me.TyAlternative.com.nocturne.api.event.GameEventBus}.
+     */
+    public void onAbilityCastEvent(@NotNull AbilityCastEvent event, @NotNull Player self, @NotNull NocturnePlayer np) {
+        dispatchToAbilities(ability -> ability.onAbilityCastEvent(event, self, np));
+    }
+
+
     // -------------------------------------------------------------------------
     // Dispatch isolé — cœur de la robustesse des hooks
     // -------------------------------------------------------------------------

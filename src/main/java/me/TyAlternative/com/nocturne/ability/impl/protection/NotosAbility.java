@@ -128,7 +128,7 @@ public final class NotosAbility extends AbstractAbility {
 
         ProtectionManager protectionManager = game().getCurrentRound().getProtectionManager();
         for (UUID targetId : markedPlayers) {
-            protectionManager.protect(targetId, ProtectionType.NOTOS);
+            protectionManager.protect(targetId, nocturnePlayer.getPlayerId(), ProtectionType.NOTOS);
         }
         markedPlayers.clear();
     }

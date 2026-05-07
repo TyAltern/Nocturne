@@ -5,6 +5,8 @@ import me.TyAlternative.com.nocturne.Nocturne;
 import me.TyAlternative.com.nocturne.ability.AbilityIds;
 import me.TyAlternative.com.nocturne.ability.impl.misc.CicatricesAbility;
 import me.TyAlternative.com.nocturne.api.ability.Ability;
+import me.TyAlternative.com.nocturne.api.event.EliminationEvent;
+import me.TyAlternative.com.nocturne.api.event.GameEventBus;
 import me.TyAlternative.com.nocturne.api.role.Role;
 import me.TyAlternative.com.nocturne.core.NocturneGame;
 import me.TyAlternative.com.nocturne.core.round.RoundContext;
@@ -47,6 +49,7 @@ public final class EliminationManager {
     private final PlayerManager playerManager;
     private final AnonymityManager anonymityManager;
     private final Logger logger;
+    private final GameEventBus eventBus;
 
     private final Map<UUID,EmbrasementCause> cicatricesId;
 
@@ -57,10 +60,12 @@ public final class EliminationManager {
     public EliminationManager(
             @NotNull PlayerManager playerManager,
             @NotNull AnonymityManager anonymityManager,
+            @NotNull GameEventBus eventBus,
             @NotNull Logger logger) {
         this.playerManager = playerManager;
         this.anonymityManager = anonymityManager;
         this.logger = logger;
+        this.eventBus         = eventBus;
         this.cicatricesId = new HashMap<>();
     }
 
@@ -151,16 +156,56 @@ public final class EliminationManager {
     // -------------------------------------------------------------------------
 
     /**
-     * Élimine le joueur identifié par {@code playerId} pour la cause donnée.
+     * Tente d'éliminer un joueur, en passant d'abord par le {@link GameEventBus}.
      *
-     * <p>Sans effet si le joueur est introuvable ou déjà éliminé.
-     * Chaque hook est isolé dans un try/catch pour garantir que la chaîne
-     * complète s'exécute même si une capacité lève une exception.
+     * <p>Ordre des opérations :
+     * <ol>
+     *   <li>Vérification que le joueur est vivant.</li>
+     *   <li>Création et dispatch de l'{@link EliminationEvent}.</li>
+     *   <li>Si annulé → log + retour sans élimination.</li>
+     *   <li>Si redirigé → appel récursif sur la nouvelle cible (sans re-firer l'événement).</li>
+     *   <li>Élimination effective.</li>
+     * </ol>
      *
      * @param playerId UUID du joueur à éliminer
      * @param cause    raison de l'élimination
      */
     public void eliminate(@NotNull UUID playerId, @NotNull EliminationCause cause) {
+        NocturnePlayer nocturnePlayer = playerManager.get(playerId);
+        if (nocturnePlayer == null || !nocturnePlayer.isAlive()) return;
+
+        EliminationEvent event = new EliminationEvent(playerId, cause);
+        eventBus.fireElimination(event);
+
+        if (event.isCancelled()) {
+            if (event.getCancelReason() != null) {
+                Player player = nocturnePlayer.getPlayer();
+                if (player != null) player.sendMessage(event.getCancelReason());
+            }
+
+            logger.info("[Nocturne] Élimination de %s annulée par une capacité."
+                    .formatted(playerId));
+            return;
+        }
+
+        UUID finalTarget = event.getTargetId();
+        EliminationCause finalCause = event.getCause();
+
+        // Élimination de la cible originale
+        eliminateDirect(finalTarget, finalCause);
+    }
+
+
+
+
+    /**
+     * Élimination directe sans passer par l'EventBus.
+     * Utilisé après une redirection pour éviter les boucles infinies.
+     *
+     * @param playerId UUID du joueur à éliminer
+     * @param cause    cause de l'élimination
+     */
+    public void eliminateDirect(@NotNull UUID playerId, @NotNull EliminationCause cause) {
         NocturnePlayer nocturnePlayer = playerManager.get(playerId);
         if (nocturnePlayer == null || !nocturnePlayer.isAlive()) return;
 

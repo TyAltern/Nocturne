@@ -3,6 +3,7 @@ package me.TyAlternative.com.nocturne.api.ability;
 import me.TyAlternative.com.nocturne.ability.AbilityIds;
 import me.TyAlternative.com.nocturne.ability.AbilityManager;
 import me.TyAlternative.com.nocturne.ability.DrunkSupport;
+import me.TyAlternative.com.nocturne.api.event.*;
 import me.TyAlternative.com.nocturne.api.role.Role;
 import me.TyAlternative.com.nocturne.core.phase.PhaseContext;
 import me.TyAlternative.com.nocturne.elimination.EliminationCause;
@@ -224,5 +225,124 @@ public interface Ability {
             @NotNull NocturnePlayer nocturneCaster,
             @NotNull AbilityContext context,
             @NotNull AbilityResult result
+    ) {}
+
+    // -------------------------------------------------------------------------
+    // Hooks d'événements interceptables
+    // -------------------------------------------------------------------------
+
+    /**
+     * Appelé sur toutes les capacités de tous les joueurs vivants <em>avant</em>
+     * qu'un joueur soit embrasé.
+     *
+     * <p>Les capacités peuvent modifier l'événement :
+     * <ul>
+     *   <li>{@code event.cancel()} — l'embrasement n'a pas lieu.</li>
+     *   <li>{@code event.redirectTarget(uuid)} — un autre joueur est embrasé à la place.</li>
+     *   <li>{@code event.setCause(...)} — la source affichée est modifiée.</li>
+     * </ul>
+     *
+     * <p>Si l'événement est annulé par une capacité, les capacités suivantes voient
+     * {@code event.isCancelled() == true} et peuvent choisir de lever l'annulation.
+     *
+     * @param event          événement mutable, partagé entre toutes les capacités
+     * @param self           joueur porteur de cette capacité
+     * @param nocturnePlayer données Nocturne du porteur
+     */
+    default void onEmbrasementEvent(
+            @NotNull EmbrasementEvent event,
+            @NotNull Player self,
+            @NotNull NocturnePlayer nocturnePlayer
+    ) {}
+
+    /**
+     * Appelé sur toutes les capacités de tous les joueurs vivants <em>avant</em>
+     * qu'un joueur soit protégé.
+     *
+     * <p>Les capacités peuvent modifier l'événement :
+     * <ul>
+     *   <li>{@code event.cancel()} — la protection n'est pas appliquée.</li>
+     *   <li>{@code event.redirectTarget(uuid)} — un autre joueur reçoit la protection.</li>
+     *   <li>{@code event.setProtectionType(...)} — le type de protection est modifié.</li>
+     * </ul>
+     *
+     * @param event          événement mutable
+     * @param self           joueur porteur de cette capacité
+     * @param nocturnePlayer données Nocturne du porteur
+     */
+    default void onProtectionEvent(
+            @NotNull ProtectionEvent event,
+            @NotNull Player self,
+            @NotNull NocturnePlayer nocturnePlayer
+    ) {}
+
+    /**
+     * Appelé sur toutes les capacités de tous les joueurs vivants <em>avant</em>
+     * qu'un joueur soit éliminé.
+     *
+     * <p>Les capacités peuvent modifier l'événement :
+     * <ul>
+     *   <li>{@code event.cancel()} — l'élimination n'a pas lieu (le joueur survit).</li>
+     *   <li>{@code event.redirectTarget(uuid)} — un autre joueur est éliminé à la place.</li>
+     *   <li>{@code event.setCause(...)} — la cause affichée est modifiée.</li>
+     * </ul>
+     *
+     * <p><b>Attention :</b> annuler une élimination dans un mauvais contexte peut
+     * bloquer des conditions de victoire. À utiliser avec précaution et idéalement
+     * avec une limite d'usage (perGame).
+     *
+     * @param event          événement mutable
+     * @param self           joueur porteur de cette capacité
+     * @param nocturnePlayer données Nocturne du porteur
+     */
+    default void onEliminationEvent(
+            @NotNull EliminationEvent event,
+            @NotNull Player self,
+            @NotNull NocturnePlayer nocturnePlayer
+    ) {}
+
+    /**
+     * Appelé sur toutes les capacités de tous les joueurs vivants <em>avant</em>
+     * qu'un vote soit enregistré.
+     *
+     * <p>Les capacités peuvent modifier l'événement :
+     * <ul>
+     *   <li>{@code event.cancel()} — le vote n'est pas enregistré.</li>
+     *   <li>{@code event.redirectTarget(uuid)} — le vote cible un autre joueur.</li>
+     *   <li>{@code event.setWeight(n)} — le poids du vote est modifié pour ce tour.</li>
+     * </ul>
+     *
+     * @param event          événement mutable
+     * @param self           joueur porteur de cette capacité
+     * @param nocturnePlayer données Nocturne du porteur
+     */
+    default void onVoteCastEvent(
+            @NotNull VoteCastEvent event,
+            @NotNull Player self,
+            @NotNull NocturnePlayer nocturnePlayer
+    ) {}
+
+    /**
+     * Appelé sur toutes les capacités de tous les joueurs vivants <em>avant</em>
+     * qu'une capacité active soit exécutée.
+     *
+     * <p>Déclenché après les vérifications de l'{@link AbilityManager} (cooldown,
+     * limite d'usage, canExecute) mais avant {@link #execute}.
+     *
+     * <p>Les capacités peuvent modifier l'événement :
+     * <ul>
+     *   <li>{@code event.cancel()} — la capacité n'est pas exécutée, la charge n'est pas consommée.</li>
+     *   <li>{@code event.setContext(...)} — la cible ou l'état de main est modifié.</li>
+     *   <li>{@code event.setForceDrunk(true)} — force le mode drunk pour ce seul cast.</li>
+     * </ul>
+     *
+     * @param event          événement mutable
+     * @param self           joueur porteur de cette capacité
+     * @param nocturnePlayer données Nocturne du porteur
+     */
+    default void onAbilityCastEvent(
+            @NotNull AbilityCastEvent event,
+            @NotNull Player self,
+            @NotNull NocturnePlayer nocturnePlayer
     ) {}
 }

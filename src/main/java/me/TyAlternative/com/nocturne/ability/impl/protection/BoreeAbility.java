@@ -53,7 +53,7 @@ public final class BoreeAbility extends AbstractAbility {
         var protectionManager = game().getCurrentRound().getProtectionManager();
 
         for (NocturnePlayer np : game().getPlayerManager().getAlive()) {
-            protectionManager.protect(np.getPlayerId(), ProtectionType.BOREE);
+            protectionManager.protect(np.getPlayerId(), nocturnePlayer.getPlayerId(), ProtectionType.BOREE);
         }
 
         return AbilityResult.success(

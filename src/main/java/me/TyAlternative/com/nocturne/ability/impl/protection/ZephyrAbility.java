@@ -86,7 +86,7 @@ public final class ZephyrAbility extends AbstractAbility {
                 closestDistSq = distSq;
             }
         }
-        protectionManager.protect(closest.getPlayerId(), ProtectionType.ZEPHYR);
+        protectionManager.protect(closest.getPlayerId(), nocturnePlayer.getPlayerId(), ProtectionType.ZEPHYR);
 
     }
 }

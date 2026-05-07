@@ -1,5 +1,7 @@
 package me.TyAlternative.com.nocturne.mechanics.protection;
 
+import me.TyAlternative.com.nocturne.api.event.GameEventBus;
+import me.TyAlternative.com.nocturne.api.event.ProtectionEvent;
 import me.TyAlternative.com.nocturne.core.round.RoundContext;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -23,24 +25,47 @@ public final class ProtectionManager {
     /** Map UUID joueur -> type de protection active. */
     private final Map<UUID, ProtectionType> protections = new LinkedHashMap<>();
 
+    private final GameEventBus eventBus;
+
+    public ProtectionManager(@NotNull GameEventBus eventBus) {
+        this.eventBus = eventBus;
+    }
+
     // -------------------------------------------------------------------------
     // Protection
     // -------------------------------------------------------------------------
 
     /**
-     * Tente de protéger le joueur identifié par {@code playerId}.
+     * Tente de protéger un joueur, en passant d'abord par le {@link GameEventBus}.
      *
-     * <p>Si le joueur est déjà protégé, l'entrée est mise à jour
-     *    avec la nouvelle protection.
+     * <p>Ordre des opérations :
+     * <ol>
+     *   <li>Création et dispatch du {@link ProtectionEvent}.</li>
+     *   <li>Si annulé → retour {@code false}.</li>
+     *   <li>Application sur la cible finale (potentiellement redirigée).</li>
+     * </ol>
      *
-     * @param playerId UUID du joueur à protéger
+     * @param playerId UUID du joueur à protéger (cible initiale)
      * @param type     source de la protection
-     * @return {@code true} si la protection a été appliquée, {@code false} si le joueur l'était déjà
+     * @return {@code true} si la protection a été appliquée, {@code false} si annulée
+     *         ou si le joueur était déjà protégé
      */
-    public boolean protect(@NotNull UUID playerId, @NotNull ProtectionType type) {
-        boolean returnValue = !protections.containsKey(playerId);
-        protections.put(playerId, type);
-        return returnValue;
+    public boolean protect(@NotNull UUID playerId, @Nullable UUID casterId, @NotNull ProtectionType type) {
+
+        // Créer et propager l'événement
+        ProtectionEvent event = new ProtectionEvent(playerId, casterId, type);
+        eventBus.fireProtection(event);
+
+        // Si annulé par une capacité
+        if (event.isCancelled()) return false;
+
+        // Lire la cible et le type finals
+        UUID finalTarget = event.getTargetId();
+        ProtectionType finalType = event.getProtectionType();
+
+        boolean isNew = !protections.containsKey(finalTarget);
+        protections.put(finalTarget, finalType);
+        return isNew;
     }
 
     /**

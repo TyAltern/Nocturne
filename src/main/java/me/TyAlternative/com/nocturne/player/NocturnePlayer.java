@@ -44,6 +44,7 @@ public final class NocturnePlayer {
     // Système de vote
     private @Nullable UUID votedPlayerId;
     private int voteWeight;
+    private int currentRoundVoteWeight;
     private boolean canVote;
     private boolean canBeVoted;
     private boolean hideVoteImmunity;
@@ -52,6 +53,10 @@ public final class NocturnePlayer {
 
     // Flèches spectrales
     private int spectralArrowsRemaining;
+
+    private boolean isInVent;
+    private boolean usedHisVent;
+    private int ventTimer;
 
 
     // -------------------------------------------------------------------------
@@ -70,6 +75,10 @@ public final class NocturnePlayer {
         this.hideVoteImmunity = true;
         this.isHiddenInVote = false;
         this.voteGlowColor = TextColor.color(255,170,0); // doré par défaut
+        this.isInVent = false;
+        this.usedHisVent = false;
+        this.ventTimer = 10;
+
     }
 
 
@@ -205,6 +214,11 @@ public final class NocturnePlayer {
         this.voteWeight = weight;
     }
 
+
+    public int getCurrentRoundVoteWeight()              { return currentRoundVoteWeight; }
+    public void setCurrentRoundVoteWeight(int weight)   { this.currentRoundVoteWeight = weight; }
+    public void resetCurrentRoundVoteWeight()           { this.currentRoundVoteWeight = voteWeight; }
+
     /** {@code true} si ce joueur est autorisé à voter. */
     public boolean canVote() {return canVote;}
 
@@ -233,6 +247,14 @@ public final class NocturnePlayer {
 
     public void setVoteGlowColor(@Nullable TextColor color) {this.voteGlowColor = color;}
 
+    public boolean isInVent() {return isInVent;}
+    public void setInVent(boolean inVent) {isInVent = inVent;}
+
+    public boolean hasUsedHisVent() {return usedHisVent;}
+    public void setUsedHisVent(boolean usedHisVent) {this.usedHisVent = usedHisVent;}
+
+    public int getVentTimer() {return ventTimer;}
+    public void setVentTimer(int ventTimer) {this.ventTimer = ventTimer;}
 
     // -------------------------------------------------------------------------
     // Réinitialisations
@@ -246,6 +268,7 @@ public final class NocturnePlayer {
      */
     public void resetForNewRound() {
         clearVote();
+        resetCurrentRoundVoteWeight();
     }
 
     /**
@@ -256,13 +279,14 @@ public final class NocturnePlayer {
      * instances de capacités, qui sont garbage-collectées avec le rôle.
      */
     public void resetFull() {
-        state = PlayerState.LOBBY;
-        role = null;
-        votedPlayerId = null;
-        voteWeight = 1;
-        canVote = true;
-        voteGlowColor = TextColor.color(255,170,0);
-        spectralArrowsRemaining = 0;
+        state                     = PlayerState.LOBBY;
+        role                      = null;
+        votedPlayerId             = null;
+        voteWeight                = 1;
+        currentRoundVoteWeight    = 1;
+        canVote                   = true;
+        voteGlowColor             = TextColor.color(255,170,0);
+        spectralArrowsRemaining   = 0;
     }
 
 

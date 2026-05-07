@@ -65,8 +65,11 @@ public final class ConfigManager {
         settings.setDefaultSpectralArrows(cfg.getInt("mechanics.spectral_arrows.default_count", 1));
         settings.setRedeemSpectralArrowIfMiss(cfg.getBoolean("mechanics.spectral_arrows.redeem_if_miss", true));
 
+        // Vent
+        settings.setVentLocations(parseLocation(cfg.getStringList("mechanics.vent.coordinates")));
+
         // Tables de vote
-        settings.setVoteTableLocations(parseVoteTables(cfg));
+        settings.setVoteTableLocations(parseLocation(cfg.getStringList("vote_tables")));
 
         // Élimination
         settings.setRevealRoleOnDeath(cfg.getBoolean("mechanics.elimination.reveal_role_on_death", false));
@@ -153,27 +156,27 @@ public final class ConfigManager {
     // Parsers privés
     // -------------------------------------------------------------------------
 
-    private @NotNull List<Location> parseVoteTables(@NotNull FileConfiguration cfg) {
-        List<Location> tables = new ArrayList<>();
+    private @NotNull List<Location> parseLocation(@NotNull List<String> locationsString) {
+        List<Location> locations = new ArrayList<>();
         var world = plugin.getServer().getWorld(settings.getWorldName());
 
-        for (String raw : cfg.getStringList("vote_tables")) {
+        for (String raw : locationsString) {
             try {
                 String[] parts = raw.replace(" ","").split(",");
                 if (parts.length >= 3) {
                     double x = Double.parseDouble(parts[0]);
                     double y = Double.parseDouble(parts[1]);
                     double z = Double.parseDouble(parts[2]);
-                    tables.add(new Location(world, x, y, z));
+                    locations.add(new Location(world, x, y, z));
                 }
             } catch (NumberFormatException e) {
                 plugin.getLogger().warning(
-                        "[Nocturne] Position de table de vote invalide ignorée : " + raw
+                        "[Nocturne] Location invalide, elle est donc ignorée : " + raw
                 );
             }
         }
 
-        return tables;
+        return locations;
     }
 
     private @Nullable Location parseSpectatorLocation(@NotNull FileConfiguration cfg) {

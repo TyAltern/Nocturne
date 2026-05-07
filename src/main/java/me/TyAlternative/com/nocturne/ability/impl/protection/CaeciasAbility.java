@@ -62,7 +62,7 @@ public final class CaeciasAbility extends AbstractAbility {
         if (game().getCurrentRound() == null) return;
         ProtectionManager protectionManager  = game().getCurrentRound().getProtectionManager();
 
-        protectionManager.protect(nocturnePlayer.getPlayerId(), ProtectionType.CAECIAS);
+        protectionManager.protect(nocturnePlayer.getPlayerId(), nocturnePlayer.getPlayerId(), ProtectionType.CAECIAS);
     }
 
     @Override

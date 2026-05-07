@@ -393,9 +393,9 @@ public final class AnonymityManager {
 
                 // 2. Configuration d'affichage optimisée pour le riding
                 entity.setBillboard(Display.Billboard.CENTER); // Centré et face au joueur
-                entity.setSeeThrough(seeThrough);                    // Transparence à travers les blocs
-                entity.setDefaultBackground(false);             // Pas de fond par défaut
-                entity.setShadowed(false);                      // Ombre pour meilleure lisibilité
+                entity.setSeeThrough(seeThrough);              // Transparence à travers les blocs
+                entity.setDefaultBackground(false);            // Pas de fond par défaut
+                entity.setShadowed(false);                     // Ombre pour meilleure lisibilité
 
                 // 3. Échelle optimisée pour le riding (légèrement plus petite)
                 Transformation transformation = new Transformation(
